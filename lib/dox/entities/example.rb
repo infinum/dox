@@ -36,15 +36,11 @@ module Dox
 
       private
 
-      def path
-        request.path.sub(/\.json[^\?]*/, '')
-      end
-
       def fullpath
         if request.query_parameters.present?
-          URI::HTTP.build(path: path, query: request.query_parameters.to_query)
+          "#{request.path}?#{request.query_parameters.to_query}"
         else
-          path
+          request.path
         end
       end
     end
