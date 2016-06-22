@@ -19,7 +19,7 @@ module Dox
       end
 
       def request_identifier
-        fullpath
+        @desc
       end
 
       def response_status
@@ -34,15 +34,6 @@ module Dox
         response.body
       end
 
-      private
-
-      def fullpath
-        if request.query_parameters.present?
-          "#{request.path}?#{request.query_parameters.to_query}"
-        else
-          request.path
-        end
-      end
     end
   end
 end

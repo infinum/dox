@@ -3,7 +3,7 @@ module Dox
     class ActionPrinter < BasePrinter
 
       def print(action)
-        @output.puts "### #{action.name}\n\n#{print_desc(action.desc)}\n\n"
+        @output.puts "### #{action.name} [#{action.verb} #{action.path}]\n\n#{print_desc(action.desc)}\n\n"
 
         if action.uri_params.present?
           @output.puts("+ Parameters\n#{formatted_params(action.uri_params)}")

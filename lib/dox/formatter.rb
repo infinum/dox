@@ -49,7 +49,7 @@ module Dox
 
     def load_or_save_action_to_resource(resource)
       action_name = @current_example_data[:action_name]
-      resource.actions[action_name] ||= Entities::Action.new(action_name, @current_example_data)
+      resource.actions[action_name] ||= Entities::Action.new(action_name, @current_example_data, request)
     end
 
     def move_example_to_passed
