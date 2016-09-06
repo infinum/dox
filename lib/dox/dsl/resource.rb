@@ -17,10 +17,10 @@ module Dox
 
       def config
         {}.tap do |config|
-          config[:resource_name] = @name if @name
-          config[:resource_desc] = @desc if @desc
-          config[:resource_group_name] = @group if @group
-          config[:resource_endpoint] = @endpoint if @endpoint
+          config[:resource_name] = @name.presence
+          config[:resource_desc] = @desc.presence
+          config[:resource_group_name] = @group.presence
+          config[:resource_endpoint] = @endpoint.presence
           config[:apidoc] = true
         end
       end

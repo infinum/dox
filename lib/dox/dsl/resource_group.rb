@@ -13,8 +13,8 @@ module Dox
 
       def config
         {}.tap do |config|
-          config[:resource_group_name] = @name if @name
-          config[:resource_group_desc] = @desc if @desc
+          config[:resource_group_name] = @name.presence
+          config[:resource_group_desc] = @desc.presence
           config[:apidoc] = true
         end
       end

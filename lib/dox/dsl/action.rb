@@ -23,11 +23,11 @@ module Dox
 
       def config
         Hash.new.tap do |config|
-          config[:action_name] = @name if @name
-          config[:action_verb] = @verb if @verb
-          config[:action_path] = @path if @path
-          config[:action_desc] = @desc if @desc
-          config[:action_params] = @params if @params
+          config[:action_name] = @name.presence
+          config[:action_verb] = @verb.presence
+          config[:action_path] = @path.presence
+          config[:action_desc] = @desc.presence
+          config[:action_params] = @params.presence
         end
       end
     end
