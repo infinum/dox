@@ -2,7 +2,8 @@ module Dox
   module Entities
     class Action
 
-      attr_accessor :name, :desc, :verb, :path, :uri_params, :examples
+      attr_reader :name, :desc, :verb, :path, :uri_params
+      attr_accessor :examples
 
       def initialize(name, details, request)
         @request = request

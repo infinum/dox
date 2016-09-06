@@ -2,7 +2,8 @@ module Dox
   module Entities
     class Resource
 
-      attr_accessor :name, :desc, :endpoint, :actions
+      attr_reader :name, :desc, :endpoint
+      attr_accessor :actions
 
       def initialize(name, details)
         @name = name
