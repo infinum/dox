@@ -21,7 +21,7 @@ module Dox
       end
 
       def api_desc_path
-        Dox.config.root_api_file
+        Dox.config.header_file_path
       end
 
     end

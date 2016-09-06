@@ -94,7 +94,7 @@ Descriptions folder is a fullpath of a folder that contains markdown files with 
 
 ``` ruby
 Dox.configure do |config|
-  config.root_api_file = 'api.md'
+  config.header_file_path = 'api.md'
   config.desc_folder_path = Rails.root.join('spec/support/api_doc/v1/markdown_descriptions')
 end
 ```

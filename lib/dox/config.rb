@@ -1,10 +1,10 @@
 module Dox
   class Config
 
-    attr_accessor :root_api_file, :desc_folder_path
+    attr_accessor :header_file_path, :desc_folder_path
 
     def initialize
-      @root_api_file = 'api.md'
+      @header_file_path = 'api.md'
       @desc_folder_path = Rails.root.join('')
     end
 
