@@ -2,6 +2,8 @@ require "rspec/rails"
 require "dox/version"
 require "dox/config"
 require "dox/formatter"
+require "dox/errors/invalid_resource_error"
+
 require "dox/dsl/attr_proxy"
 require "dox/dsl/action"
 require "dox/dsl/resource"

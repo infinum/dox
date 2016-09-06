@@ -10,6 +10,11 @@ module Dox
 
       def initialize(opts = {})
         self.name = opts.fetch(:name, nil)
+
+        if @name.blank?
+          raise(Dox::Errors::InvalidResourceError, "Resource name is required!")
+        end
+
         self.desc = opts.fetch(:desc, nil)
         self.group = opts.fetch(:group, nil)
         self.endpoint = opts.fetch(:endpoint, nil)
