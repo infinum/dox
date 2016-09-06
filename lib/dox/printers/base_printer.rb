@@ -16,7 +16,7 @@ module Dox
       private
 
       def print_desc(desc)
-        return unless desc.present?
+        return if desc.blank?
 
         if desc.to_s =~ /.*\.md$/
           path = descriptions_folder_path.join(desc).to_s
