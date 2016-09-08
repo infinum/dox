@@ -11,6 +11,8 @@ module Dox
 
       def initialize(opts = {})
         self.name = opts.fetch(:name, nil)
+        raise(Dox::Errors::InvalidActionError, 'Action name is required!') if @name.blank?
+
         self.verb = opts.fetch(:verb, nil)
         self.path = opts.fetch(:path, nil)
         self.desc = opts.fetch(:desc, nil)

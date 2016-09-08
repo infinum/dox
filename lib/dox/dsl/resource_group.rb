@@ -8,6 +8,8 @@ module Dox
 
       def initialize(opts = {})
         self.name = opts.fetch(:name, nil)
+        raise(Dox::Errors::InvalidResourceGroupError, 'Resource group name is required!') if @name.blank?
+
         self.desc = opts.fetch(:desc, nil)
       end
 

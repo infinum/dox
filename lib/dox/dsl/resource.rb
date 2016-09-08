@@ -5,19 +5,21 @@ module Dox
 
       attr_writer :name
       attr_writer :group
-      attr_writer :desc
       attr_writer :endpoint
+
+      attr_writer :desc
 
       def initialize(opts = {})
         self.name = opts.fetch(:name, nil)
+        raise(Dox::Errors::InvalidResourceError, 'Resource name is required!') if @name.blank?
 
-        if @name.blank?
-          raise(Dox::Errors::InvalidResourceError, "Resource name is required!")
-        end
+        self.group = opts.fetch(:group, nil)
+        raise(Dox::Errors::InvalidResourceError, 'Resource group is required!') if @group.blank?
+
+        self.endpoint = opts.fetch(:endpoint, nil)
+        raise(Dox::Errors::InvalidResourceError, 'Resource endpoint is required!') if @endpoint.blank?
 
         self.desc = opts.fetch(:desc, nil)
-        self.group = opts.fetch(:group, nil)
-        self.endpoint = opts.fetch(:endpoint, nil)
       end
 
       def config
