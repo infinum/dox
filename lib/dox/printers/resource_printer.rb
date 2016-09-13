@@ -3,11 +3,7 @@ module Dox
     class ResourcePrinter < BasePrinter
 
       def print(resource)
-        if resource.endpoint.present?
-          @output.puts "\n## #{resource.name} [#{resource.endpoint}]\n\n#{print_desc(resource.desc)}\n"
-        else
-          @output.puts "## #{resource.name}"
-        end
+        @output.puts "\n## #{resource.name} [#{resource.endpoint}]\n\n#{print_desc(resource.desc)}\n"
 
         resource.actions.each do |_, action|
           action_printer.print(action)

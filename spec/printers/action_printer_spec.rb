@@ -1,0 +1,75 @@
+describe Dox::Printers::ActionPrinter do
+  subject { described_class }
+
+  let(:request) { double(:request, method: 'GET', path_parameters: { 'id' => 1 }, path: '/pokemons/1') }
+  let(:uri_params) do
+    {
+      id: { type: :number, required: :required, value: 1, description: 'pokemon id' }
+    }
+  end
+
+  let(:details) do
+    {
+      action_desc: 'Returns a Pokemon',
+      action_params: uri_params
+    }
+  end
+  let(:action_without_params) { Dox::Entities::Action.new('Get Pokemon', details.except(:action_params), request) }
+  let(:action_with_params) { Dox::Entities::Action.new('Get Pokemon', details, request) }
+
+  let(:output) { double(:output) }
+  let(:printer) { described_class.new(output) }
+
+  before do
+    allow(Rails).to receive_message_chain(:root, :join).and_return('/')
+  end
+
+  describe '#print' do
+    let(:action_output) do
+      <<~HEREDOC
+       ### Get Pokemon [GET /pokemons/{id}]
+
+       Returns a Pokemon
+
+       HEREDOC
+     end
+
+    before do
+      allow(output).to receive(:puts)
+    end
+
+    it 'prints action header' do
+      printer.print(action_without_params)
+      expect(output).to have_received(:puts).with(action_output).once
+    end
+
+    context 'with uri params' do
+      let(:action_uri_output) do
+        <<~HEREDOC
+          + Parameters
+              + id: `1` (number, required) - pokemon id
+        HEREDOC
+      end
+
+      it 'prints uri params' do
+        printer.print(action_with_params)
+        expect(output).to have_received(:puts).with(action_uri_output.strip).once
+      end
+    end
+
+    context 'with one example' do
+      let(:response) { double(:response) }
+      let(:example_details) { { description: 'Returns a Pokemon' } }
+      let(:example) { Dox::Entities::Example.new(example_details, request, response) }
+
+      before do
+        action_without_params.examples << example
+        expect_any_instance_of(Dox::Printers::ExamplePrinter).to receive(:print).once
+      end
+
+      it 'triggers example printer once' do
+        printer.print(action_without_params)
+      end
+    end
+  end
+end
