@@ -21,9 +21,10 @@ module Dox
 
       def template_path
         path_params = request.path_parameters.except(:action, :controller)
-        path = request.path
+        path = request.path.dup
         path_params.each do |key, value|
-          path.sub!(value, "{#{key}}")
+          # /pokemons/1 => pokemons/{id}
+          path.sub!(/\/#{value}(\/|$)/, "/{#{key}}\\1")
         end
         path
       end
