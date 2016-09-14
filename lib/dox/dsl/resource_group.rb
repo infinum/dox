@@ -6,19 +6,19 @@ module Dox
       attr_writer :name
       attr_writer :desc
 
-      def initialize(opts = {})
-        self.name = opts.fetch(:name, nil)
-        raise(Dox::Errors::InvalidResourceGroupError, 'Resource group name is required!') if @name.blank?
+      def initialize(name, &block)
+        self.name = name
+        instance_eval(&block) if block_given?
 
-        self.desc = opts.fetch(:desc, nil)
+        raise(Dox::Errors::InvalidResourceGroupError, 'Resource group name is required!') if @name.blank?
       end
 
       def config
-        {}.tap do |config|
-          config[:resource_group_name] = @name.presence
-          config[:resource_group_desc] = @desc.presence
-          config[:apidoc] = true
-        end
+        {
+          resource_group_name: @name.presence,
+          resource_group_desc: @desc.presence,
+          apidoc: true
+        }
       end
     end
   end
