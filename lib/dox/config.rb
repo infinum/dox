@@ -1,11 +1,16 @@
 module Dox
   class Config
 
-    attr_accessor :header_file_path, :desc_folder_path
+    attr_reader :header_file_path, :desc_folder_path
 
-    def initialize
-      @header_file_path = 'api.md'
-      @desc_folder_path = Rails.root.join('')
+    def header_file_path=(file_path)
+      raise(Errors::FileNotFoundError, file_path) unless File.exists?(file_path)
+      @header_file_path = file_path
+    end
+
+    def desc_folder_path=(folder_path)
+      raise(Errors::FolderNotFoundError, folder_path) unless Dir.exists?(folder_path)
+      @desc_folder_path = folder_path
     end
 
   end
