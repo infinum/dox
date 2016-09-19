@@ -21,7 +21,7 @@ describe Dox::Printers::ActionPrinter do
   let(:printer) { described_class.new(output) }
 
   before do
-    allow(Rails).to receive_message_chain(:root, :join).and_return('/')
+    allow(output).to receive(:puts)
   end
 
   describe '#print' do
@@ -33,10 +33,6 @@ describe Dox::Printers::ActionPrinter do
 
        HEREDOC
      end
-
-    before do
-      allow(output).to receive(:puts)
-    end
 
     it 'prints action header' do
       printer.print(action_without_params)

@@ -14,7 +14,6 @@ describe Dox::Printers::ExamplePrinter do
   let(:printer) { described_class.new(output) }
 
   before do
-    allow(Rails).to receive_message_chain(:root, :join).and_return('/')
     allow(output).to receive(:puts)
     allow(request).to receive(:parameters).and_return({})
   end

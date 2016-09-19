@@ -12,10 +12,6 @@ describe Dox::Printers::ResourcePrinter do
   let(:output) { double(:output) }
   let(:printer) { described_class.new(output) }
 
-  before do
-    allow(Rails).to receive_message_chain(:root, :join).and_return('/')
-  end
-
   describe '#print' do
     let(:resource_output) do
       <<~HEREDOC
