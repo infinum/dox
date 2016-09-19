@@ -10,19 +10,16 @@ module Dox
         self.subject = opts.fetch :subject
       end
 
-      def resource(name = nil, &block)
-        self._resource = Resource.new(name: name)
-        _resource.instance_eval(&block)
+      def resource(name, &block)
+        self._resource = Resource.new(name, &block)
       end
 
-      def action(name = nil, &block)
-        self._action = Action.new(name: name)
-        _action.instance_eval(&block)
+      def action(name, &block)
+        self._action = Action.new(name, &block)
       end
 
-      def group(name = nil, &block)
-        self._group = ResourceGroup.new(name: name)
-        _group.instance_eval(&block)
+      def group(name, &block)
+        self._group = ResourceGroup.new(name: name, &block)
       end
 
       def config

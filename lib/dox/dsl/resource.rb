@@ -9,8 +9,9 @@ module Dox
 
       attr_writer :desc
 
-      def initialize(name, block)
+      def initialize(name, &block)
         self.name = name
+
         instance_eval(&block)
 
         raise(Dox::Errors::InvalidResourceError, 'Resource name is required!') if @name.blank?
