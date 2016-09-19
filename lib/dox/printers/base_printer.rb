@@ -2,11 +2,8 @@ module Dox
   module Printers
     class BasePrinter
 
-      attr_reader :descriptions_folder_path
-
       def initialize(output)
         @output = output
-        @descriptions_folder_path = Dox.config.desc_folder_path
       end
 
       def print
@@ -14,6 +11,10 @@ module Dox
       end
 
       private
+
+      def descriptions_folder_path
+        Dox.config.desc_folder_path
+      end
 
       def print_desc(desc)
         return if desc.blank?
