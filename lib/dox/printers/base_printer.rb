@@ -16,17 +16,20 @@ module Dox
         Dox.config.desc_folder_path
       end
 
-      def print_desc(desc)
+      def print_desc(desc, fullpath = false)
         return if desc.blank?
 
         if desc.to_s =~ /.*\.md$/
-          path = descriptions_folder_path.join(desc).to_s
+          if fullpath
+            path = desc
+          else
+            path = descriptions_folder_path.join(desc).to_s
+          end
           "<!-- include(#{path}) -->"
         else
           desc
         end
       end
-
     end
   end
 end
