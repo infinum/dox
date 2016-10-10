@@ -1,7 +1,6 @@
 module Dox
   module Entities
     class Action
-
       attr_reader :name, :desc, :verb, :path, :uri_params
       attr_accessor :examples
 
@@ -20,7 +19,7 @@ module Dox
       attr_reader :request
 
       def template_path
-        path_params = request.path_parameters.except(:action, :controller)
+        path_params = request.path_parameters.symbolize_keys.except(:action, :controller)
         path = request.path.dup
         path_params.each do |key, value|
           # /pokemons/1 => pokemons/{id}
@@ -28,7 +27,6 @@ module Dox
         end
         path
       end
-
     end
   end
 end
