@@ -1,19 +1,19 @@
 describe Dox::DSL::ResourceGroup do
   subject { described_class }
 
-  NAME = 'Pokemons'
-  DESC = 'All pokemons'
+  GROUP_NAME = 'Pokemons'.freeze
+  GROUP_DESC = 'All pokemons'.freeze
 
   let(:options) do
-    Proc.new do
-      desc DESC
+    proc do
+      desc GROUP_DESC
     end
   end
 
   let(:options_with_name) do
-    Proc.new do
-      name NAME
-      desc DESC
+    proc do
+      name GROUP_NAME
+      desc GROUP_DESC
     end
   end
 
@@ -29,7 +29,7 @@ describe Dox::DSL::ResourceGroup do
     context 'when required attributes present' do
       it 'initializes resource' do
         expect do
-          subject.new(NAME, &options)
+          subject.new(GROUP_NAME, &options)
         end.not_to raise_error
       end
     end
@@ -45,16 +45,16 @@ describe Dox::DSL::ResourceGroup do
     context 'when block is not defined' do
       it 'initializes resource' do
         expect do
-          subject.new(NAME)
+          subject.new(GROUP_NAME)
         end.not_to raise_error
       end
     end
   end
 
   describe '#config' do
-    let(:resource_group) { subject.new(NAME, &options) }
-    it { expect(resource_group.config[:resource_group_name]).to eq(NAME) }
-    it { expect(resource_group.config[:resource_group_desc]).to eq(DESC) }
+    let(:resource_group) { subject.new(GROUP_NAME, &options) }
+    it { expect(resource_group.config[:resource_group_name]).to eq(GROUP_NAME) }
+    it { expect(resource_group.config[:resource_group_desc]).to eq(GROUP_DESC) }
     it { expect(resource_group.config[:apidoc]).to eq(true) }
   end
 end
