@@ -1,4 +1,5 @@
 require 'dox/config'
+require 'dox/utils/refined_hash'
 require 'dox/dsl/attr_proxy'
 require 'dox/dsl/action'
 require 'dox/dsl/documentation'
@@ -22,7 +23,6 @@ require 'dox/printers/example_printer'
 require 'dox/printers/resource_group_printer'
 require 'dox/printers/resource_printer'
 require 'dox/version'
-
 
 module Dox
   class << self

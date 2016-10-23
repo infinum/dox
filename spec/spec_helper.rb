@@ -1,6 +1,9 @@
 require 'active_support'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/json'
+require 'codeclimate-test-reporter'
+require 'dox'
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'dox'
+
+CodeClimate::TestReporter.start

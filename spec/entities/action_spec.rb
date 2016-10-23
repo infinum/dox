@@ -47,7 +47,7 @@ describe Dox::Entities::Action do
       context 'with multiple path params' do
         before do
           allow(request).to receive(:path).and_return('/pokemons/electric/11')
-          allow(request).to receive(:path_parameters).and_return({ 'id' => 11, 'type' => 'electric' })
+          allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'electric')
         end
         it { expect(action.path).to eq('/pokemons/{type}/{id}') }
       end
@@ -55,7 +55,7 @@ describe Dox::Entities::Action do
       context 'when value is substring of path' do
         before do
           allow(request).to receive(:path).and_return('/pokemons/electric/11')
-          allow(request).to receive(:path_parameters).and_return({ 'id' => 11, 'type' => 'lec' })
+          allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'lec')
         end
         it { expect(action.path).to eq('/pokemons/electric/{id}') }
       end
@@ -63,7 +63,26 @@ describe Dox::Entities::Action do
   end
 
   describe '#uri_params' do
-    it { expect(action.uri_params).to eq(details[:action_params]) }
+    context 'when explicitly defined' do
+      it { expect(action.uri_params).to eq(details[:action_params]) }
+    end
+
+    context 'when not explicitly defined' do
+      let(:uri_params) do
+        {
+          id: { type: :string, required: :required, value: 11 },
+          type: { type: :string, required: :required, value: 'electric' }
+        }
+      end
+      let(:action) { subject.new(action_name, {}, request) }
+
+      before do
+        allow(request).to receive(:path).and_return('/pokemons/electric/11')
+        allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'electric')
+      end
+
+      it { expect(action.uri_params).to eq(uri_params) }
+    end
   end
 
   describe '#examples' do

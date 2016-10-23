@@ -2,7 +2,7 @@ module Dox
   module DSL
     module AttrProxy
       def method_missing(name, value)
-        setter = "#{name.to_s}="
+        setter = "#{name}="
         return super unless respond_to? setter
 
         public_send setter, value
