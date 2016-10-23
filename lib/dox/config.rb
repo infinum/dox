@@ -1,6 +1,5 @@
 module Dox
   class Config
-
     attr_reader :header_file_path, :desc_folder_path
 
     def header_file_path=(file_path)
@@ -12,7 +11,5 @@ module Dox
       raise(Errors::FolderNotFoundError, folder_path) unless Dir.exist?(folder_path)
       @desc_folder_path = folder_path
     end
-
   end
 end
-
