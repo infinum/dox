@@ -1,7 +1,6 @@
 module Dox
   module Printers
     class DocumentPrinter < BasePrinter
-
       def print(passed_examples)
         print_meta_info
 
@@ -23,7 +22,6 @@ module Dox
       def api_desc_path
         Dox.config.header_file_path
       end
-
     end
   end
 end

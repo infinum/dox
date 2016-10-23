@@ -3,13 +3,11 @@ require 'pry'
 
 module Dox
   class Formatter < RSpec::Core::Formatters::BaseFormatter
-
     RSpec::Core::Formatters.register self, :example_passed, :example_started, :stop
 
     def initialize(output)
       super
       @passed_examples = {}
-      @group_level = 0
     end
 
     def example_started(notification)
@@ -18,9 +16,7 @@ module Dox
 
     def example_passed(passed)
       @current_example_data = passed.example.metadata
-      if should_document_example?
-        move_example_to_passed
-      end
+      move_example_to_passed if should_document_example?
       @example_group_instance = nil
     end
 
@@ -62,9 +58,6 @@ module Dox
     def should_document_example?
       @current_example_data[:apidoc] &&
         !@current_example_data[:nodoc]
-      # error check
-      #&&
-        # @current_example_data[:resource_group] &&
         # @current_example_data[:resource] &&
         # @current_example_data[:action] &&
         # !@current_example_data[:nodoc]
@@ -81,6 +74,5 @@ module Dox
     def printer
       @printer ||= Printers::DocumentPrinter.new(output)
     end
-
   end
 end

@@ -28,5 +28,4 @@ describe Dox::Printers::DocumentPrinter do
       it { printer.print({ example1: passed_example }) }
     end
   end
-
 end

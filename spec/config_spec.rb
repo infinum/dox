@@ -28,5 +28,4 @@ describe Dox::Config do
       expect(config.desc_folder_path).to eq('spec/printers')
     end
   end
-
 end
