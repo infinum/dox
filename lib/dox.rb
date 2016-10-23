@@ -24,7 +24,6 @@ require 'dox/printers/resource_group_printer'
 require 'dox/printers/resource_printer'
 require 'dox/version'
 
-
 module Dox
   class << self
     attr_writer :config
