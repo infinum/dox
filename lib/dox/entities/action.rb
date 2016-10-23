@@ -1,6 +1,8 @@
 module Dox
   module Entities
     class Action
+      using Dox::Utils::RefinedHash
+
       attr_reader :name, :desc, :verb, :path, :uri_params
       attr_accessor :examples
 
@@ -27,6 +29,8 @@ module Dox
         end
         path
       end
+
+
     end
   end
 end
