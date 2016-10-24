@@ -19,7 +19,7 @@ module Dox
       end
 
       def group(name, &block)
-        self._group = ResourceGroup.new(name: name, &block)
+        self._group = ResourceGroup.new(name, &block)
       end
 
       def config
