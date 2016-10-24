@@ -1,3 +1,7 @@
+[![Code Climate](https://codeclimate.com/github/infinum/dox/badges/gpa.svg)](https://codeclimate.com/github/infinum/dox)
+[![Test Coverage](https://codeclimate.com/github/infinum/dox/badges/coverage.svg)](https://codeclimate.com/github/infinum/dox/coverage)
+[![Build Status](https://semaphoreci.com/api/v1/infinum/dox/branches/master/shields_badge.svg)](https://semaphoreci.com/infinum/dox)
+
 # Dox
 
 Dox formats the rspec output in the [api blueprint](https://apiblueprint.org/) format.
