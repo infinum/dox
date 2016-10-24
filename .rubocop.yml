@@ -1,0 +1,14 @@
+LineLength:
+  Max: 120
+
+Documentation:
+  Enabled: False
+
+WordArray:
+  Enabled: False
+
+AllCops:
+  TargetRubyVersion: 2.3.0
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
