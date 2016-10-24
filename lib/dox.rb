@@ -1,5 +1,4 @@
 require 'dox/config'
-require 'dox/utils/refined_hash'
 require 'dox/dsl/attr_proxy'
 require 'dox/dsl/action'
 require 'dox/dsl/documentation'
