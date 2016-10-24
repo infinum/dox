@@ -3,7 +3,7 @@ module Dox
     class ActionPrinter < BasePrinter
 
       def print(action)
-        @output.puts "### #{action.name} [#{action.verb} #{action.path}]\n\n#{print_desc(action.desc)}\n\n"
+        @output.puts "### #{action.name} [#{action.verb.upcase} #{action.path}]\n\n#{print_desc(action.desc)}\n\n"
 
         if action.uri_params.present?
           @output.puts("+ Parameters\n#{formatted_params(action.uri_params)}")
@@ -22,7 +22,9 @@ module Dox
 
       def formatted_params(uri_params)
         uri_params.map do |param, details|
-          "    + #{CGI.escape(param.to_s)}: `#{CGI.escape(details[:value].to_s)}` (#{details[:type]}, #{details[:required]}) - #{details[:description]}"
+          desc = "    + #{CGI.escape(param.to_s)}: `#{CGI.escape(details[:value].to_s)}` (#{details[:type]}, #{details[:required]})"
+          desc +=  "- #{details[:description]}" if details[:description].present?
+          desc
         end.flatten.join("\n")
       end
 
