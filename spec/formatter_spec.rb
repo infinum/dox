@@ -1,3 +1,5 @@
+require_relative 'fixtures/dox_test_classes'
+
 describe Dox::Formatter do
   subject { described_class }
 
@@ -22,57 +24,131 @@ describe Dox::Formatter do
     let(:header_filepath) { 'api_header_demo.md' }
 
     before do
-      # allow(output).to receive(:puts)
-
       allow(Dox).to receive_message_chain(:config, :header_file_path).and_return(header_filepath)
       allow(Dox).to receive_message_chain(:config, :desc_folder_path).and_return(Pathname.new('/Users/someuser'))
     end
 
-    let(:pokemon_request) do
-      double(:pokemon_request, method: 'POST', path: '/pokemons', path_parameters: {}, content_type: 'json', request_parameters: {}, parameters: {}, query_parameters: {} )
-    end
-
-    let(:pokemon_response) do
-      double(:pokemon_response, status: 201, content_type: 'json', body: {}.to_json )
-    end
-
-    let(:pokemon_meta) do
+    let(:create_pokemon_data) do
       {
-        resource_group_name: 'Pokemons',
-        resource_group_desc: 'Hello',
-        resource_name: 'Pokemons',
-        resource_endpoint: '/pokemons',
-        action_name: 'Create pokemon',
-        apidoc: true
+        meta: {
+          apidoc: true,
+          resource_group_name: 'Pokemons & Digimons',
+          resource_group_desc: 'Pokemons desc',
+          resource_name: 'Pokemons',
+          resource_endpoint: '/pokemons',
+          action_name: 'Create pokemon'
+        },
+        request: {
+          method: 'POST',
+          path: '/pokemons',
+          parameters: {
+            'pokemon' => {
+              'name' => 'Pikachu',
+              'type' => 'electric'
+            }
+          }
+        },
+        response: {
+          status: 201,
+          body: {
+            pokemon: {
+              id: 1,
+              name: 'Pikachu',
+              type: 'electric'
+            }
+          }
+        }
       }
     end
 
-    let(:pokemon_instance) do
-      double(:pokemon_instance, request: pokemon_request, response: pokemon_response)
-    end
-
-    let(:pokemon_meta_d) { double(:pokemon_meta, metadata: pokemon_meta, example_group_instance: pokemon_instance) }
     let(:create_pokemon) do
-      double(:create_pokemon, example: pokemon_meta_d)
+      DoxTestNotification.new(create_pokemon_data)
     end
 
-    # let(:get_pokemons) do
-    #   double(:get_pokemons)
-    # end
-    #
-    # let(:get_pokemons) do
-    #   double(:get_pokemons)
-    # end
-    #
-    # let(:get_digimon) do
-    #   double(:get_digimon)
-    # end
+    let(:get_pokemon_data) do
+      {
+        meta: {
+          apidoc: true,
+          resource_group_name: 'Pokemons & Digimons',
+          resource_name: 'Pokemons',
+          resource_endpoint: '/pokemons',
+          action_name: 'Get pokemon'
+        },
+        request: {
+          method: 'get',
+          path: '/pokemons/14',
+          path_parameters: { id: 14 }
+        },
+        response: {
+          status: 200,
+          body: {
+            pokemon: {
+              id: 14,
+              name: 'Pikachu',
+              type: 'electric'
+            }
+          }
+        }
+      }
+    end
+
+    let(:get_pokemon) do
+      DoxTestNotification.new(get_pokemon_data)
+    end
+
+    let(:get_digimons_data) do
+      {
+        meta: {
+          apidoc: true,
+          resource_group_name: 'Pokemons & Digimons',
+          resource_name: 'Digimons',
+          resource_desc: 'Digimons desc',
+          resource_endpoint: '/digimons',
+          action_name: 'Get digimons',
+          action_desc: 'Returns all digimons'
+        },
+        request: {
+          method: 'get',
+          path: '/digimons'
+        },
+        response: {
+          status: 200,
+          body: [
+            {
+              digimon: {
+                id: 11,
+                name: 'Tanemon',
+                type: 'Bulb'
+              }
+            },
+            {
+              digimon: {
+                id: 12,
+                name: 'Pyocomon',
+                type: 'Bulb'
+              }
+            }
+          ]
+        }
+      }
+    end
+
+    let(:get_digimons) do
+      DoxTestNotification.new(get_digimons_data)
+    end
 
     let(:expected_output) { File.read('spec/fixtures/example.md') }
 
     before do
       formatter.example_started(create_pokemon)
       formatter.example_passed(create_pokemon)
+
+      formatter.example_started(get_pokemon)
+      formatter.example_passed(get_pokemon)
+
+      formatter.example_started(get_digimons)
+      formatter.example_passed(get_digimons)
+
       formatter.stop(nil)
     end
 
