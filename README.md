@@ -4,14 +4,14 @@
 
 # Dox
 
-Dox formats the rspec output in the [api blueprint](https://apiblueprint.org/) format.
+Dox formats the rspec output in the [api blueprint](https://apiblueprint.org/) format. It works only with Rails.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'dox'
+gem 'dox', require: 'false'
 ```
 
 And then execute:
@@ -24,9 +24,16 @@ Or install it yourself as:
 
 ## Usage
 
-### Code example
+### Require it
+ Require Dox in spec_helper or rails_helper:
 
-Example documentation module for a resource:
+ ``` ruby
+ require 'dox'
+ ```
+
+### Example
+
+Define a descriptor module for a resource using Dox DSL:
 
 ``` ruby
 module ApiDoc
@@ -34,83 +41,132 @@ module ApiDoc
     module Bids
       include Dox::DSL::Syntax
 
+      # define common data for each test
       document :api do
-        group do
-          name 'Bids'
-        end
-
-        resource do
-          name 'Bids'
+        resource 'Bids' do
           endpoint '/bids'
           group 'Bids'
-          desc 'bid_resource.md'
         end
       end
 
+      # define data for specific test
       document :index do
-        action do
-          name 'Get bids'
-          verb 'GET'
-          path '/bids'
-          desc 'Returns list of user bids'
-        end
-      end
-
-      document :create do
-        action do
-          name 'Post bids'
-          verb 'POST'
-          path '/bids'
-          desc 'Creates bid'
-        end
+        action 'Get bids'
       end
     end
   end
 end
-```
-Description can be included inline or relative path of a markdown file with the description (relative to configured folder for markdown descriptions).
 
-Including the documentation module in a controller:
+```
+Description can be included inline or relative path of a markdown file with the description (relative to configured folder for markdown descriptions*).
+
+Include the descriptor modules in a controller:
 
 ``` ruby
 describe Api::V1::BidsController, type: :controller do
+  # include resource level module
   include ApiDoc::V1::Bids::Api
 
   describe 'GET #index' do
+    # include action level module
     include ApiDoc::V1::Bids::Index
 
     it 'returns a list of bids' do
       get :index
       expect(response).to have_http_status(:ok)
     end
+  end
+end
+```
 
+### Options
+
+You can document the following:
+
+- resource group
+- resource
+- action
+
+#### Resource group
+Resource groups contains related resources and can be defined with:
+- name
+- desc (optional)
+
+``` ruby
+document :resource_group do
+  resource_group 'Bids' do
+    desc 'Bids group'
+  end
+end
+```
+
+#### Resource group
+Resource contains actions and can be defined with:
+- name - required
+- endpoint - required
+- group - required, to connect it with the group
+- desc - optional
+
+``` ruby
+document :resource do
+  resource 'Bids' do
+    endpoint '/bids'
+    group 'Bids'
+    desc 'Bids group'
+  end
+end
+```
+
+#### Action
+Action can be defined with:
+- name - required
+- path* - optional
+- verb* - optional
+- params* - optional
+- desc - optional
+
+\* these optional attributes are guessed (if not defined) from request object and you can override them.
+
+``` ruby
+show_params = { id: { type: :number, required: :required, value: 1, description: 'bid id' } }
+
+document :action do
+  action 'Get bid' do
+    path '/bids/{id}'
+    verb 'GET'
+    params show_params
+    desc 'Bids group'
   end
 end
 ```
 
 ### Configuration
 
-You have to specify **root api file** and **descriptions folder**.
+You have to specify **header file path** and **desc folder path**.
 
-Root api file is a markdown file that will be included in the top of the documentation. It should contain title and some basic info about the api.
+Header file is a markdown file that will be included in the top of the documentation. It should contain title and some basic info about the api.
 
-Descriptions folder is a fullpath of a folder that contains markdown files with descriptions which behave like partials and are included in the final concatenated markdown. Root api file should also be in this folder.
+Descriptions folder is a fullpath of a folder that contains markdown files with descriptions which behave like partials and are included in the final concatenated markdown.
 
 ``` ruby
 Dox.configure do |config|
-  config.header_file_path = 'api.md'
-  config.desc_folder_path = Rails.root.join('spec/support/api_doc/v1/markdown_descriptions')
+  config.header_file_path = Rails.root.join('spec/support/api_doc/v1/descriptions/header.md')
+  config.desc_folder_path = Rails.root.join('spec/support/api_doc/v1/descriptions')
 end
 ```
 
 ### Generate HTML documentation
 You have to install [aglio](https://www.npmjs.com/package/aglio).
 
-Rake task for generating HTML:
+And add a bash script with the following commands:
 
-``` ruby
-  `bundle exec rspec spec --tag apidoc -f Dox::Formatter --order defined --out spec/apispec.md`
-  `aglio --include-path / -i spec/apispec.md -o public/api/docs/index.html`
+```
+#!/usr/bin/env bash
+
+bundle exec rspec spec/controllers/api/v1 --tag apidoc -f Dox::Formatter --order defined --out public/api/docs/v1/apispec.md
+
+aglio --include-path / -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html
+
 ```
 
 ## Development
