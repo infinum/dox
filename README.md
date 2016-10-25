@@ -79,7 +79,7 @@ describe Api::V1::BidsController, type: :controller do
 end
 ```
 
-### Options
+### Options for descriptors
 
 You can document the following:
 
@@ -137,6 +137,17 @@ document :action do
     params show_params
     desc 'Bids group'
   end
+end
+```
+
+### Skip some examples in documentation
+
+If you don't want all test examples in the documentation, skip them with **:nodoc** option on **it** or **context** definitions.
+
+``` ruby
+it 'returns a list of bids', :nodoc do
+  get :index, status: 'published'
+  expect(response).to have_http_status(:ok)
 end
 ```
 
