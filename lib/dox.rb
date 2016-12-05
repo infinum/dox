@@ -33,6 +33,6 @@ module Dox
   end
 
   def self.config
-    @conifg ||= Dox::Config.new
+    @config ||= Dox::Config.new
   end
 end
