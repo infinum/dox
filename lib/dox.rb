@@ -24,10 +24,6 @@ require 'dox/printers/resource_printer'
 require 'dox/version'
 
 module Dox
-  class << self
-    attr_writer :config
-  end
-
   def self.configure
     yield(config) if block_given?
   end
