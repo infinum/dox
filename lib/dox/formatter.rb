@@ -1,5 +1,4 @@
 require 'rspec/core/formatters/base_formatter'
-require 'pry'
 
 module Dox
   class Formatter < RSpec::Core::Formatters::BaseFormatter
