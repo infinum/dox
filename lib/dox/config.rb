@@ -1,6 +1,11 @@
 module Dox
   class Config
     attr_reader :header_file_path, :desc_folder_path
+    attr_accessor :post_process
+
+    def initialize
+      @post_process = true
+    end
 
     def header_file_path=(file_path)
       raise(Errors::FileNotFoundError, file_path) unless File.exist?(file_path)

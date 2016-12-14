@@ -5,12 +5,16 @@ describe Dox::Printers::DocumentPrinter do
   let(:output) { double(:output) }
   let(:printer) { subject.new(output) }
   let(:header_filepath) { 'api_header_demo.md' }
+  let(:config) do
+    instance_double(Dox::Config, header_file_path: header_filepath,
+                                 desc_folder_path: Pathname.new('/Users/someuser'),
+                                 post_process: true)
+  end
 
   before do
     allow(output).to receive(:puts)
 
-    allow(Dox).to receive_message_chain(:config, :header_file_path).and_return(header_filepath)
-    allow(Dox).to receive_message_chain(:config, :desc_folder_path).and_return(Pathname.new('/Users/someuser'))
+    allow(Dox).to receive(:config).and_return(config)
   end
 
   describe '#print' do
