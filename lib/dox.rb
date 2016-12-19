@@ -27,15 +27,11 @@ require 'dox/version'
 module Dox
   Error = Class.new(StandardError)
 
-  class << self
-    attr_writer :config
-  end
-
   def self.configure
     yield(config) if block_given?
   end
 
   def self.config
-    @conifg ||= Dox::Config.new
+    @config ||= Dox::Config.new
   end
 end
