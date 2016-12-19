@@ -5,7 +5,6 @@ module Dox
 
       def initialize(output)
         @output = output
-        @content_encoder = Dox.config.post_process ? PathAnotation.new : PathContent.new
       end
 
       def print
@@ -28,22 +27,15 @@ module Dox
             path = descriptions_folder_path.join(desc).to_s
           end
 
-          content_encoder.descriptor(path)
+          content(path)
         else
           desc
         end
+
       end
 
-      class PathAnotation
-        def descriptor(path)
-          "<!-- include(#{path}) -->"
-        end
-      end
-
-      class PathContent
-        def descriptor(path)
-          File.read(path)
-        end
+      def content(path)
+        File.read(path)
       end
     end
   end

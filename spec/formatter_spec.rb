@@ -1,6 +1,9 @@
 require_relative 'fixtures/dox_test_classes'
 
 describe Dox::Formatter do
+  include DirectoryHelper
+  include OutputHelper
+
   subject { described_class }
 
   let(:output) { StringIO.new }
@@ -24,8 +27,7 @@ describe Dox::Formatter do
     let(:header_filepath) { 'api_header_demo.md' }
     let(:config) do
       instance_double(Dox::Config, header_file_path: header_filepath,
-                                   desc_folder_path: Pathname.new('/Users/someuser'),
-                                   post_process: true)
+                                   desc_folder_path: fixtures_path.join('someuser'))
     end
 
     before do
@@ -141,7 +143,6 @@ describe Dox::Formatter do
       DoxTestNotification.new(get_digimons_data)
     end
 
-    let(:expected_output) { File.read('spec/fixtures/example.md') }
 
     before do
       formatter.example_started(create_pokemon)
@@ -157,7 +158,7 @@ describe Dox::Formatter do
     end
 
     it 'prints whole doc' do
-      expect(output.string).to eq(expected_output)
+      expect(output.string).to eq(example_output)
     end
   end
 end

@@ -1,4 +1,7 @@
 describe Dox::Printers::DocumentPrinter do
+  include DirectoryHelper
+  include OutputHelper
+
   subject { described_class }
 
   let(:passed_example) { double(:passed_example) }
@@ -7,8 +10,7 @@ describe Dox::Printers::DocumentPrinter do
   let(:header_filepath) { 'api_header_demo.md' }
   let(:config) do
     instance_double(Dox::Config, header_file_path: header_filepath,
-                                 desc_folder_path: Pathname.new('/Users/someuser'),
-                                 post_process: true)
+                                 desc_folder_path: fixtures_path.join('someuser'))
   end
 
   before do
@@ -20,7 +22,7 @@ describe Dox::Printers::DocumentPrinter do
   describe '#print' do
     context 'without passed_examples' do
       before { printer.print({}) }
-      it { expect(output).to have_received(:puts).with('<!-- include(/Users/someuser/api_header_demo.md) -->') }
+      it { expect(output).to have_received(:puts).with(api_header_demo_output) }
     end
 
     context 'with one passed_example' do
