@@ -1,8 +1,6 @@
 module Dox
   module Printers
     class BasePrinter
-      attr_reader :content_encoder
-
       def initialize(output)
         @output = output
       end
