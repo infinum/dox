@@ -95,4 +95,10 @@ describe Dox::Entities::Action do
       expect(action.examples).to eq(['Pika'])
     end
   end
+
+  it 'raises error for unrecognized verb' do
+    allow(Dox::Util::Http).to receive(:verb?).and_return(false)
+
+    expect { action }.to raise_error(Dox::Error, 'Unrecognized HTTP verb GET')
+  end
 end

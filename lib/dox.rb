@@ -21,9 +21,12 @@ require 'dox/printers/document_printer'
 require 'dox/printers/example_printer'
 require 'dox/printers/resource_group_printer'
 require 'dox/printers/resource_printer'
+require 'dox/util/http'
 require 'dox/version'
 
 module Dox
+  Error = Class.new(StandardError)
+
   class << self
     attr_writer :config
   end

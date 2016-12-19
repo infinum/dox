@@ -12,6 +12,8 @@ module Dox
         @path = details[:action_path] || template_path
         @uri_params = details[:action_params] || template_path_params
         @examples = []
+
+        validate!
       end
 
       private
@@ -46,6 +48,10 @@ module Dox
         else
           :string
         end
+      end
+
+      def validate!
+        raise(Error, "Unrecognized HTTP verb #{verb}") unless Util::Http.verb?(verb)
       end
     end
   end
