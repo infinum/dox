@@ -1,4 +1,7 @@
-<!-- include(/Users/someuser/api_header_demo.md) -->
+Format: 1A
+# Pokemon API Documentation
+
+This api is implemented according to JSON API spec.
 
 # Group Pokemons & Digimons
 

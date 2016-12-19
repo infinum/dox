@@ -1,7 +1,6 @@
 module Dox
   module Printers
     class BasePrinter
-
       def initialize(output)
         @output = output
       end
@@ -25,10 +24,16 @@ module Dox
           else
             path = descriptions_folder_path.join(desc).to_s
           end
-          "<!-- include(#{path}) -->"
+
+          content(path)
         else
           desc
         end
+
+      end
+
+      def content(path)
+        File.read(path)
       end
     end
   end
