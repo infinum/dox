@@ -8,17 +8,41 @@ describe Dox::Formatter do
 
   let(:output) { StringIO.new }
 
-  context 'with required methods' do
-    it 'has example_started method' do
-      expect(subject.method_defined?(:example_started)).to eq(true)
+  context 'skipped examples' do
+    let(:printer) { instance_double(Dox::Printers::DocumentPrinter, print: nil) }
+    let(:formatter) { subject.new(output) }
+    let(:example_group) { RSpec::Core::ExampleGroup.describe('Pokemon', meta) }
+    let(:example) do
+      instance_double(RSpec::Core::Example, example_group_instance: example_group,
+                                            metadata: meta)
+    end
+    let(:notification) do
+      instance_double(RSpec::Core::Notifications::ExampleNotification, example: example)
     end
 
-    it 'has example_passed method' do
-      expect(subject.method_defined?(:example_started)).to eq(true)
+    before do
+      allow(Dox::Printers::DocumentPrinter).to receive(:new).and_return(printer)
+
+      formatter.example_started(notification)
+      formatter.example_passed(notification)
+
+      formatter.stop(nil)
     end
 
-    it 'has stop method' do
-      expect(subject.method_defined?(:stop)).to eq(true)
+    context 'tagged with nodoc' do
+      let(:meta) { { apidoc: true, apidoc_example: true, nodoc: true } }
+
+      it 'skips examples' do
+        expect(printer).to have_received(:print).with({})
+      end
+    end
+
+    context 'without apidoc_example tag' do
+      let(:meta) { { apidoc: true } }
+
+      it 'skips examples' do
+        expect(printer).to have_received(:print).with({})
+      end
     end
   end
 
@@ -38,6 +62,7 @@ describe Dox::Formatter do
       {
         meta: {
           apidoc: true,
+          apidoc_example: true,
           resource_group_name: 'Pokemons & Digimons',
           resource_group_desc: 'Pokemons desc',
           resource_name: 'Pokemons',
@@ -48,9 +73,9 @@ describe Dox::Formatter do
           method: 'POST',
           path: '/pokemons',
           parameters: {
-            'pokemon' => {
-              'name' => 'Pikachu',
-              'type' => 'electric'
+            pokemon: {
+              name: 'Pikachu',
+              type: 'electric'
             }
           }
         },
@@ -75,6 +100,7 @@ describe Dox::Formatter do
       {
         meta: {
           apidoc: true,
+          apidoc_example: true,
           resource_group_name: 'Pokemons & Digimons',
           resource_name: 'Pokemons',
           resource_endpoint: '/pokemons',
@@ -106,6 +132,7 @@ describe Dox::Formatter do
       {
         meta: {
           apidoc: true,
+          apidoc_example: true,
           resource_group_name: 'Pokemons & Digimons',
           resource_name: 'Digimons',
           resource_desc: 'Digimons desc',
@@ -142,7 +169,6 @@ describe Dox::Formatter do
     let(:get_digimons) do
       DoxTestNotification.new(get_digimons_data)
     end
-
 
     before do
       formatter.example_started(create_pokemon)
