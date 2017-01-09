@@ -1,3 +1,4 @@
+require 'rspec/core'
 require 'rspec/core/formatters/base_formatter'
 
 module Dox
