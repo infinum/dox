@@ -39,7 +39,7 @@ Define a descriptor module for a resource using Dox DSL:
 module ApiDoc
   module V1
     module Bids
-      include Dox::DSL::Syntax
+      extend Dox::DSL::Syntax
 
       # define common data for each test
       document :api do
@@ -60,7 +60,7 @@ end
 ```
 Description can be included inline or relative path of a markdown file with the description (relative to configured folder for markdown descriptions*).
 
-Include the descriptor modules in a controller:
+Include the descriptor modules in a controller and tag the examples you want to document with **apidoc_example**:
 
 ``` ruby
 describe Api::V1::BidsController, type: :controller do
@@ -71,7 +71,7 @@ describe Api::V1::BidsController, type: :controller do
     # include action level module
     include ApiDoc::V1::Bids::Index
 
-    it 'returns a list of bids' do
+    it 'returns a list of bids', :apidoc_example do
       get :index
       expect(response).to have_http_status(:ok)
     end
@@ -137,17 +137,6 @@ document :action do
     params show_params
     desc 'Bids group'
   end
-end
-```
-
-### Skip some examples in documentation
-
-If you don't want all test examples in the documentation, skip them with **:nodoc** option on **it** or **context** definitions.
-
-``` ruby
-it 'returns a list of bids', :nodoc do
-  get :index, status: 'published'
-  expect(response).to have_http_status(:ok)
 end
 ```
 
