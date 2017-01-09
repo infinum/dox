@@ -102,7 +102,7 @@ module Dox
       end
 
       def document?
-        tagged_with?(:apidoc) && tagged_with?(:apidoc_example) && !tagged_with?(:nodoc)
+        tagged_with?(:apidoc) && tagged_with?(:dox) && !tagged_with?(:nodoc)
       end
 
       private

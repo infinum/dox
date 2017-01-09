@@ -30,14 +30,14 @@ describe Dox::Formatter do
     end
 
     context 'tagged with nodoc' do
-      let(:meta) { { apidoc: true, apidoc_example: true, nodoc: true } }
+      let(:meta) { { apidoc: true, dox: true, nodoc: true } }
 
       it 'skips examples' do
         expect(printer).to have_received(:print).with({})
       end
     end
 
-    context 'without apidoc_example tag' do
+    context 'without dox tag' do
       let(:meta) { { apidoc: true } }
 
       it 'skips examples' do
@@ -62,7 +62,7 @@ describe Dox::Formatter do
       {
         meta: {
           apidoc: true,
-          apidoc_example: true,
+          dox: true,
           resource_group_name: 'Pokemons & Digimons',
           resource_group_desc: 'Pokemons desc',
           resource_name: 'Pokemons',
@@ -100,7 +100,7 @@ describe Dox::Formatter do
       {
         meta: {
           apidoc: true,
-          apidoc_example: true,
+          dox: true,
           resource_group_name: 'Pokemons & Digimons',
           resource_name: 'Pokemons',
           resource_endpoint: '/pokemons',
@@ -132,7 +132,7 @@ describe Dox::Formatter do
       {
         meta: {
           apidoc: true,
-          apidoc_example: true,
+          dox: true,
           resource_group_name: 'Pokemons & Digimons',
           resource_name: 'Digimons',
           resource_desc: 'Digimons desc',

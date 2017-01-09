@@ -60,7 +60,7 @@ end
 ```
 Description can be included inline or relative path of a markdown file with the description (relative to configured folder for markdown descriptions*).
 
-Include the descriptor modules in a controller and tag the examples you want to document with **apidoc_example**:
+Include the descriptor modules in a controller and tag the examples you want to document with **dox**:
 
 ``` ruby
 describe Api::V1::BidsController, type: :controller do
@@ -71,7 +71,7 @@ describe Api::V1::BidsController, type: :controller do
     # include action level module
     include ApiDoc::V1::Bids::Index
 
-    it 'returns a list of bids', :apidoc_example do
+    it 'returns a list of bids', :dox do
       get :index
       expect(response).to have_http_status(:ok)
     end
