@@ -158,6 +158,26 @@ Dox.configure do |config|
 end
 ```
 
+#### Wrap parameters issue
+Rails wraps JSON parameters on all requests by default, which results with documented requests looking like this:
+
+```
++ Request get pokemons
+    {
+      "pokemon": {}
+    }
+```
+
+To disable wrapping parameters with a resource name, turn off this feature in `config/initializers/wrap_parameters.rb`:
+
+``` ruby
+# Enable parameter wrapping for JSON. You can disable this by setting :format to an empty array.
+ActiveSupport.on_load(:action_controller) do
+  wrap_parameters format: []
+end
+```
+
+
 ### Generate HTML documentation
 You have to install [aglio](https://www.npmjs.com/package/aglio).
 
