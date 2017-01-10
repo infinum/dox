@@ -35,7 +35,7 @@ class DoxTestRequest
     @path_parameters = request_data.fetch(:path_parameters, {})
     @query_parameters = request_data.fetch(:query_parameters, {})
     @content_type = request_data.fetch(:content_type, 'json')
-    @headers = request_data.fetch(:headers, [])
+    @headers = request_data.fetch(:headers, {})
   end
 end
 
@@ -46,6 +46,6 @@ class DoxTestResponse
     @status = response_data.fetch(:status)
     @body = response_data.fetch(:body).to_json
     @content_type = response_data.fetch(:content_type, 'json')
-    @headers = response_data.fetch(:headers, [])
+    @headers = response_data.fetch(:headers, {})
   end
 end

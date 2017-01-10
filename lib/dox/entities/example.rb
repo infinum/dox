@@ -39,9 +39,12 @@ module Dox
       attr_reader :desc, :request, :response
 
       def filter_headers(obj)
-        obj.headers.find_all do |key, _|
-          headers_whitelist.include?(key)
-        end
+        headers_whitelist.map do |header|
+          header_val = obj.headers[header]
+          next if header_val.blank?
+
+          [header, header_val]
+        end.compact
       end
 
       def headers_whitelist

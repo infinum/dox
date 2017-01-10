@@ -80,7 +80,7 @@ describe Dox::Formatter do
               type: 'electric'
             }
           },
-          headers: [['Content-Type', 'application/json']]
+          headers: { 'Content-Type' => 'application/json' }
         },
         response: {
           status: 201,
@@ -91,7 +91,7 @@ describe Dox::Formatter do
               type: 'electric'
             }
           },
-          headers: [['Content-Type', 'application/json']]
+          headers: { 'Content-Type' => 'application/json' }
         }
       }
     end
@@ -125,7 +125,7 @@ describe Dox::Formatter do
               type: 'electric'
             }
           },
-          headers: [['Content-Type', 'application/json']]
+          headers: { 'Content-Type' => 'application/json' }
         }
       }
     end
@@ -169,7 +169,7 @@ describe Dox::Formatter do
               }
             }
           ],
-          headers: [['Content-Type', 'application/json']]
+          headers: { 'Content-Type' => 'application/json' }
         }
       }
     end
