@@ -148,10 +148,13 @@ Header file is a markdown file that will be included in the top of the documenta
 
 Descriptions folder is a fullpath of a folder that contains markdown files with descriptions which behave like partials and are included in the final concatenated markdown.
 
+**Headers whitelist** is an optional setting. Requests and responses will by default list only `Content-Type` header. To list  other http headers, you must whitelist them.
+
 ``` ruby
 Dox.configure do |config|
   config.header_file_path = Rails.root.join('spec/support/api_doc/v1/descriptions/header.md')
   config.desc_folder_path = Rails.root.join('spec/support/api_doc/v1/descriptions')
+  config.headers_whitelist = ['Accept', 'X-Auth-Token']
 end
 ```
 
