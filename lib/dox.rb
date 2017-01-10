@@ -34,4 +34,9 @@ module Dox
   def self.config
     @config ||= Dox::Config.new
   end
+
+  DEFAULT_HEADERS_WHITELIST = ['Content-Type'].freeze
+  def self.full_headers_whitelist
+    config.headers_whitelist.to_a + DEFAULT_HEADERS_WHITELIST
+  end
 end

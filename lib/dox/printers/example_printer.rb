@@ -1,22 +1,34 @@
 module Dox
   module Printers
     class ExamplePrinter < BasePrinter
-
       def print(example)
-        @output.puts "\n+ Request #{example.request_identifier} (#{example.request_content_type})"
-
-        if example.request_parameters.present?
-          @output.puts "\n#{indent_lines(8, pretty_json(example.request_parameters))}\n"
-        end
-
-        @output.puts "+ Response #{example.response_status} (#{example.response_content_type})"
-
-        if example.response_body.present?
-          @output.puts "\n#{indent_lines(8, pretty_json(safe_json_parse(example.response_body)))}\n"
-        end
+        print_request(example)
+        print_response(example)
       end
 
       private
+
+      def print_request(example)
+        return if example.request_headers.empty? && example.request_parameters.empty?
+
+        @output.puts "\n+ Request #{example.request_identifier}\n"
+        if example.request_headers.present?
+          @output.puts "    + Headers\n\n#{indent_lines(12, print_headers(example.request_headers))}\n\n"
+        end
+
+        return unless example.request_parameters.present?
+        @output.puts "\n    + Body\n\n#{indent_lines(12, pretty_json(example.request_parameters))}\n"
+      end
+
+      def print_response(example)
+        @output.puts "+ Response #{example.response_status}\n"
+        if example.response_headers.present?
+          @output.puts "    + Headers\n\n#{indent_lines(12, print_headers(example.response_headers))}\n\n"
+        end
+
+        return unless example.response_body.present?
+        @output.puts "\n    + Body\n\n#{indent_lines(12, pretty_json(safe_json_parse(example.response_body)))}\n"
+      end
 
       def safe_json_parse(json_string)
         json_string.length >= 2 ? JSON.parse(json_string) : nil
@@ -28,6 +40,12 @@ module Dox
         else
           ''
         end
+      end
+
+      def print_headers(headers)
+        headers.map do |key, value|
+          "#{key}: #{value}"
+        end.join("\n")
       end
 
       def indent_lines(number_of_spaces, string)

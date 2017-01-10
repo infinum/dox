@@ -25,7 +25,7 @@ class DoxTestExampleGroupInstance
 end
 
 class DoxTestRequest
-  attr_reader :method, :path, :content_type
+  attr_reader :method, :path, :content_type, :headers
   attr_reader :path_parameters, :parameters, :query_parameters
 
   def initialize(request_data)
@@ -35,15 +35,17 @@ class DoxTestRequest
     @path_parameters = request_data.fetch(:path_parameters, {})
     @query_parameters = request_data.fetch(:query_parameters, {})
     @content_type = request_data.fetch(:content_type, 'json')
+    @headers = request_data.fetch(:headers, [])
   end
 end
 
 class DoxTestResponse
-  attr_reader :status, :body, :content_type
+  attr_reader :status, :body, :content_type, :headers
 
   def initialize(response_data)
     @status = response_data.fetch(:status)
     @body = response_data.fetch(:body).to_json
     @content_type = response_data.fetch(:content_type, 'json')
+    @headers = response_data.fetch(:headers, [])
   end
 end

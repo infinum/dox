@@ -23,7 +23,7 @@ module Dox
       def formatted_params(uri_params)
         uri_params.map do |param, details|
           desc = "    + #{CGI.escape(param.to_s)}: `#{CGI.escape(details[:value].to_s)}` (#{details[:type]}, #{details[:required]})"
-          desc +=  " - #{details[:description]}" if details[:description].present?
+          desc += " - #{details[:description]}" if details[:description].present?
           desc
         end.flatten.join("\n")
       end

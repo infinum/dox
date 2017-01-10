@@ -51,7 +51,8 @@ describe Dox::Formatter do
     let(:header_filepath) { 'api_header_demo.md' }
     let(:config) do
       instance_double(Dox::Config, header_file_path: header_filepath,
-                                   desc_folder_path: fixtures_path.join('someuser'))
+                                   desc_folder_path: fixtures_path.join('someuser'),
+                                   headers_whitelist: nil)
     end
 
     before do
@@ -67,7 +68,8 @@ describe Dox::Formatter do
           resource_group_desc: 'Pokemons desc',
           resource_name: 'Pokemons',
           resource_endpoint: '/pokemons',
-          action_name: 'Create pokemon'
+          action_name: 'Create pokemon',
+          description: 'creates pokemon'
         },
         request: {
           method: 'POST',
@@ -77,7 +79,8 @@ describe Dox::Formatter do
               name: 'Pikachu',
               type: 'electric'
             }
-          }
+          },
+          headers: [['Content-Type', 'application/json']]
         },
         response: {
           status: 201,
@@ -87,7 +90,8 @@ describe Dox::Formatter do
               name: 'Pikachu',
               type: 'electric'
             }
-          }
+          },
+          headers: [['Content-Type', 'application/json']]
         }
       }
     end
@@ -104,7 +108,8 @@ describe Dox::Formatter do
           resource_group_name: 'Pokemons & Digimons',
           resource_name: 'Pokemons',
           resource_endpoint: '/pokemons',
-          action_name: 'Get pokemon'
+          action_name: 'Get pokemon',
+          description: 'returns pokemon'
         },
         request: {
           method: 'get',
@@ -119,7 +124,8 @@ describe Dox::Formatter do
               name: 'Pikachu',
               type: 'electric'
             }
-          }
+          },
+          headers: [['Content-Type', 'application/json']]
         }
       }
     end
@@ -138,7 +144,8 @@ describe Dox::Formatter do
           resource_desc: 'Digimons desc',
           resource_endpoint: '/digimons',
           action_name: 'Get digimons',
-          action_desc: 'Returns all digimons'
+          action_desc: 'Returns all digimons',
+          description: 'returns digimons'
         },
         request: {
           method: 'get',
@@ -161,7 +168,8 @@ describe Dox::Formatter do
                 type: 'Bulb'
               }
             }
-          ]
+          ],
+          headers: [['Content-Type', 'application/json']]
         }
       }
     end

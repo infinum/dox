@@ -1,6 +1,7 @@
 module Dox
   class Config
     attr_reader :header_file_path, :desc_folder_path
+    attr_accessor :headers_whitelist
 
     def header_file_path=(file_path)
       raise(Errors::FileNotFoundError, file_path) unless File.exist?(file_path)

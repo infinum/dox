@@ -15,40 +15,56 @@ Pokemons desc
 
 
 
-+ Request  (json)
++ Request creates pokemon
+    + Headers
 
-        {
-          "pokemon": {
-            "name": "Pikachu",
-            "type": "electric"
-          }
-        }
-+ Response 201 (json)
+            Content-Type: application/json
 
-        {
-          "pokemon": {
-            "id": 1,
-            "name": "Pikachu",
-            "type": "electric"
-          }
-        }
+
+    + Body
+
+            {
+              "pokemon": {
+                "name": "Pikachu",
+                "type": "electric"
+              }
+            }
++ Response 201
+    + Headers
+
+            Content-Type: application/json
+
+
+    + Body
+
+            {
+              "pokemon": {
+                "id": 1,
+                "name": "Pikachu",
+                "type": "electric"
+              }
+            }
 ### Get pokemon [GET /pokemons/{id}]
 
 
 
 + Parameters
     + id: `14` (string, required)
++ Response 200
+    + Headers
 
-+ Request  (json)
-+ Response 200 (json)
+            Content-Type: application/json
 
-        {
-          "pokemon": {
-            "id": 14,
-            "name": "Pikachu",
-            "type": "electric"
-          }
-        }
+
+    + Body
+
+            {
+              "pokemon": {
+                "id": 14,
+                "name": "Pikachu",
+                "type": "electric"
+              }
+            }
 
 ## Digimons [/digimons]
 
@@ -57,23 +73,27 @@ Digimons desc
 
 Returns all digimons
 
++ Response 200
+    + Headers
 
-+ Request  (json)
-+ Response 200 (json)
+            Content-Type: application/json
 
-        [
-          {
-            "digimon": {
-              "id": 11,
-              "name": "Tanemon",
-              "type": "Bulb"
-            }
-          },
-          {
-            "digimon": {
-              "id": 12,
-              "name": "Pyocomon",
-              "type": "Bulb"
-            }
-          }
-        ]
+
+    + Body
+
+            [
+              {
+                "digimon": {
+                  "id": 11,
+                  "name": "Tanemon",
+                  "type": "Bulb"
+                }
+              },
+              {
+                "digimon": {
+                  "id": 12,
+                  "name": "Pyocomon",
+                  "type": "Bulb"
+                }
+              }
+            ]
