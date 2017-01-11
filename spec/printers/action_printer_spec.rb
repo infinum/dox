@@ -27,10 +27,9 @@ describe Dox::Printers::ActionPrinter do
   describe '#print' do
     let(:action_output) do
       <<~HEREDOC
+
        ### Get Pokemon [GET /pokemons/{id}]
-
        Returns a Pokemon
-
        HEREDOC
      end
 
@@ -49,7 +48,7 @@ describe Dox::Printers::ActionPrinter do
 
       it 'prints uri params' do
         printer.print(action_with_params)
-        expect(output).to have_received(:puts).with(action_uri_output.strip).once
+        expect(output).to have_received(:puts).with(action_uri_output).once
       end
     end
 

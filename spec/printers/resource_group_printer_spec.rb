@@ -16,7 +16,6 @@ describe Dox::Printers::ResourceGroupPrinter do
       <<~HEREDOC
 
         # Group Pokemons
-
         Pokemons desc
       HEREDOC
     end

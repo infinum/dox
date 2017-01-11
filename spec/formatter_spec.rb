@@ -74,6 +74,7 @@ describe Dox::Formatter do
         request: {
           method: 'POST',
           path: '/pokemons',
+          fullpath: '/pokemons',
           parameters: {
             pokemon: {
               name: 'Pikachu',
@@ -114,7 +115,9 @@ describe Dox::Formatter do
         request: {
           method: 'get',
           path: '/pokemons/14',
-          path_parameters: { id: 14 }
+          fullpath: '/pokemons/14',
+          path_parameters: { id: 14 },
+          headers: { 'Accept' => 'application/json' }
         },
         response: {
           status: 200,
@@ -149,7 +152,9 @@ describe Dox::Formatter do
         },
         request: {
           method: 'get',
-          path: '/digimons'
+          path: '/digimons',
+          fullpath: '/digimons',
+          headers: { 'Accept' => 'application/json' }
         },
         response: {
           status: 200,

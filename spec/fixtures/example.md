@@ -4,7 +4,6 @@ Format: 1A
 This api is implemented according to JSON API spec.
 
 # Group Pokemons & Digimons
-
 Pokemons desc
 
 ## Pokemons [/pokemons]
@@ -13,13 +12,12 @@ Pokemons desc
 ### Create pokemon [POST /pokemons]
 
 
-
-
 + Request creates pokemon
+**POST**&nbsp;&nbsp;`/pokemons`
+
     + Headers
 
             Content-Type: application/json
-
 
     + Body
 
@@ -29,11 +27,12 @@ Pokemons desc
                 "type": "electric"
               }
             }
+
 + Response 201
+
     + Headers
 
             Content-Type: application/json
-
 
     + Body
 
@@ -44,17 +43,24 @@ Pokemons desc
                 "type": "electric"
               }
             }
+
 ### Get pokemon [GET /pokemons/{id}]
-
-
 
 + Parameters
     + id: `14` (string, required)
+
++ Request returns pokemon
+**GET**&nbsp;&nbsp;`/pokemons/14`
+
+    + Headers
+
+            Accept: application/json
+
 + Response 200
+
     + Headers
 
             Content-Type: application/json
-
 
     + Body
 
@@ -67,17 +73,23 @@ Pokemons desc
             }
 
 ## Digimons [/digimons]
-
 Digimons desc
-### Get digimons [GET /digimons]
 
+### Get digimons [GET /digimons]
 Returns all digimons
 
++ Request returns digimons
+**GET**&nbsp;&nbsp;`/digimons`
+
+    + Headers
+
+            Accept: application/json
+
 + Response 200
+
     + Headers
 
             Content-Type: application/json
-
 
     + Body
 

@@ -17,7 +17,6 @@ describe Dox::Printers::ResourcePrinter do
       <<~HEREDOC
 
         ## Pokemons [/pokemons]
-
         Pokemons
       HEREDOC
     end
