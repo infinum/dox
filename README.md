@@ -158,6 +158,22 @@ Dox.configure do |config|
 end
 ```
 
+### Generate HTML documentation
+You have to install [aglio](https://www.npmjs.com/package/aglio).
+
+And add a bash script with the following commands:
+
+```
+#!/usr/bin/env bash
+
+bundle exec rspec spec/controllers/api/v1 --tag apidoc -f Dox::Formatter --order defined --out public/api/docs/v1/apispec.md
+
+aglio --include-path / -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html
+
+```
+
+### Common issues
+
 #### Wrap parameters issue
 Rails wraps JSON parameters on all requests by default, which results with documented requests looking like this:
 
@@ -176,21 +192,14 @@ ActiveSupport.on_load(:action_controller) do
   wrap_parameters format: []
 end
 ```
+#### Rendering warnings
+You might get the following warnings when rendering html:
 
+* `no headers specified (warning code 3)`
+* `empty request message-body (warning code 6)`
 
-### Generate HTML documentation
-You have to install [aglio](https://www.npmjs.com/package/aglio).
+This usually happens on GET requests examples when there are no headers. To solve this issue, add at least one header for the tests, like `Accept: application/json`.
 
-And add a bash script with the following commands:
-
-```
-#!/usr/bin/env bash
-
-bundle exec rspec spec/controllers/api/v1 --tag apidoc -f Dox::Formatter --order defined --out public/api/docs/v1/apispec.md
-
-aglio --include-path / -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html
-
-```
 
 ## Development
 
