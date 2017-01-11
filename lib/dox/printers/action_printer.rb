@@ -1,13 +1,10 @@
 module Dox
   module Printers
     class ActionPrinter < BasePrinter
-
       def print(action)
-        @output.puts "### #{action.name} [#{action.verb.upcase} #{action.path}]\n\n#{print_desc(action.desc)}\n\n"
-
-        if action.uri_params.present?
-          @output.puts("+ Parameters\n#{formatted_params(action.uri_params)}")
-        end
+        self.action = action
+        @output.puts action_title
+        @output.puts action_uri_params if action.uri_params.present?
 
         action.examples.each do |example|
           example_printer.print(example)
@@ -15,6 +12,23 @@ module Dox
       end
 
       private
+
+      attr_accessor :action
+
+      def action_title
+        <<-HEREDOC
+
+### #{action.name} [#{action.verb.upcase} #{action.path}]
+#{print_desc(action.desc)}
+        HEREDOC
+      end
+
+      def action_uri_params
+        <<-HEREDOC
++ Parameters
+#{formatted_params(action.uri_params)}
+        HEREDOC
+      end
 
       def example_printer
         @example_printer ||= ExamplePrinter.new(@output)
@@ -27,7 +41,6 @@ module Dox
           desc
         end.flatten.join("\n")
       end
-
     end
   end
 end

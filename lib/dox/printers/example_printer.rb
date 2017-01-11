@@ -2,33 +2,83 @@ module Dox
   module Printers
     class ExamplePrinter < BasePrinter
       def print(example)
-        print_request(example)
-        print_response(example)
+        self.example = example
+        print_example_request
+        print_example_response
       end
 
       private
 
-      def print_request(example)
-        @output.puts "\n+ Request #{example.request_identifier}\n"
-        # show example request fullpath with markdown in the apiblueprint description section
-        @output.puts "    **#{example.request_method}**&nbsp;&nbsp;`#{example.request_fullpath}`"
+      attr_accessor :example
 
-        if example.request_headers.present?
-          @output.puts "    + Headers\n\n#{indent_lines(12, print_headers(example.request_headers))}\n\n"
-        end
-
+      def print_example_request
+        @output.puts example_request_title
+        @output.puts example_request_headers
         return unless example.request_parameters.present?
-        @output.puts "\n    + Body\n\n#{indent_lines(12, pretty_json(example.request_parameters))}\n"
+
+        @output.puts example_request_body
       end
 
-      def print_response(example)
-        @output.puts "+ Response #{example.response_status}\n"
+      def print_example_response
+        @output.puts example_response_title
+
         if example.response_headers.present?
-          @output.puts "    + Headers\n\n#{indent_lines(12, print_headers(example.response_headers))}\n\n"
+          @output.puts example_response_headers
         end
 
         return unless example.response_body.present?
-        @output.puts "\n    + Body\n\n#{indent_lines(12, pretty_json(safe_json_parse(example.response_body)))}\n"
+        @output.puts example_response_body
+      end
+
+      def example_request_title
+        <<-HEREDOC
+
++ Request #{example.request_identifier}
+**#{example.request_method.upcase}**&nbsp;&nbsp;`#{example.request_fullpath}`
+        HEREDOC
+      end
+
+      def example_request_headers
+        <<-HEREDOC
+
+    + Headers
+
+#{indent_lines(12, print_headers(example.request_headers))}
+        HEREDOC
+      end
+
+      def example_request_body
+        <<-HEREDOC
+
+    + Body
+
+#{indent_lines(12, pretty_json(example.request_parameters))}
+        HEREDOC
+      end
+
+      def example_response_title
+        <<-HEREDOC
+
++ Response #{example.response_status}
+        HEREDOC
+      end
+
+      def example_response_headers
+        <<-HEREDOC
+
+    + Headers
+
+#{indent_lines(12, print_headers(example.response_headers))}
+        HEREDOC
+      end
+
+      def example_response_body
+        <<-HEREDOC
+
+    + Body
+
+#{indent_lines(12, pretty_json(safe_json_parse(example.response_body)))}
+        HEREDOC
       end
 
       def safe_json_parse(json_string)
