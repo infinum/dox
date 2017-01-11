@@ -9,9 +9,10 @@ module Dox
       private
 
       def print_request(example)
-        return if example.request_headers.empty? && example.request_parameters.empty?
-
         @output.puts "\n+ Request #{example.request_identifier}\n"
+        # show example request fullpath with markdown in the apiblueprint description section
+        @output.puts "    **#{example.request_method}**&nbsp;&nbsp;`#{example.request_fullpath}`"
+
         if example.request_headers.present?
           @output.puts "    + Headers\n\n#{indent_lines(12, print_headers(example.request_headers))}\n\n"
         end
