@@ -34,7 +34,7 @@ module Dox
         <<-HEREDOC
 
 + Request #{example.request_identifier}
-**#{example.request_method.upcase}**&nbsp;&nbsp;`#{example.request_fullpath}`
+**#{example.request_method.upcase}**&nbsp;&nbsp;`#{CGI.unescape(example.request_fullpath)}`
         HEREDOC
       end
 
