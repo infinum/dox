@@ -1,7 +1,3 @@
-require 'rspec/core'
-require 'rspec/core/formatters/base_formatter'
-require 'forwardable'
-
 module Dox
   class Formatter < RSpec::Core::Formatters::BaseFormatter
     extend Forwardable

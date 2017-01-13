@@ -1,5 +1,3 @@
-require 'forwardable'
-
 module Dox
   module Entities
     class Example

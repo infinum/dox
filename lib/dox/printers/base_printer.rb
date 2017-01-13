@@ -19,17 +19,15 @@ module Dox
         return if desc.blank?
 
         if desc.to_s =~ /.*\.md$/
-          if fullpath
-            path = desc
-          else
-            path = descriptions_folder_path.join(desc).to_s
-          end
-
+          path = if fullpath
+                   desc
+                 else
+                   descriptions_folder_path.join(desc).to_s
+                 end
           content(path)
         else
           desc
         end
-
       end
 
       def content(path)
