@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Dox::Printers::ExamplePrinter do
   subject { described_class }
 
