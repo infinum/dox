@@ -23,36 +23,36 @@ describe Dox::Printers::ExamplePrinter do
   describe '#print' do
     context 'without request parameters and response body' do
       let(:request_title_output) do
-        <<~HEREDOC
+        <<-HEREDOC
 
-        + Request Returns a Pokemon
-        **GET**&nbsp;&nbsp;`/pokemons/1`
++ Request Returns a Pokemon
+**GET**&nbsp;&nbsp;`/pokemons/1`
         HEREDOC
       end
 
       let(:response_id_output) do
-        <<~HEREDOC
+        <<-HEREDOC
 
-        + Response 200
++ Response 200
         HEREDOC
       end
 
       context 'without whitelisted headers' do
         let(:request_empty_headers_output) do
-          <<~HEREDOC
+          <<-HEREDOC
 
-          \s   + Headers
+    + Headers
 
 
           HEREDOC
         end
 
         let(:response_headers_output) do
-          <<~HEREDOC
+          <<-HEREDOC
 
-          \s   + Headers
+    + Headers
 
-                      Content-Type: application/json
+            Content-Type: application/json
           HEREDOC
         end
 
@@ -67,21 +67,21 @@ describe Dox::Printers::ExamplePrinter do
 
       context 'with whitelisted case sensitive headers' do
         let(:request_headers_output) do
-          <<~HEREDOC
+          <<-HEREDOC
 
-          \s   + Headers
+    + Headers
 
-                      X-Auth-Token: 877da7da7fbc16216e
+            X-Auth-Token: 877da7da7fbc16216e
           HEREDOC
         end
 
         let(:response_headers_output) do
-          <<~HEREDOC
+          <<-HEREDOC
 
-          \s   + Headers
+    + Headers
 
-                      Content-Encoding: gzip
-                      Content-Type: application/json
+            Content-Encoding: gzip
+            Content-Type: application/json
           HEREDOC
         end
 
@@ -100,26 +100,26 @@ describe Dox::Printers::ExamplePrinter do
 
       # indentation matters here
       let(:response_body_output) do
-        <<~HEREDOC
+        <<-HEREDOC
 
-        \s   + Body
+    + Body
 
-                    {
-                      "id": 1,
-                      "name": "Pikachu"
-                    }
+            {
+              "id": 1,
+              "name": "Pikachu"
+            }
         HEREDOC
       end
 
       let(:request_body_output) do
-        <<~HEREDOC
+        <<-HEREDOC
 
-        \s   + Body
+    + Body
 
-                    {
-                      "name": "Pikachu",
-                      "type": "Electric"
-                    }
+            {
+              "name": "Pikachu",
+              "type": "Electric"
+            }
         HEREDOC
       end
 

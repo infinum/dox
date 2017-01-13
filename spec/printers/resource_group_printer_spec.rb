@@ -13,10 +13,10 @@ describe Dox::Printers::ResourceGroupPrinter do
 
   describe '#print' do
     let(:resource_group_output) do
-      <<~HEREDOC
+      <<-HEREDOC
 
-        # Group Pokemons
-        Pokemons desc
+# Group Pokemons
+Pokemons desc
       HEREDOC
     end
 
@@ -33,7 +33,7 @@ describe Dox::Printers::ResourceGroupPrinter do
       let(:resource_details) do
         {
           resource_desc: 'Pokemons',
-          resource_endpoint: '/pokemons',
+          resource_endpoint: '/pokemons'
         }
       end
       let(:resource) { Dox::Entities::Resource.new('Pokemons', resource_details) }
