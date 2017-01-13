@@ -1,8 +1,6 @@
 require 'active_support/concern'
 require 'active_support/core_ext/string'
 require 'forwardable'
-require 'rspec/core'
-require 'rspec/core/formatters/base_formatter'
 
 require 'dox/config'
 require 'dox/dsl/attr_proxy'
