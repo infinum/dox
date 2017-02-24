@@ -5,7 +5,7 @@ describe Dox::Printers::ExamplePrinter do
   let(:req_headers) { { 'X-Auth-Token' => '877da7da7fbc16216e'} }
   let(:res_headers) { { 'Content-Type' => content_type, 'Content-Encoding' => 'gzip', 'cache-control' => 'public' } }
   let(:response) { double('response', content_type: content_type, status: 200, body: nil, headers: res_headers) }
-  let(:request) { double('request', content_type: content_type, headers: req_headers, query_parameters: {}, path_parameters: {}, method: 'GET', fullpath: '/pokemons/1') }
+  let(:request) { double('request', content_type: content_type, headers: req_headers, query_parameters: {}, path_parameters: {}, method: 'GET', path: '/pokemons/1', fullpath: '/pokemons/1') }
   let(:details) { { description: 'Returns a Pokemon' } }
 
   let(:example) { Dox::Entities::Example.new(details, request, response) }
