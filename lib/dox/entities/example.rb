@@ -59,7 +59,7 @@ module Dox
       end
 
       def request_url_query_parameters
-        request.query_parameters.map { |key, value| "#{key}=#{value}" }.join('&')
+        CGI.unescape(request.query_parameters.to_query)
       end
     end
   end

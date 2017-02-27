@@ -50,6 +50,13 @@ describe Dox::Entities::Example do
       it { expect(example.request_fullpath).to eq(request_fullpath) }
     end
 
+    context 'query params with special characters' do
+      let(:query_params) { { 'color' => 'blue', 'power' => '100/50' } }
+      let(:request_fullpath) { '/pokemons?color=blue&power=100/50' }
+
+      it { expect(example.request_fullpath).to eq(request_fullpath) }
+    end
+
     context 'without query params' do
       let(:query_params) { {} }
       let(:request_fullpath) { '/pokemons' }
