@@ -8,7 +8,6 @@ module Dox
       def_delegator :response, :body, :response_body
       def_delegator :request, :content_type, :request_content_type
       def_delegator :request, :method, :request_method
-      def_delegator :request, :fullpath, :request_fullpath
 
       def initialize(details, request, response)
         @desc = details[:description]
@@ -34,6 +33,15 @@ module Dox
         @request_headers ||= filter_headers(request)
       end
 
+      # Rails 4 includes the body params in the request_fullpath
+      def request_fullpath
+        if request.query_parameters.present?
+          "#{request.path}?#{request_url_query_parameters}"
+        else
+          request.path
+        end
+      end
+
       private
 
       attr_reader :desc, :request, :response
@@ -49,6 +57,10 @@ module Dox
 
       def headers_whitelist
         @headers_whitelist ||= Dox.full_headers_whitelist
+      end
+
+      def request_url_query_parameters
+        CGI.unescape(request.query_parameters.to_query)
       end
     end
   end

@@ -7,9 +7,10 @@ describe Dox::Entities::Example do
   let(:query_params) { { 'color' => 'blue'} }
   let(:path_params) { { 'id' => 11 } }
   let(:body_parameters) { { 'data' => 'users' } }
+  let(:request_fullpath) { '/pokemons?color=blue' }
 
   let(:response) { double('response', content_type: content_type, status: 200, body: response_body) }
-  let(:request) { double('request', content_type: content_type, query_parameters: query_params, path_parameters: path_params) }
+  let(:request) { double('request', content_type: content_type, query_parameters: query_params, path_parameters: path_params, path: '/pokemons') }
 
   let(:example) { subject.new({ description: example_desc }, request, response) }
 
@@ -37,6 +38,31 @@ describe Dox::Entities::Example do
 
   describe '#request_identifier' do
     it { expect(example.request_identifier).to eq(example_desc) }
+  end
+
+  describe '#request_fullpath' do
+    it { expect(example.request_fullpath).to eq(request_fullpath) }
+
+    context 'multiple query params' do
+      let(:query_params) { { 'color' => 'blue', 'power' => '100' } }
+      let(:request_fullpath) { '/pokemons?color=blue&power=100' }
+
+      it { expect(example.request_fullpath).to eq(request_fullpath) }
+    end
+
+    context 'query params with special characters' do
+      let(:query_params) { { 'color' => 'blue', 'power' => '100/50' } }
+      let(:request_fullpath) { '/pokemons?color=blue&power=100/50' }
+
+      it { expect(example.request_fullpath).to eq(request_fullpath) }
+    end
+
+    context 'without query params' do
+      let(:query_params) { {} }
+      let(:request_fullpath) { '/pokemons' }
+
+      it { expect(example.request_fullpath).to eq(request_fullpath) }
+    end
   end
 
   describe '#response_content_type' do
