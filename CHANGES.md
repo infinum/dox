@@ -1,46 +1,41 @@
-dox Changelog
-============================
+# Changelog
 
-Version 1.0.0-rc1
--------------
+## Version 1.0.0
 
-Released on February 27, 2017
+Released on March 11, 2017
 
-- Fixed duplication of body params in the query params for POST, PATCH and PUT HTTP requests
-- Refactor printers with heredocs
-- Show request method and fullpath for each action request in the description section
-- Add rubocop
-- Add integration test for DSL
-- Fix resource group definition
-- Style changes
-- Fix warnings in tests
-- Add codeclimate test coverage gem
-- Guess path params from request
+New:
+- Guess path params for URI definition from example's request object
+- Validate HTTP verbs specified in the descriptors' actions
+- Document only examples whitelisted with `dox` tag
+- Added option for whitelisting additional HTTP headers for examples
+- Show request HTTP verb and fullpath for each action request
+
+Fix:
+- Ignore body in query params (Rails 4 issue) for example request URL
 
 
-Version 1.0.0.alpha
--------------
+## Version 1.0.0.alpha
 
 Released on October 18, 2016
 
-- Update the dependencies
-- Remove old unnecessary stub for filepaths
-- Refactor codebase
-- Add DSL specs for action, resource and group
-- Add specs for all main features
-- Raise errors on missing required dox attributes
+- Updated the dependencies
+
+New:
+- Raise errors on missing required dox attributes in descriptors
+- `extend Dox::DSL::Syntax` instead of `include Dox::DSL::Syntax` in descriptors
 
 
-Version 0.0.3
--------------
+## Version 0.0.3
 
 Released on June 22, 2016
 
-- Fix path for examples with query params
+Fix:
+- Fixed example identifier for examples with query params
 
 
-Version 0.0.2
--------------
+## Version 0.0.2
+
 
 Released on June 14, 2016
 
@@ -48,8 +43,7 @@ Released on June 14, 2016
 - Added usage to readme
 
 
-Version 0.0.1
--------------
+## Version 0.0.1
 
 Released on June 06, 2016
 
