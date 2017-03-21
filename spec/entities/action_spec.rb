@@ -59,6 +59,16 @@ describe Dox::Entities::Action do
         end
         it { expect(action.path).to eq('/pokemons/electric/{id}') }
       end
+
+      # in Rails 5.0.2 request.path returns ""
+      context 'when path is empty string and query params are present' do
+        before do
+          allow(request).to receive(:path).and_return('')
+          allow(request).to receive(:fullpath).and_return('/pokemons/electric/11?some_query=123&other=m')
+          allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'lec')
+        end
+        it { expect(action.path).to eq('/pokemons/electric/{id}') }
+      end
     end
   end
 
