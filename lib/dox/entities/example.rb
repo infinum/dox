@@ -36,13 +36,18 @@ module Dox
       # Rails 4 includes the body params in the request_fullpath
       def request_fullpath
         if request.query_parameters.present?
-          "#{request.path}?#{request_url_query_parameters}"
+          "#{request_path}?#{request_url_query_parameters}"
         else
-          request.path
+          request_path
         end
       end
 
       private
+
+      # Rails 5.0.2 returns "" for request.path
+      def request_path
+        request.path.presence || request.fullpath.split("?")[0]
+      end
 
       attr_reader :desc, :request, :response
 
