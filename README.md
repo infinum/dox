@@ -11,7 +11,9 @@ Dox formats the rspec output in the [api blueprint](https://apiblueprint.org/) f
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'dox', require: 'false'
+group :test do
+  gem 'dox', require: 'false'
+end
 ```
 
 And then execute:
@@ -30,6 +32,15 @@ Or install it yourself as:
  ``` ruby
  require 'dox'
  ```
+
+ and add this to Rspec's config:
+
+ ``` ruby
+  config.after(:each, :dox) do |example|
+    example.metadata[:request] = request
+    example.metadata[:response] = response
+  end
+```
 
 ### Example
 
