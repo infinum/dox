@@ -41,6 +41,6 @@ module Dox
 
   DEFAULT_HEADERS_WHITELIST = ['Accept', 'Content-Type'].freeze
   def self.full_headers_whitelist
-    config.headers_whitelist.to_a + DEFAULT_HEADERS_WHITELIST
+    (config.headers_whitelist.to_a + DEFAULT_HEADERS_WHITELIST).uniq
   end
 end
