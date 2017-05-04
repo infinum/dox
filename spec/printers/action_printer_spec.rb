@@ -4,7 +4,7 @@ describe Dox::Printers::ActionPrinter do
   let(:request) { double(:request, method: 'GET', path_parameters: { 'id' => 1 }, path: '/pokemons/1') }
   let(:uri_params) do
     {
-      id: { type: :number, required: :required, value: 1, description: 'pokemon id' }
+      id: { type: :number, required: :required, value: 2, description: 'pokemon id', default: 1 }
     }
   end
 
@@ -42,7 +42,8 @@ Returns a Pokemon
       let(:action_uri_output) do
         <<-HEREDOC
 + Parameters
-    + id: `1` (number, required) - pokemon id
+    + id: `2` (number, required) - pokemon id
+        + Default: 1
         HEREDOC
       end
 
