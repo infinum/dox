@@ -99,19 +99,19 @@ You can document the following:
 - action
 
 #### Resource group
-Resource groups contains related resources and can be defined with:
+Resource group contains related resources and can be defined with:
 - name
 - desc (optional)
 
 ``` ruby
 document :resource_group do
-  resource_group 'Bids' do
+  group 'Bids' do
     desc 'Bids group'
   end
 end
 ```
 
-#### Resource group
+#### Resource
 Resource contains actions and can be defined with:
 - name - required
 - endpoint - required
