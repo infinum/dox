@@ -7,20 +7,12 @@ class DoxTestNotification
 end
 
 class DoxTestExample
-  attr_reader :example_group_instance, :metadata
+  attr_reader :metadata
 
   def initialize(test_data)
     @metadata = test_data.fetch(:meta)
-    @example_group_instance = DoxTestExampleGroupInstance.new(test_data)
-  end
-end
-
-class DoxTestExampleGroupInstance
-  attr_reader :request, :response
-
-  def initialize(test_data)
-    @request = DoxTestRequest.new(test_data.fetch(:request))
-    @response = DoxTestResponse.new(test_data.fetch(:response))
+    @metadata[:request] = DoxTestRequest.new(test_data.fetch(:request))
+    @metadata[:response] = DoxTestResponse.new(test_data.fetch(:response))
   end
 end
 

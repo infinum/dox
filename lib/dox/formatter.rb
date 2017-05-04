@@ -5,23 +5,16 @@ module Dox
   class Formatter < RSpec::Core::Formatters::BaseFormatter
     extend Forwardable
 
-    RSpec::Core::Formatters.register self, :example_passed, :example_started, :stop
-
-    delegate [:request, :response] => :example_group_instance
+    RSpec::Core::Formatters.register self, :example_passed, :stop
 
     def initialize(output)
       super
       self.passed_examples = {}
     end
 
-    def example_started(notification)
-      self.example_group_instance = notification.example.example_group_instance
-    end
-
     def example_passed(passed)
       self.current_example = CurrentExample.new(passed.example)
       move_example_to_passed if current_example.document?
-      clear_example_group_instance
     end
 
     def stop(_notification)
@@ -31,12 +24,7 @@ module Dox
     private
 
     attr_accessor :passed_examples
-    attr_accessor :example_group_instance
     attr_accessor :current_example
-
-    def clear_example_group_instance
-      self.example_group_instance = nil
-    end
 
     def load_or_save_group
       group_name = current_example.resource_group_name
@@ -59,14 +47,14 @@ module Dox
     def load_or_save_action_to_resource(resource)
       action_name = current_example.action_name
       resource.actions[action_name] ||= Entities::Action.new(action_name, current_example.metadata,
-                                                             request)
+                                                             current_example.request)
     end
 
     def move_example_to_passed
       group = load_or_save_group
       resource = load_or_save_resource_to_group(group)
       action = load_or_save_action_to_resource(resource)
-      action.examples << Entities::Example.new(current_example.metadata, request, response)
+      action.examples << Entities::Example.new(current_example.metadata, current_example.request, current_example.response)
     end
 
     def printer
@@ -98,6 +86,14 @@ module Dox
 
       def action_name
         metadata[:action_name]
+      end
+
+      def request
+        metadata[:request]
+      end
+
+      def response
+        metadata[:response]
       end
 
       def document?

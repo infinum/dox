@@ -23,7 +23,6 @@ describe Dox::Formatter do
     before do
       allow(Dox::Printers::DocumentPrinter).to receive(:new).and_return(printer)
 
-      formatter.example_started(notification)
       formatter.example_passed(notification)
 
       formatter.stop(nil)
@@ -184,13 +183,8 @@ describe Dox::Formatter do
     end
 
     before do
-      formatter.example_started(create_pokemon)
       formatter.example_passed(create_pokemon)
-
-      formatter.example_started(get_pokemon)
       formatter.example_passed(get_pokemon)
-
-      formatter.example_started(get_digimons)
       formatter.example_passed(get_digimons)
 
       formatter.stop(nil)
