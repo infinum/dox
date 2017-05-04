@@ -22,7 +22,7 @@ module Dox
 
       # /pokemons/1 => pokemons/{id}
       def template_path
-        path = request.path.dup
+        path = request.path.dup.presence || request.fullpath.split("?").first
         path_params.each do |key, value|
           path.sub!(%r{\/#{value}(\/|$)}, "/{#{key}}\\1")
         end
