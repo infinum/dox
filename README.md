@@ -5,7 +5,7 @@
 
 # Dox
 
-Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [api blueprint](https://apiblueprint.org/) format. Choose one of the [renderes](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io/)
+Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [API Blueprint](https://apiblueprint.org) format. Choose one of the [renderes](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io/)
 
 Here's a [demo app](https://github.com/infinum/dox-demo) and here are some examples:
 
@@ -86,7 +86,7 @@ end
 Define a descriptor module for a resource using Dox DSL:
 
 ``` ruby
-module ApiDoc
+module Docs
   module V1
     module Bids
       extend Dox::DSL::Syntax
@@ -120,11 +120,11 @@ Include the descriptor modules in a controller and tag the specs you want to doc
 ``` ruby
 describe Api::V1::BidsController, type: :controller do
   # include resource module
-  include ApiDoc::V1::Bids::Api
+  include Docs::V1::Bids::Api
 
   describe 'GET #index' do
     # include action module
-    include ApiDoc::V1::Bids::Index
+    include Docs::V1::Bids::Index
 
     it 'returns a list of bids', :dox do
       get :index
@@ -139,7 +139,7 @@ And [generate the documentation](#generate-documentation).
 
 ### Advanced options
 
-Before running into any more details, here's roughly how is the generated apiblueprint document structured:
+Before running into any more details, here's roughly how is the generated API Blueprint document structured:
 
 - header
 - resource group
@@ -243,7 +243,7 @@ end
 ### Generate documentation
 Documentation is generated in 2 steps:
 
-1. generate apiblueprint markdown with dox command:
+1. generate API Blueprint markdown with dox command:
 ```bundle exec dox spec/controllers/api/v1 > docs.md```
 
 2. render HTML with some renderer, for example, with Aglio:
