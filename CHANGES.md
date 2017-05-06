@@ -2,7 +2,7 @@
 
 ## Version 1.0.0
 
-Released on March 11, 2017
+Released on May 6, 2017
 
 New:
 - Guess path params for URI definition from example's request object
@@ -10,10 +10,11 @@ New:
 - Document only examples whitelisted with `dox` tag
 - Added option for whitelisting additional HTTP headers for examples
 - Show request HTTP verb and fullpath for each action request
+- Dox executable
 
 Fix:
 - Ignore body in query params (Rails 4 issue) for example request URL
-
+- Pull request and response objects from example metadata
 
 ## Version 1.0.0.alpha
 
