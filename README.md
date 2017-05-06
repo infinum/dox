@@ -1,10 +1,12 @@
+[![Build Status](https://travis-ci.org/infinum/dox.svg?branch=master)](https://travis-ci.org/infinum/dox)
 [![Code Climate](https://codeclimate.com/github/infinum/dox/badges/gpa.svg)](https://codeclimate.com/github/infinum/dox)
 [![Test Coverage](https://codeclimate.com/github/infinum/dox/badges/coverage.svg)](https://codeclimate.com/github/infinum/dox/coverage)
 [![Build Status](https://semaphoreci.com/api/v1/infinum/dox/branches/master/shields_badge.svg)](https://semaphoreci.com/infinum/dox)
 
 # Dox
 
-Dox formats the rspec output in the [api blueprint](https://apiblueprint.org/) format. It works only with Rails.
+Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [api blueprint](https://apiblueprint.org/) format. Choose one of the renderes to convert it to HTML or host it on Apiary.io
+
 
 ## Installation
 
@@ -18,31 +20,62 @@ end
 
 And then execute:
 
-    $ bundle
+```
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install dox
+```
+$ gem install dox
+```
 
 ## Usage
 
 ### Require it
- Require Dox in spec_helper or rails_helper:
+ Require Dox in the spec_helper or rails_helper:
 
  ``` ruby
  require 'dox'
  ```
 
- and add this to Rspec's config:
+and configure rspec with this:
 
- ``` ruby
+``` ruby
+Rspec.configure do |config|
   config.after(:each, :dox) do |example|
     example.metadata[:request] = request
     example.metadata[:response] = response
   end
+end
 ```
 
-### Example
+### Configure it
+Set these madatory options in the spec_helper:
+
+| Option | Value | Description |
+| -- | :-- | :-- |
+| header_file_path | Path or fullpath string | Markdown file that will be included at the top of the documentation. It should contain title and some basic info about the api. |
+| desc_folder_path | Path or fullpath string | Folder with markdown descriptions. |
+
+
+Optional settings:
+
+| Option | Value| Description |
+| -- | :-- | :-- |
+| headers_whitelist | Array of headers | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
+
+Example:
+
+``` ruby
+Dox.configure do |config|
+  config.header_file_path = Rails.root.join('spec/docs/v1/descriptions/header.md')
+  config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
+  config.headers_whitelist = ['Accept', 'X-Auth-Token']
+end
+```
+
+### Basic example
 
 Define a descriptor module for a resource using Dox DSL:
 
@@ -52,7 +85,7 @@ module ApiDoc
     module Bids
       extend Dox::DSL::Syntax
 
-      # define common data for each test
+      # define common resource data for each action
       document :api do
         resource 'Bids' do
           endpoint '/bids'
@@ -60,7 +93,7 @@ module ApiDoc
         end
       end
 
-      # define data for specific test
+      # define data for specific action
       document :index do
         action 'Get bids'
       end
@@ -69,17 +102,21 @@ module ApiDoc
 end
 
 ```
-Description can be included inline or relative path of a markdown file with the description (relative to configured folder for markdown descriptions*).
+You can place your descriptors for example in spec/docs folder. Just make sure your descriptor modules are loaded in the spec_helper before running the tests.
+``` ruby
+Dir[Rails.root.join('spec/docs/**/*.rb')].each { |f| require f }
+```
 
-Include the descriptor modules in a controller and tag the examples you want to document with **dox**:
+
+Include the descriptor modules in a controller and tag the specs you want to document with **dox**:
 
 ``` ruby
 describe Api::V1::BidsController, type: :controller do
-  # include resource level module
+  # include resource module
   include ApiDoc::V1::Bids::Api
 
   describe 'GET #index' do
-    # include action level module
+    # include action module
     include ApiDoc::V1::Bids::Index
 
     it 'returns a list of bids', :dox do
@@ -90,13 +127,22 @@ describe Api::V1::BidsController, type: :controller do
 end
 ```
 
-### Options for descriptors
+And generate apiblueprint markdown with:
+
+```bundle exec dox spec/controllers/api/v1```
+
+
+### Customize the descriptors
+
+
+- explain document structure
+
 
 You can document the following:
 
-- resource group
-- resource
-- action
+- resource group (link apiblueprint)
+- resource (link apiblueprint)
+- action (link apiblueprint)
 
 #### Resource group
 Resource group contains related resources and can be defined with:
@@ -151,35 +197,20 @@ document :action do
 end
 ```
 
-### Configuration
+### Generate documentation
+```bundle exec dox rspec spec/controllers/api/v1```
 
-You have to specify **header file path** and **desc folder path**.
+```bundle exec dox rspec spec/controllers/api/v1 --out public/api/docs/v1/apispec.md```
 
-Header file is a markdown file that will be included in the top of the documentation. It should contain title and some basic info about the api.
+### Render HTML
 
-Descriptions folder is a fullpath of a folder that contains markdown files with descriptions which behave like partials and are included in the final concatenated markdown.
+Install some of the renderers, aglio, snowboard etc. Or host it on Apiary.
 
-**Headers whitelist** is an optional setting. Requests and responses will by default list only `Content-Type` header. To list  other http headers, you must whitelist them.
+[aglio](https://www.npmjs.com/package/aglio).
 
-``` ruby
-Dox.configure do |config|
-  config.header_file_path = Rails.root.join('spec/support/api_doc/v1/descriptions/header.md')
-  config.desc_folder_path = Rails.root.join('spec/support/api_doc/v1/descriptions')
-  config.headers_whitelist = ['Accept', 'X-Auth-Token']
-end
-```
-
-### Generate HTML documentation
-You have to install [aglio](https://www.npmjs.com/package/aglio).
-
-And add a bash script with the following commands:
 
 ```
-#!/usr/bin/env bash
-
-bundle exec rspec spec/controllers/api/v1 --tag apidoc -f Dox::Formatter --order defined --out public/api/docs/v1/apispec.md
-
-aglio --include-path / -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html
+aglio -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html
 
 ```
 
@@ -220,7 +251,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/dox. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/infinum/dox. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
