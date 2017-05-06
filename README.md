@@ -5,7 +5,13 @@
 
 # Dox
 
-Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [api blueprint](https://apiblueprint.org/) format. Choose one of the renderes to convert it to HTML or host it on Apiary.io
+Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [api blueprint](https://apiblueprint.org/) format. Choose one of the [renderes](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io/)
+
+Here's a [demo app](https://github.com/infinum/dox-demo) and here are some examples:
+
+- [Dox demo - Apiary](http://docs.doxdemo.apiary.io/#reference/books/books)
+- [Dox demo - Aglio]()
+- [Dox demo - Snowboard]()
 
 
 ## Installation
@@ -54,7 +60,7 @@ end
 Set these madatory options in the spec_helper:
 
 | Option | Value | Description |
-| -- | :-- | :-- |
+| -- | -- | -- |
 | header_file_path | Path or fullpath string | Markdown file that will be included at the top of the documentation. It should contain title and some basic info about the api. |
 | desc_folder_path | Path or fullpath string | Folder with markdown descriptions. |
 
@@ -62,7 +68,7 @@ Set these madatory options in the spec_helper:
 Optional settings:
 
 | Option | Value| Description |
-| -- | :-- | :-- |
+| -- | -- | -- |
 | headers_whitelist | Array of headers | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
 
 Example:
@@ -102,11 +108,12 @@ module ApiDoc
 end
 
 ```
-You can place your descriptors for example in spec/docs folder. Just make sure your descriptor modules are loaded in the spec_helper before running the tests.
+<small>You can define the descriptors for example in specs/docs folder, just make sure you load them in the rails_helper.rb:
+
 ``` ruby
 Dir[Rails.root.join('spec/docs/**/*.rb')].each { |f| require f }
 ```
-
+</small>
 
 Include the descriptor modules in a controller and tag the specs you want to document with **dox**:
 
@@ -127,62 +134,98 @@ describe Api::V1::BidsController, type: :controller do
 end
 ```
 
-And generate apiblueprint markdown with:
-
-```bundle exec dox spec/controllers/api/v1```
+And [generate the documentation](#generate-documentation).
 
 
-### Customize the descriptors
+### Advanced options
+
+Before running into any more details, here's roughly how is the generated apiblueprint document structured:
+
+- header
+- resource group
+  - resource
+    - action
+      - example 1
+      - example 2
+    - action
+    - ...
+  - resource
+    - action
+  - ...
+- resource group
+  - resource
+    - action
 
 
-- explain document structure
+Header is defined in a markdown file as mentioned before. Examples are concrete test examples (you can have 2 examples for create 1 happy path, 1 fail path). They are completely automatically generated from the request/response objects.
+And you can customize the following in the descriptors:
 
-
-You can document the following:
-
-- resource group (link apiblueprint)
-- resource (link apiblueprint)
-- action (link apiblueprint)
+- resource group
+- resource
+- action
 
 #### Resource group
-Resource group contains related resources and can be defined with:
-- name
-- desc (optional)
 
+Resource group contains related resources and is defined with:
+- **name** (required)
+- desc (optional, inline string or relative filepath)
+
+Example:
 ``` ruby
-document :resource_group do
+document :bids_group do
   group 'Bids' do
-    desc 'Bids group'
+    desc 'Here are all bid related resources'
   end
 end
 ```
 
-#### Resource
-Resource contains actions and can be defined with:
-- name - required
-- endpoint - required
-- group - required, to connect it with the group
-- desc - optional
+You can omit defining the resource_group, if you don't have any description for it. Related resources will be linked in a group by the group option at the resource definition.
 
+#### Resource
+Resource contains actions and is defined with:
+- **name** (required)
+- **endpoint** (required)
+- **group** (required; to associate it with the related group)
+- desc (optional; inline string or relative filepath)
+
+Example:
 ``` ruby
-document :resource do
+document :bids do
   resource 'Bids' do
     endpoint '/bids'
     group 'Bids'
-    desc 'Bids group'
+    desc 'bids/bids.md'
+  end
+end
+```
+
+Usually you'll want to define resource and resource group together, so you don't have to include 2 modules with common data per spec file:
+
+``` ruby
+document :bids_common do
+  group 'Bids' do
+    desc 'Here are all bid related resources'
+  end
+
+  resource 'Bids' do
+    endpoint '/bids'
+    group 'Bids'
+    desc 'bids/bids.md'
   end
 end
 ```
 
 #### Action
-Action can be defined with:
-- name - required
-- path* - optional
-- verb* - optional
-- params* - optional
-- desc - optional
+Action is defined with:
+- **name** (required)
+- path* (optional)
+- verb* (optional)
+- params* (optional)
+- desc (optional; inline string or relative filepath)
 
-\* these optional attributes are guessed (if not defined) from request object and you can override them.
+\* these optional attributes are guessed (if not defined) from the request object of the test example and you can override them.
+
+Example:
 
 ``` ruby
 show_params = { id: { type: :number, required: :required, value: 1, description: 'bid id' } }
@@ -192,29 +235,35 @@ document :action do
     path '/bids/{id}'
     verb 'GET'
     params show_params
-    desc 'Bids group'
+    desc 'Some description for get bid action'
   end
 end
 ```
 
 ### Generate documentation
-```bundle exec dox rspec spec/controllers/api/v1```
+Documentation is generated in 2 steps:
 
-```bundle exec dox rspec spec/controllers/api/v1 --out public/api/docs/v1/apispec.md```
+1. generate apiblueprint markdown with dox command:
+```bundle exec dox spec/controllers/api/v1 > docs.md```
 
-### Render HTML
-
-Install some of the renderers, aglio, snowboard etc. Or host it on Apiary.
-
-[aglio](https://www.npmjs.com/package/aglio).
+2. render HTML with some renderer, for example, with Aglio:
+```aglio -i docs.md -o docs.html```
 
 
-```
-aglio -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html
+#### Renderers
+You can render the HTML yourself with one of the renderers:
 
-```
+- [Aglio](https://github.com/danielgtaylor/aglio)
+- [Snowboard](https://github.com/subosito/snowboard)
+
+Both support multiple themes and template customization.
+
+Or you can just take your generated markdown and host your documentation on [Apiary.io](https://apiary.io/).
+
 
 ### Common issues
+
+You might experience some strange issues when generating the documentation. Here are a few examples of what we've encountered so far.
 
 #### Wrap parameters issue
 Rails wraps JSON parameters on all requests by default, which results with documented requests looking like this:
@@ -234,13 +283,14 @@ ActiveSupport.on_load(:action_controller) do
   wrap_parameters format: []
 end
 ```
-#### Rendering warnings
-You might get the following warnings when rendering html:
+
+#### Rendering warnings with Aglio
+You might get the following warnings when rendering HTML with Aglio:
 
 * `no headers specified (warning code 3)`
 * `empty request message-body (warning code 6)`
 
-This usually happens on GET requests examples when there are no headers. To solve this issue, add at least one header for the tests, like `Accept: application/json`.
+This usually happens on GET requests examples when there are no headers. To solve this issue, add at least one header to the tests' requests, like `Accept: application/json`.
 
 
 ## Development
@@ -253,6 +303,11 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/infinum/dox. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
+
+## Credits
+Dox is maintained and sponsored by [Infinum](https://infinum.co).
+
+<a href="https://infinum.co"><img alt="Infinum" src="infinum.png" width="250"></a>
 
 ## License
 
