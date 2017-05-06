@@ -1,17 +1,16 @@
 [![Build Status](https://travis-ci.org/infinum/dox.svg?branch=master)](https://travis-ci.org/infinum/dox)
 [![Code Climate](https://codeclimate.com/github/infinum/dox/badges/gpa.svg)](https://codeclimate.com/github/infinum/dox)
 [![Test Coverage](https://codeclimate.com/github/infinum/dox/badges/coverage.svg)](https://codeclimate.com/github/infinum/dox/coverage)
-[![Build Status](https://semaphoreci.com/api/v1/infinum/dox/branches/master/shields_badge.svg)](https://semaphoreci.com/infinum/dox)
 
 # Dox
 
-Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [API Blueprint](https://apiblueprint.org) format. Choose one of the [renderes](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io/)
+Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [API Blueprint](https://apiblueprint.org) format. Choose one of the [renderes](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io)
 
 Here's a [demo app](https://github.com/infinum/dox-demo) and here are some examples:
 
 - [Dox demo - Apiary](http://docs.doxdemo.apiary.io/#reference/books/books)
-- [Dox demo - Aglio]()
-- [Dox demo - Snowboard]()
+- [Dox demo - Aglio](https://infinum.github.io/dox-demo/aglio)
+- [Dox demo - Snowboard](https://infinum.github.io/dox-demo/snowboard)
 
 
 ## Installation
@@ -39,7 +38,7 @@ $ gem install dox
 ## Usage
 
 ### Require it
- Require Dox in the spec_helper or rails_helper:
+ Require Dox in the rails_helper:
 
  ``` ruby
  require 'dox'
@@ -57,7 +56,7 @@ end
 ```
 
 ### Configure it
-Set these madatory options in the spec_helper:
+Set these mandatory options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
@@ -258,7 +257,7 @@ You can render the HTML yourself with one of the renderers:
 
 Both support multiple themes and template customization.
 
-Or you can just take your generated markdown and host your documentation on [Apiary.io](https://apiary.io/).
+Or you can just take your generated markdown and host your documentation on [Apiary.io](https://apiary.io).
 
 
 ### Common issues
