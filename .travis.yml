@@ -15,3 +15,11 @@ matrix:
       env: "RAILS_VERSION=5.0.0"
     - rvm: 2.4.0
       env: "RAILS_VERSION=5.0.0"
+
+addons:
+  code_climate:
+    repo_token:
+      secure: "LsnC+ru4oLhNOo0YFUfQeVvnCLkfeOv7xN9xSaBO2J1K2qZCadjsX/gnV6BRU5wmAxyXR2xQGnI+9wi4dqlPcuXlTIbE4Ge91WoTU+DNjA8RBrYePfVGsNeuT5wos6I0nBmnNYujBS6Rk0ntc1WEV2nq+3K4dpiTNcAYtS1f8zwV7qXBU63hc3urL0tO6DQUIYOi1rlse2EO5vhBlm3dH24TqEz32RROxh0kkuNLPmoq9NHCZQuJl1I0D3ovW+NRcOYDcgALX4HMRk8+4Hoqz3gyalLNvFujBdwnObL6kiMdRuUO8SGIc2crVMdckAnDBOkYYO4GQUwPv4qzaSX15i8Hrdxz16Rh9saqmX7qacornatt85j0aXA7nDPTD2zxG749XPu1DsUz0VC/2vWbCFhk9VysVtiY/grcUXg1CC/uh0+xbrnZol4rlInXyuXxmWOKThzMeSPjR0aCkQwqpRWG9ck0VTQIcC2mPGIF4o6fsMYe6iDtwPixNsCHBTPa/Ack0rgnxCvb5SH59VK0p4bTgzY/st85mBht1t46sqkbhdDI0S/oJu0NgmpyBAB6RL/kjNlVHvSi4plQxhW2N0FyQpwnLGkvxidIRwqnd1YalJxja2RDe7LaB82zusX+GLl0T79tW4VGEm8PqC7i3COMsWji8P75eiVzvwISN8w="
+
+after_success:
+  - bundle exec codeclimate-test-reporter
