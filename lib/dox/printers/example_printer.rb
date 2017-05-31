@@ -14,7 +14,7 @@ module Dox
       def print_example_request
         @output.puts example_request_title
         @output.puts example_request_headers
-        return unless example.request_parameters.present?
+        return unless example.request_body.present?
 
         @output.puts example_request_body
       end
@@ -52,7 +52,7 @@ module Dox
 
     + Body
 
-#{indent_lines(12, pretty_json(example.request_parameters))}
+#{indent_lines(12, pretty_json(example.request_body))}
         HEREDOC
       end
 

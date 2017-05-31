@@ -15,10 +15,10 @@ module Dox
         @response = response
       end
 
-      def request_parameters
-        request.parameters
-               .except(*request.path_parameters.keys.map(&:to_s))
-               .except(*request.query_parameters.keys.map(&:to_s))
+      def request_body
+        body = request.body.read
+        return body if body.blank?
+        JSON.parse(body)
       end
 
       def request_identifier
