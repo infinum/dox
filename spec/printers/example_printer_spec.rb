@@ -20,6 +20,10 @@ describe Dox::Printers::ExamplePrinter do
 
   describe '#print' do
     context 'without request parameters and response body' do
+      before do
+        allow(request).to receive(:body).and_return(StringIO.new())
+      end
+
       let(:request_title_output) do
         <<-HEREDOC
 
@@ -94,7 +98,7 @@ describe Dox::Printers::ExamplePrinter do
 
     context 'with request parameters and response body' do
       let(:response_body) { { id: 1, name: 'Pikachu' }.to_json }
-      let(:body_parameters) { { 'name' => 'Pikachu', type: 'Electric' } }
+      let(:request_body) { { 'name' => 'Pikachu', type: 'Electric' }.to_json }
 
       # indentation matters here
       let(:response_body_output) do
@@ -122,7 +126,7 @@ describe Dox::Printers::ExamplePrinter do
       end
 
       before do
-        allow(request).to receive(:parameters).and_return(body_parameters)
+        allow(request).to receive(:body).and_return(StringIO.new(request_body))
         allow(response).to receive(:body).and_return(response_body)
       end
 
@@ -135,6 +139,7 @@ describe Dox::Printers::ExamplePrinter do
 
     context 'with empty string as a body' do
       before do
+        allow(request).to receive(:body).and_return(StringIO.new())
         allow(response).to receive(:body).and_return('')
       end
 
