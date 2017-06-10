@@ -68,7 +68,7 @@ module Dox
 
       def parse_request_body
         body = request.body.read
-        return body if body.blank?
+        return body if body.to_s.empty?
         JSON.parse(body)
       end
     end
