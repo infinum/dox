@@ -242,12 +242,45 @@ end
 ### Generate documentation
 Documentation is generated in 2 steps:
 
-1. generate API Blueprint markdown with dox command:
-```bundle exec dox spec/controllers/api/v1 > docs.md```
+1. generate API Blueprint markdown:
+```bundle exec rspec spec/controllers/api/v1 -f Dox::Formatter --order defined --tag dox --out docs.md```
 
 2. render HTML with some renderer, for example, with Aglio:
 ```aglio -i docs.md -o docs.html```
 
+
+#### Use Rake tasks
+It's recommendable to write a few Rake tasks to make things easier. Here's an example:
+
+```ruby
+namespace :api do
+  namespace :doc do
+    desc 'Generate API documentation markdown'
+    task :md do
+      require 'rspec/core/rake_task'
+
+      RSpec::Core::RakeTask.new(:api_spec) do |t|
+        t.pattern = 'spec/controllers/api/v1/'
+        t.rspec_opts = "-f Dox::Formatter --order defined --tag dox --out public/api/docs/v1/apispec.md"
+      end
+
+      Rake::Task['api_spec'].invoke
+    end
+
+    task html: :md do
+      `aglio -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html`
+    end
+
+    task open: :html do
+      `open public/api/docs/v1/index.html`
+    end
+
+    task publish: :md do
+      `apiary publish --path=public/api/docs/v1/apispec.md --api-name=doxdemo`
+    end
+  end
+end
+```
 
 #### Renderers
 You can render the HTML yourself with one of the renderers:
