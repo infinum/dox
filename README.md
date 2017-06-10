@@ -249,8 +249,8 @@ Documentation is generated in 2 steps:
 ```aglio -i docs.md -o docs.html```
 
 
-#### Use Rake tasks
-It's recommendable to write a few Rake tasks to make things easier. Here's an example:
+#### Use rake tasks
+It's recommendable to write a few rake tasks to make things easier. Here's an example:
 
 ```ruby
 namespace :api do
