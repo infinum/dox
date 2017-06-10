@@ -16,9 +16,7 @@ module Dox
       end
 
       def request_body
-        body = request.body.read
-        return body if body.blank?
-        JSON.parse(body)
+        @request_body ||= parse_request_body
       end
 
       def request_identifier
@@ -66,6 +64,12 @@ module Dox
 
       def request_url_query_parameters
         CGI.unescape(request.query_parameters.to_query)
+      end
+
+      def parse_request_body
+        body = request.body.read
+        return body if body.blank?
+        JSON.parse(body)
       end
     end
   end
