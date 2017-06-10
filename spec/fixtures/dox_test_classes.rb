@@ -18,12 +18,12 @@ end
 
 class DoxTestRequest
   attr_reader :method, :path, :content_type, :headers, :fullpath
-  attr_reader :path_parameters, :parameters, :query_parameters
+  attr_reader :path_parameters, :query_parameters, :body
 
   def initialize(request_data)
     @method = request_data.fetch(:method)
     @path = request_data.fetch(:path)
-    @parameters = request_data.fetch(:parameters, {})
+    @body = StringIO.new(request_data.fetch(:body, '').to_json)
     @path_parameters = request_data.fetch(:path_parameters, {})
     @query_parameters = request_data.fetch(:query_parameters, {})
     @content_type = request_data.fetch(:content_type, 'json')

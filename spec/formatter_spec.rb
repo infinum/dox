@@ -74,7 +74,7 @@ describe Dox::Formatter do
           method: 'POST',
           path: '/pokemons',
           fullpath: '/pokemons?name=Pikachu&type=Electric',
-          parameters: {
+          body: {
             pokemon: {
               name: 'Pikachu',
               type: 'electric'
