@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 1.0.1
+
+Released on June 10, 2017
+
+New:
+- Add Rake tasks for generating documentation to Readme
+
+Fix:
+- Fix printing request body for test examples
+
+
 ## Version 1.0.0
 
 Released on May 6, 2017
