@@ -23,7 +23,11 @@ class DoxTestRequest
   def initialize(request_data)
     @method = request_data.fetch(:method)
     @path = request_data.fetch(:path)
-    @body = StringIO.new(request_data.fetch(:body, '').to_json)
+
+    req_body = request_data.fetch(:body, '')
+    req_body = req_body.to_json unless req_body.empty?
+    @body = StringIO.new(req_body)
+
     @path_parameters = request_data.fetch(:path_parameters, {})
     @query_parameters = request_data.fetch(:query_parameters, {})
     @content_type = request_data.fetch(:content_type, 'json')
