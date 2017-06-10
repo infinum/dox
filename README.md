@@ -60,15 +60,15 @@ Set these mandatory options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
-| header_file_path | Path or fullpath string | Markdown file that will be included at the top of the documentation. It should contain title and some basic info about the api. |
-| desc_folder_path | Path or fullpath string | Folder with markdown descriptions. |
+| header_file_path | Pathname instance or fullpath string | Markdown file that will be included at the top of the documentation. It should contain title and some basic info about the api. |
+| desc_folder_path | Pathname instance or fullpath string | Folder with markdown descriptions. |
 
 
 Optional settings:
 
 | Option | Value| Description |
 | -- | -- | -- |
-| headers_whitelist | Array of headers | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
+| headers_whitelist | Array of headers (strings) | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
 
 Example:
 
@@ -178,7 +178,7 @@ document :bids_group do
 end
 ```
 
-You can omit defining the resource_group, if you don't have any description for it. Related resources will be linked in a group by the group option at the resource definition.
+You can omit defining the resource group, if you don't have any description for it. Related resources will be linked in a group by the group option at the resource definition.
 
 #### Resource
 Resource contains actions and is defined with:
