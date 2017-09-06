@@ -47,7 +47,7 @@ $ gem install dox
 and configure rspec with this:
 
 ``` ruby
-Rspec.configure do |config|
+RSpec.configure do |config|
   config.after(:each, :dox) do |example|
     example.metadata[:request] = request
     example.metadata[:response] = response
