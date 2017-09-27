@@ -19,7 +19,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 group :test do
-  gem 'dox', require: 'false'
+  gem 'dox', require: false
 end
 ```
 
