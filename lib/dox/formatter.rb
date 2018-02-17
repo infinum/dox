@@ -1,11 +1,12 @@
 require 'rspec/core'
 require 'rspec/core/formatters/base_formatter'
+require 'rspec/core/formatters/console_codes'
 
 module Dox
   class Formatter < RSpec::Core::Formatters::BaseFormatter
     extend Forwardable
 
-    RSpec::Core::Formatters.register self, :example_passed, :stop
+    RSpec::Core::Formatters.register self, :example_passed, :stop, :dump_summary
 
     def initialize(output)
       super
@@ -17,8 +18,18 @@ module Dox
       move_example_to_passed if current_example.document?
     end
 
-    def stop(_notification)
-      printer.print(passed_examples)
+    def stop(notification)
+      if notification.failed_examples.any?
+        $stderr.puts(notification.fully_formatted_failed_examples)
+      else
+        printer.print(passed_examples)
+      end
+    end
+
+    def dump_summary(summary)
+      return if summary.failed_examples.none?
+      $stderr.puts(summary.fully_formatted)
+      exit(-1)
     end
 
     private
