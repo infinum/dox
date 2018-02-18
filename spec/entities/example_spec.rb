@@ -7,6 +7,7 @@ describe Dox::Entities::Example do
   let(:query_params) { { 'color' => 'blue'} }
   let(:path_params) { { 'id' => 11 } }
   let(:body) { { 'data' => 'users' } }
+  let(:body_query) { 'data=users' }
   let(:request_fullpath) { '/pokemons?color=blue' }
 
   let(:response) { double('response', content_type: content_type, status: 200, body: response_body) }
@@ -25,6 +26,14 @@ describe Dox::Entities::Example do
       before { allow(request).to receive(:body).and_return(StringIO.new(body.to_json)) }
 
       it { expect(example.request_body).to eq(body) }
+    end
+
+    context 'when body_format is :query' do
+      before { Dox.configure{ |c| c.body_format = :query } }
+      before { allow(request).to receive(:body).and_return(StringIO.new(body_query)) }
+      after { Dox.configure{ |c| c.body_format = :json } }
+
+      it { expect(example.request_body).to eq(body_query) }
     end
   end
 

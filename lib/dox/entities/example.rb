@@ -69,7 +69,10 @@ module Dox
       def parse_request_body
         body = request.body.read
         return body if body.blank?
-        JSON.parse(body)
+        return JSON.parse(body) if Dox.config.body_format == :json
+        body
+      rescue JSON::ParserError => e
+        raise Dox::Errors::RequestBodyNotJsonError, e.message
       end
     end
   end
