@@ -6,7 +6,7 @@ describe Dox::Entities::Example do
   let(:example_desc) { 'Dummy' }
   let(:query_params) { { 'color' => 'blue'} }
   let(:path_params) { { 'id' => 11 } }
-  let(:body) { { 'data' => 'users' } }
+  let(:body) { { 'data' => 'users' }.to_json }
   let(:request_fullpath) { '/pokemons?color=blue' }
 
   let(:response) { double('response', content_type: content_type, status: 200, body: response_body) }
@@ -22,7 +22,7 @@ describe Dox::Entities::Example do
     end
 
     context 'when present' do
-      before { allow(request).to receive(:body).and_return(StringIO.new(body.to_json)) }
+      before { allow(request).to receive(:body).and_return(StringIO.new(body)) }
 
       it { expect(example.request_body).to eq(body) }
     end

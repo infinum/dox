@@ -16,7 +16,7 @@ module Dox
       end
 
       def request_body
-        @request_body ||= parse_request_body
+        @request_body ||= request.body.read
       end
 
       def request_identifier
@@ -44,7 +44,7 @@ module Dox
 
       # Rails 5.0.2 returns "" for request.path
       def request_path
-        request.path.presence || request.fullpath.split("?")[0]
+        request.path.presence || request.fullpath.split('?')[0]
       end
 
       attr_reader :desc, :request, :response
@@ -64,12 +64,6 @@ module Dox
 
       def request_url_query_parameters
         CGI.unescape(request.query_parameters.to_query)
-      end
-
-      def parse_request_body
-        body = request.body.read
-        return body if body.blank?
-        JSON.parse(body)
       end
     end
   end
