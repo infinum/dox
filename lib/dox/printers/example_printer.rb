@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module Dox
   module Printers
     class ExamplePrinter < BasePrinter
@@ -85,7 +87,7 @@ module Dox
         case content_type
         when %r{application\/.*json}
           pretty_json(safe_json_parse(body_str))
-        when %r{text\/xml}
+        when /xml/
           pretty_xml(body_str)
         else
           body_str
