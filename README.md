@@ -19,7 +19,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 group :test do
-  gem 'dox', require: 'false'
+  gem 'dox', require: false
 end
 ```
 
@@ -47,7 +47,7 @@ $ gem install dox
 and configure rspec with this:
 
 ``` ruby
-Rspec.configure do |config|
+RSpec.configure do |config|
   config.after(:each, :dox) do |example|
     example.metadata[:request] = request
     example.metadata[:response] = response

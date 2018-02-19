@@ -30,7 +30,8 @@ module Dox
       end
 
       def path_params
-        @path_params ||= request.path_parameters.symbolize_keys.except(:action, :controller, :format)
+        @path_params ||=
+          request.path_parameters.symbolize_keys.except(:action, :controller, :format, :subdomain)
       end
 
       def template_path_params
