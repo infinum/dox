@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 1.1.0
+
+Released on February 19, 2018
+
+New:
+- Full RSpec failure dump to stderr if any test fails when running tests with Dox::Formatter
+- Support any payload format with pretty formatting for JSON and XML (based on `content-type` header)
+
+Fix:
+- Ignore subdomain request header in headers output
+
+
 ## Version 1.0.1
 
 Released on June 10, 2017
