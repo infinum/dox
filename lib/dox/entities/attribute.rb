@@ -1,6 +1,8 @@
 module Dox
   module Entities
     class Attribute
+      attr_reader :children
+
       def initialize(name, options)
         @name = name
         @default = options[:default]
@@ -14,10 +16,25 @@ module Dox
       end
 
       def print
-        children? ? print_object : print_rest
+        children? ? print_parent : print_child
       end
 
-      def print_rest
+      def children?
+        children.present?
+      end
+
+      private
+
+      def print_parent
+        [
+          "+ #{@name}",
+          '(',
+          @required ? 'required' : 'optional',
+          ')'
+        ].compact.join(' ')
+      end
+
+      def print_child
         [
           main,
           ("    #{@additional_desc}" if @additional_desc),
@@ -25,15 +42,6 @@ module Dox
           ('    + Members ' if @members),
           members
         ].compact.join("\n")
-      end
-
-      def print_object
-        [
-          "+ #{@name}",
-          '(',
-          @required ? 'required' : 'optional',
-          ')'
-        ].compact.join(' ')
       end
 
       def main
@@ -61,10 +69,6 @@ module Dox
         end
       end
 
-      def children?
-        @children.present?
-      end
-
       def default_value
         return @default unless @default.respond_to?(:call)
         @default.call
@@ -79,10 +83,6 @@ module Dox
             ("- #{options[:desc]}" if options[:desc])
           ].join(' ')
         end
-      end
-
-      def children
-        @children
       end
     end
   end
