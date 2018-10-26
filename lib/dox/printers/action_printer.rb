@@ -5,6 +5,7 @@ module Dox
         self.action = action
         @output.puts action_title
         @output.puts action_uri_params if action.uri_params.present?
+        @output.puts action_attributes if action.attributes
 
         action.examples.each do |example|
           example_printer.print(example)
@@ -20,6 +21,13 @@ module Dox
 
 ### #{action.name} [#{action.verb.upcase} #{action.path}]
 #{print_desc(action.desc)}
+        HEREDOC
+      end
+
+      def action_attributes
+        <<-HEREDOC
++ Attributes
+#{print_attributes(action.attributes, 4)}
         HEREDOC
       end
 
@@ -41,6 +49,19 @@ module Dox
           desc += "\n        + Default: #{details[:default]}" if details[:default].present?
           desc
         end.flatten.join("\n")
+      end
+
+      def print_attributes(attributes, indent)
+        str = []
+        attributes.map do |name, options|
+          attribute = Dox::Entities::Attribute.new(name, options)
+          str << indent_lines(indent, attribute.print)
+          if attribute.children?
+            str << print_attributes(attribute.children, indent + 4)
+          end
+        end
+
+        str.join("\n")
       end
     end
   end

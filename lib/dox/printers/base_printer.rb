@@ -33,6 +33,13 @@ module Dox
       def content(path)
         File.read(path)
       end
+
+      def indent_lines(number_of_spaces, string)
+        string
+          .split("\n")
+          .map { |a| a.prepend(' ' * number_of_spaces) }
+          .join("\n")
+      end
     end
   end
 end

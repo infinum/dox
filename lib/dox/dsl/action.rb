@@ -8,6 +8,7 @@ module Dox
       attr_writer :path
       attr_writer :desc
       attr_writer :params
+      attr_writer :attributes
 
       def initialize(name, &block)
         self.name = name
@@ -22,7 +23,8 @@ module Dox
           action_verb: @verb.presence,
           action_path: @path.presence,
           action_desc: @desc.presence,
-          action_params: @params.presence
+          action_params: @params.presence,
+          action_attributes: @attributes.presence
         }
       end
     end

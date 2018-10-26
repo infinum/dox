@@ -120,13 +120,6 @@ module Dox
           "#{key}: #{value}"
         end.join("\n")
       end
-
-      def indent_lines(number_of_spaces, string)
-        string
-          .split("\n")
-          .map { |a| a.prepend(' ' * number_of_spaces) }
-          .join("\n")
-      end
     end
   end
 end

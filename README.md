@@ -221,6 +221,8 @@ Action is defined with:
 - verb* (optional)
 - params* (optional)
 - desc (optional; inline string or relative filepath)
+- attributes (optional; hash of attributes)
+    - each attribute can have these keys: `:required`, `:type`, `:default`, `:desc`, `:additional_desc`, `:example`, `:members`, `:children`
 
 \* these optional attributes are guessed (if not defined) from the request object of the test example and you can override them.
 
@@ -228,6 +230,23 @@ Example:
 
 ``` ruby
 show_params = { id: { type: :number, required: :required, value: 1, description: 'bid id' } }
+attributes_params = {
+  bid: {
+    type: :hash,
+    required: true,
+    children: {
+      name: {type: :string, required: true},
+      bid_type: {
+        type: :string,
+        required: true,
+        members: [
+          [:normal, {desc: "Normal"}],
+          [:extra, {desc: "Extra"}]
+        ],
+      }
+    }
+  }
+}
 
 document :action do
   action 'Get bid' do
@@ -235,6 +254,7 @@ document :action do
     verb 'GET'
     params show_params
     desc 'Some description for get bid action'
+    attributes attributes_params
   end
 end
 ```
