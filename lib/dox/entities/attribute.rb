@@ -29,6 +29,8 @@ module Dox
         [
           "+ #{@name}",
           '(',
+          type,
+          ',',
           @required ? 'required' : 'optional',
           ')'
         ].compact.join(' ')

@@ -32,7 +32,8 @@ describe Dox::DSL::Documentation do
           action_verb: nil,
           action_desc: nil,
           action_path: nil,
-          action_params: nil
+          action_params: nil,
+          action_attributes: nil
         }
       end
 
@@ -54,7 +55,8 @@ describe Dox::DSL::Documentation do
           action_verb: 'GET',
           action_desc: 'Returns a Pokemon',
           action_path: '/pokemons/{id}',
-          action_params: { id: { type: :number } }
+          action_params: { id: { type: :number } },
+          action_attributes: nil
         }
       end
 
