@@ -9,7 +9,7 @@ module Dox
         @type = options[:type]
         @desc = options[:desc] || options[:desc]
         @additional_desc = options[:additional_desc]
-        @example_value = options[:example]
+        @example = options[:example]
         @required = options[:required] || false
         @members = options[:members]
         @children = options[:children]
