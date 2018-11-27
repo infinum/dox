@@ -10,7 +10,7 @@ module Dox
         @desc = details[:action_desc]
         @verb = details[:action_verb] || request.method
         @path = details[:action_path] || template_path
-        @uri_params = details[:action_params] || template_path_params
+        @uri_params = detect_action_params(details[:action_params])
         @examples = []
 
         validate!
@@ -48,6 +48,14 @@ module Dox
           :number
         else
           :string
+        end
+      end
+
+      def detect_action_params(given_params)
+        if given_params
+          given_params
+        elsif Dox.config.guess_params_from_path
+          template_path_params
         end
       end
 

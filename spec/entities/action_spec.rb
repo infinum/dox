@@ -78,12 +78,6 @@ describe Dox::Entities::Action do
     end
 
     context 'when not explicitly defined' do
-      let(:uri_params) do
-        {
-          id: { type: :string, required: :required, value: 11 },
-          type: { type: :string, required: :required, value: 'electric' }
-        }
-      end
       let(:action) { subject.new(action_name, {}, request) }
 
       before do
@@ -91,7 +85,24 @@ describe Dox::Entities::Action do
         allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'electric')
       end
 
-      it { expect(action.uri_params).to eq(uri_params) }
+      context 'when Dox.config.guess_params_from_path is true' do
+        before { Dox.config.guess_params_from_path = true }
+
+        let(:uri_params) do
+          {
+            id: { type: :string, required: :required, value: 11 },
+            type: { type: :string, required: :required, value: 'electric' }
+          }
+        end
+
+        it { expect(action.uri_params).to eq(uri_params) }
+      end
+
+      context 'when Dox.config.guess_params_from_path is false' do
+        before { Dox.config.guess_params_from_path = false }
+
+        it { expect(action.uri_params).to eq(nil) }
+      end
     end
   end
 
