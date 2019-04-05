@@ -18,13 +18,13 @@ describe Dox::Entities::Example do
     context 'when empty' do
       before { allow(request).to receive(:body).and_return(StringIO.new) }
 
-      it { expect(example.request_body).to eq('') }
+      it { expect(example.formatted_request_body).to eq('') }
     end
 
     context 'when present' do
       before { allow(request).to receive(:body).and_return(StringIO.new(body)) }
 
-      it { expect(example.request_body).to eq(body) }
+      it { expect(example.formatted_request_body).to eq(body) }
     end
   end
 
@@ -69,7 +69,7 @@ describe Dox::Entities::Example do
     it { expect(example.response_status).to eq(response.status) }
   end
 
-  describe '#response_body' do
-    it { expect(example.response_body).to eq(response_body) }
+  describe '#formatted_response_body' do
+    it { expect(example.formatted_response_body).to eq(response_body) }
   end
 end
