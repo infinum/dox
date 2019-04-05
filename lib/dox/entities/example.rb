@@ -14,12 +14,12 @@ module Dox
         @response = response
       end
 
-      def formatted_request_body
-        @formatted_request_body ||= format_content(request, request_content_type)
+      def request_body
+        @request_body ||= format_content(request, request_content_type)
       end
 
-      def formatted_response_body
-        @formatted_response_body ||= format_content(response, response_content_type)
+      def response_body
+        @response_body ||= format_content(response, response_content_type)
       end
 
       def request_identifier

@@ -16,7 +16,7 @@ module Dox
       def print_example_request
         @output.puts example_request_title
         @output.puts example_request_headers
-        return unless example.formatted_request_body.present?
+        return unless example.request_body.present?
         @output.puts example_request_body
       end
 
@@ -27,7 +27,7 @@ module Dox
           @output.puts example_response_headers
         end
 
-        return unless example.formatted_response_body.present?
+        return unless example.response_body.present?
         @output.puts example_response_body
       end
 
@@ -53,7 +53,7 @@ module Dox
 
     + Body
 
-#{indent_lines(12, example.formatted_request_body)}
+#{indent_lines(12, example.request_body)}
         HEREDOC
       end
 
@@ -78,7 +78,7 @@ module Dox
 
     + Body
 
-#{indent_lines(12, example.formatted_response_body)}
+#{indent_lines(12, example.response_body)}
         HEREDOC
       end
 
