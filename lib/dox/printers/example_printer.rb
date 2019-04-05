@@ -17,6 +17,7 @@ module Dox
         @output.puts example_request_title
         @output.puts example_request_headers
         return unless example.request_body.present?
+
         @output.puts example_request_body
       end
 
