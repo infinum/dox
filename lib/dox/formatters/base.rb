@@ -4,7 +4,7 @@ module Dox
       def initialize(dispatch)
         @dispatch = dispatch
         dispatch_body = dispatch.body
-        @body = dispatch_body.is_a?(StringIO) ? dispatch_body.read : dispatch_body
+        @body = dispatch_body.respond_to?(:read) ? dispatch_body.read : dispatch_body
       end
 
       def format
