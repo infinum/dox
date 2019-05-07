@@ -45,8 +45,8 @@ module Dox
 
       private
 
-      def format_content(dispatch, content_type)
-        formatter(content_type).new(dispatch).format
+      def format_content(http_env, content_type)
+        formatter(content_type).new(http_env).format
       end
 
       def formatter(content_type)

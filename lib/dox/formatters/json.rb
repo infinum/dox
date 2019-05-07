@@ -2,9 +2,9 @@ module Dox
   module Formatters
     class Json < Dox::Formatters::Base
       def format
-        return '' if body.nil? || body.length < 2
-
-        JSON.pretty_generate(JSON.parse(body))
+        JSON.pretty_generate(JSON.parse(body || ''))
+      rescue JSON::ParserError
+        ''
       end
     end
   end

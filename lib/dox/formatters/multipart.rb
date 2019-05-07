@@ -1,8 +1,8 @@
 module Dox
   module Formatters
     class Multipart
-      def initialize(dispatch)
-        @dispatch = dispatch
+      def initialize(http_env)
+        @http_env = http_env
       end
 
       def format
@@ -12,10 +12,10 @@ module Dox
       private
 
       def extracted_multipart
-        Rack::Multipart.extract_multipart(dispatch)
+        Rack::Multipart.extract_multipart(http_env)
       end
 
-      attr_reader :dispatch
+      attr_reader :http_env
     end
   end
 end
