@@ -1,6 +1,7 @@
 require 'rspec/core'
 require 'rspec/core/formatters/base_formatter'
 require 'rspec/core/formatters/console_codes'
+require 'forwardable'
 
 module Dox
   class Formatter < RSpec::Core::Formatters::BaseFormatter
