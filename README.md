@@ -297,6 +297,16 @@ Or you can just take your generated markdown and host your documentation on [Api
 
 You might experience some strange issues when generating the documentation. Here are a few examples of what we've encountered so far.
 
+#### Uninitialized constant errors
+
+There seems to be a problem with **rspec-rails** versions 3.7 and later not automatically requiring the project's rails_helper.rb when run with the `--format` flag.
+
+To fix this issue, generate your documentation with `--require rails_helper`:
+
+```
+bundle exec rspec -f Dox::Formatter --order defined --tag dox --out docs.md --require rails_helper
+```
+
 #### Wrap parameters issue
 Rails wraps JSON parameters on all requests by default, which results with documented requests looking like this:
 
