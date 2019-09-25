@@ -3,6 +3,8 @@ module Dox
     class Example
       extend Forwardable
 
+      attr_reader :desc
+
       def_delegator :response, :status, :response_status
       def_delegator :response, :content_type, :response_content_type
       def_delegator :response, :body, :response_body
@@ -47,7 +49,7 @@ module Dox
         request.path.presence || request.fullpath.split('?')[0]
       end
 
-      attr_reader :desc, :request, :response
+      attr_reader :request, :response
 
       def filter_headers(obj)
         headers_whitelist.map do |header|

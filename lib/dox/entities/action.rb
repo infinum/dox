@@ -22,7 +22,7 @@ module Dox
 
       # /pokemons/1 => pokemons/{id}
       def template_path
-        path = request.path.dup.presence || request.fullpath.split("?").first
+        path = request.path.dup.presence || request.fullpath.split('?').first
         path_params.each do |key, value|
           path.sub!(%r{\/#{value}(\/|$)}, "/{#{key}}\\1")
         end
@@ -35,10 +35,10 @@ module Dox
       end
 
       def template_path_params
-        h = {}
+        h = []
         path_params.each do |param, value|
           param_type = guess_param_type(value)
-          h[param] = { type: param_type, required: :required, value: value }
+          h.push(name: param, in: :header, required: :required, schema: { type: param_type })
         end
         h
       end

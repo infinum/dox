@@ -14,10 +14,10 @@ describe Dox::Printers::ResourcePrinter do
 
   describe '#print' do
     let(:resource_output) do
-      <<-HEREDOC
+      <<~HEREDOC
 
-## Pokemons [/pokemons]
-Pokemons
+        ## Pokemons [/pokemons]
+        Pokemons
       HEREDOC
     end
 

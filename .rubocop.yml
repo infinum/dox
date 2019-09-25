@@ -12,3 +12,6 @@ AllCops:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+BlockLength:
+  Max: 200

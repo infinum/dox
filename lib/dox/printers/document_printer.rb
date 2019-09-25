@@ -1,22 +1,26 @@
 module Dox
   module Printers
     class DocumentPrinter < BasePrinter
+      def initialize(output)
+        super(acquire_desc(api_desc_path))
+        @output = output
+      end
+
       def print(passed_examples)
-        print_meta_info
+        @next_hash = {}
+        @json_hash['paths'] = @next_hash
 
         passed_examples.sort.each do |_, resource_group|
           group_printer.print(resource_group)
         end
+
+        @output.puts(JSON.pretty_generate(@json_hash))
       end
 
       private
 
       def group_printer
-        @group_printer ||= ResourceGroupPrinter.new(@output)
-      end
-
-      def print_meta_info
-        @output.puts(print_desc(api_desc_path))
+        @group_printer ||= ResourceGroupPrinter.new(@next_hash)
       end
 
       def api_desc_path

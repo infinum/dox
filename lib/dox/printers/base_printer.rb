@@ -1,12 +1,18 @@
 module Dox
   module Printers
     class BasePrinter
-      def initialize(output)
-        @output = output
+      def initialize(json_hash)
+        @json_hash = json_hash
       end
 
       def print
         raise NotImplementedError
+      end
+
+      def existing_hash(hash, key)
+        return hash[key] if hash.key?(key)
+
+        hash[key] = {}
       end
 
       private
@@ -15,23 +21,26 @@ module Dox
         Dox.config.desc_folder_path
       end
 
-      def print_desc(desc, fullpath = false)
+      def acquire_desc(desc, fullpath = false)
         return if desc.blank?
 
-        if desc.to_s =~ /.*\.md$/
-          path = if fullpath
-                   desc
-                 else
-                   descriptions_folder_path.join(desc).to_s
-                 end
-          content(path)
+        if desc.to_s =~ /.*\.json$/
+          content(acquire_path(desc, fullpath))
         else
           desc
         end
       end
 
+      def acquire_path(desc, fullpath = false)
+        if fullpath
+          desc
+        else
+          descriptions_folder_path.join(desc).to_s
+        end
+      end
+
       def content(path)
-        File.read(path)
+        JSON.parse(File.read(path))
       end
     end
   end

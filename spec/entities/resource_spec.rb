@@ -5,7 +5,7 @@ describe Dox::Entities::Resource do
   let(:details) do
     {
       resource_desc: 'Pokemons',
-      resource_endpoint: '/pokemons',
+      resource_endpoint: '/pokemons'
     }
   end
 

@@ -1,7 +1,6 @@
 module Dox
   module Entities
     class ResourceGroup
-
       attr_reader :name
       attr_accessor :desc, :resources
 

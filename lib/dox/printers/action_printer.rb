@@ -3,8 +3,8 @@ module Dox
     class ActionPrinter < BasePrinter
       def print(action)
         self.action = action
-        @output.puts action_title
-        @output.puts action_uri_params if action.uri_params.present?
+        add_action
+        add_action_uri_params if action.uri_params.present?
 
         action.examples.each do |example|
           example_printer.print(example)
@@ -15,32 +15,18 @@ module Dox
 
       attr_accessor :action
 
-      def action_title
-        <<-HEREDOC
+      def add_action
+        @path_hash = existing_hash(@json_hash, action.path.to_s)
 
-### #{action.name} [#{action.verb.upcase} #{action.path}]
-#{print_desc(action.desc)}
-        HEREDOC
+        @next_hash = existing_hash(@path_hash, action.verb.downcase.to_s)
       end
 
-      def action_uri_params
-        <<-HEREDOC
-+ Parameters
-#{formatted_params(action.uri_params)}
-        HEREDOC
+      def add_action_uri_params
+        @next_hash['parameters'] = action.uri_params
       end
 
       def example_printer
-        @example_printer ||= ExamplePrinter.new(@output)
-      end
-
-      def formatted_params(uri_params)
-        uri_params.map do |param, details|
-          desc = "    + #{CGI.escape(param.to_s)}: `#{CGI.escape(details[:value].to_s)}` (#{details[:type]}, #{details[:required]})"
-          desc += " - #{details[:description]}" if details[:description].present?
-          desc += "\n        + Default: #{details[:default]}" if details[:default].present?
-          desc
-        end.flatten.join("\n")
+        @example_printer = ExamplePrinter.new(@next_hash)
       end
     end
   end

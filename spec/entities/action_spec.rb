@@ -79,10 +79,10 @@ describe Dox::Entities::Action do
 
     context 'when not explicitly defined' do
       let(:uri_params) do
-        {
-          id: { type: :string, required: :required, value: 11 },
-          type: { type: :string, required: :required, value: 'electric' }
-        }
+        [
+          { name: :id, schema: { type: :string }, required: :required, in: :header },
+          { name: :type, schema: { type: :string }, required: :required, in: :header }
+        ]
       end
       let(:action) { subject.new(action_name, {}, request) }
 

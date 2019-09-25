@@ -26,12 +26,12 @@ describe Dox::Printers::ActionPrinter do
 
   describe '#print' do
     let(:action_output) do
-      <<-HEREDOC
+      <<~HEREDOC
 
-### Get Pokemon [GET /pokemons/{id}]
-Returns a Pokemon
-       HEREDOC
-     end
+        ### Get Pokemon [GET /pokemons/{id}]
+        Returns a Pokemon
+      HEREDOC
+    end
 
     it 'prints action header' do
       printer.print(action_without_params)
@@ -40,10 +40,10 @@ Returns a Pokemon
 
     context 'with uri params' do
       let(:action_uri_output) do
-        <<-HEREDOC
-+ Parameters
-    + id: `2` (number, required) - pokemon id
-        + Default: 1
+        <<~HEREDOC
+          + Parameters
+              + id: `2` (number, required) - pokemon id
+                  + Default: 1
         HEREDOC
       end
 

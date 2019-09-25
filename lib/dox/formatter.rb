@@ -20,7 +20,7 @@ module Dox
 
     def stop(notification)
       if notification.failed_examples.any?
-        $stderr.puts(notification.fully_formatted_failed_examples)
+        warn(notification.fully_formatted_failed_examples)
       else
         printer.print(passed_examples)
       end
@@ -28,7 +28,8 @@ module Dox
 
     def dump_summary(summary)
       return if summary.failed_examples.none?
-      $stderr.puts(summary.fully_formatted)
+
+      warn(summary.fully_formatted)
       exit(-1)
     end
 
@@ -57,7 +58,8 @@ module Dox
 
     def load_or_save_action_to_resource(resource)
       action_name = current_example.action_name
-      resource.actions[action_name] ||= Entities::Action.new(action_name, current_example.metadata,
+      resource.actions[action_name] ||= Entities::Action.new(action_name,
+                                                             current_example.metadata,
                                                              current_example.request)
     end
 
@@ -65,7 +67,9 @@ module Dox
       group = load_or_save_group
       resource = load_or_save_resource_to_group(group)
       action = load_or_save_action_to_resource(resource)
-      action.examples << Entities::Example.new(current_example.metadata, current_example.request, current_example.response)
+      action.examples << Entities::Example.new(current_example.metadata,
+                                               current_example.request,
+                                               current_example.response)
     end
 
     def printer

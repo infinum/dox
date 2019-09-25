@@ -31,7 +31,7 @@ describe Dox::Printers::DocumentPrinter do
         expect_any_instance_of(Dox::Printers::ResourceGroupPrinter).to receive(:print).once
       end
 
-      it { printer.print({ example1: passed_example }) }
+      it { printer.print(example1: passed_example) }
     end
   end
 end

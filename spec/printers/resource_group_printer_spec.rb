@@ -13,10 +13,10 @@ describe Dox::Printers::ResourceGroupPrinter do
 
   describe '#print' do
     let(:resource_group_output) do
-      <<-HEREDOC
+      <<~HEREDOC
 
-# Group Pokemons
-Pokemons desc
+        # Group Pokemons
+        Pokemons desc
       HEREDOC
     end
 
