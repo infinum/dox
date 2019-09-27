@@ -9,6 +9,7 @@ module Dox
       def print(passed_examples)
         @next_hash = {}
         @json_hash['paths'] = @next_hash
+        @json_hash['components'] = add_components
 
         passed_examples.sort.each do |_, resource_group|
           group_printer.print(resource_group)
@@ -18,6 +19,29 @@ module Dox
       end
 
       private
+
+      def add_components
+        component_hash = {}
+
+        component_hash['schemas'] = add_schemas
+
+        component_hash
+      end
+
+      def add_schemas
+        schemas = Dir[Dox.config.schema_folder_path.to_s + '/**/*.json']
+        schema_hash = {}
+
+        schemas.each do |schema|
+          next if schema.end_with?('output.json')
+
+          name = schema.match(%r{.*/(.*)_schema.json})[1]
+
+          schema_hash[name] = JSON.parse(File.read(schema))
+        end
+
+        schema_hash
+      end
 
       def group_printer
         @group_printer ||= ResourceGroupPrinter.new(@next_hash)

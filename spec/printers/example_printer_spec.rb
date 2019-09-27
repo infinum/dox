@@ -15,7 +15,7 @@ describe Dox::Printers::ExamplePrinter do
            path: '/pokemons/1',
            fullpath: '/pokemons/1')
   end
-  let(:details) { { description: 'Returns a Pokemon' } }
+  let(:details) { { description: 'Returns a Pokemon', resource_name: 'Pokemons' } }
 
   let(:example) { Dox::Entities::Example.new(details, request, response) }
 
@@ -24,88 +24,15 @@ describe Dox::Printers::ExamplePrinter do
 
   before do
     allow(output).to receive(:puts)
-    #allow(example).to receive(:response_body)
     allow(request).to receive(:parameters).and_return({})
   end
 
   describe '#print' do
     context 'without request parameters and response body' do
-      before do
-        allow(request).to receive(:body).and_return(StringIO.new)
-      end
-
-      let(:request_title_output) do
-        <<~HEREDOC
-
-          + Request Returns a Pokemon
-          **GET**&nbsp;&nbsp;`/pokemons/1`
-        HEREDOC
-      end
-
-      let(:response_id_output) do
-        <<~HEREDOC
-
-          + Response 200
-        HEREDOC
-      end
-
       context 'without whitelisted headers' do
-        let(:request_empty_headers_output) do
-          <<-HEREDOC
-
-    + Headers
-
-
-          HEREDOC
-        end
-
-        let(:response_headers_output) do
-          <<-HEREDOC
-
-    + Headers
-
-            Content-Type: application/json
-          HEREDOC
-        end
-
-        before { printer.print(example) }
-        it do
-          printer.print(example)
-          expect(output).to have_received(:puts).exactly(4).times
-        end
-        it { expect(output).to have_received(:puts).with(request_title_output).once }
-        it { expect(output).to have_received(:puts).with(request_empty_headers_output).once }
-
-        it { expect(output).to have_received(:puts).with(response_headers_output).once }
-        it { expect(output).to have_received(:puts).with(response_id_output).once }
       end
 
       context 'with whitelisted case sensitive headers' do
-        let(:request_headers_output) do
-          <<-HEREDOC
-
-    + Headers
-
-            X-Auth-Token: 877da7da7fbc16216e
-          HEREDOC
-        end
-
-        let(:response_headers_output) do
-          <<-HEREDOC
-
-    + Headers
-
-            Content-Encoding: gzip
-            Content-Type: application/json
-          HEREDOC
-        end
-
-        before { Dox.config.headers_whitelist = ['X-Auth-Token', 'Content-Encoding', 'Cache-Control'] }
-        before { printer.print(example) }
-        it { expect(output).to have_received(:puts).with(request_title_output).once }
-        it { expect(output).to have_received(:puts).with(response_id_output).once }
-        it { expect(output).to have_received(:puts).with(request_headers_output).once }
-        it { expect(output).to have_received(:puts).with(response_headers_output).once }
       end
     end
 
@@ -130,29 +57,24 @@ describe Dox::Printers::ExamplePrinter do
           }'
         )
       end
-
-      before do
-        allow(request).to receive(:body).and_return(StringIO.new(request_body))
-        allow(response).to receive(:body).and_return(response_body)
-      end
-
-      before { printer.print(example) }
-
-      it { expect(output).to have_received(:puts).with(request_body_output).once }
-      it { expect(output).to have_received(:puts).with(response_body_output).once }
     end
 
     context 'with empty string as a body' do
       before do
-        allow(request).to receive(:body).and_return(StringIO.new)
-        allow(response).to receive(:body).and_return('')
+        allow(example).to receive(:request_body).and_return('')
+        allow(example).to receive(:response_body).and_return('')
+        printer.print(example)
       end
 
-      before { printer.print(example) }
-      it { expect(example).to have_received(:response_body).once }
+      it 'deos not have example' do
+        #binding.pry
+        content = hash['responses']['200']['content']
+
+        expect(content["Content-Type\: #{content_type}"].key?('example')).to eq(false)
+      end
     end
 
-    context 'with JSON API body' do
+    context 'with regular body' do
       let(:content_type) { 'application/vnd.api+json' }
       let(:response_body) { { 'data' => { 'id' => 1, 'attributes' => { 'name' => 'Pikachu' } } }.to_json }
       let(:response_body_output) do
@@ -172,7 +94,7 @@ describe Dox::Printers::ExamplePrinter do
         printer.print(example)
       end
 
-      it 'prints formatted JSON API body' do
+      it 'contains formatted body' do
         content = hash['responses']['200']['content']
 
         expect(content["Content-Type\: #{content_type}"]['example']).to eq(response_body_output)
