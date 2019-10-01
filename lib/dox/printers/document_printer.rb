@@ -7,9 +7,10 @@ module Dox
       end
 
       def print(passed_examples)
-        @next_hash = {}
-        @json_hash['paths'] = @next_hash
+        @json_hash['paths'] = {}
         @json_hash['components'] = add_components
+        @json_hash['tags'] = []
+        @json_hash['x-tagGroups'] = []
 
         passed_examples.sort.each do |_, resource_group|
           group_printer.print(resource_group)
@@ -29,7 +30,7 @@ module Dox
       end
 
       def add_schemas
-        schemas = Dir[Dox.config.schema_folder_path.to_s + '/**/*.json']
+        schemas = Dir[Dox.config.schema_folder_path + '/**/*_schema.json']
         schema_hash = {}
 
         schemas.each do |schema|
@@ -44,7 +45,7 @@ module Dox
       end
 
       def group_printer
-        @group_printer ||= ResourceGroupPrinter.new(@next_hash)
+        @group_printer ||= ResourceGroupPrinter.new(@json_hash)
       end
 
       def api_desc_path

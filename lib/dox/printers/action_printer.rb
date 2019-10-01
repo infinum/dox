@@ -19,6 +19,8 @@ module Dox
         @path_hash = existing_hash(@json_hash, action.path.to_s)
 
         @next_hash = existing_hash(@path_hash, action.verb.downcase.to_s)
+
+        @next_hash['tags'] = [action.resource] # Jeli moguce vise tagova?
       end
 
       def add_action_uri_params

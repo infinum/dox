@@ -45,15 +45,13 @@ module Dox
       if group
         group.tap { |g| g.desc ||= current_example.resource_group_desc }
       else
-        passed_examples[group_name] = Entities::ResourceGroup.new(group_name,
-                                                                  current_example.metadata)
+        passed_examples[group_name] = Entities::ResourceGroup.new(group_name, current_example.metadata)
       end
     end
 
     def load_or_save_resource_to_group(group)
       resource_name = current_example.resource_name
-      group.resources[resource_name] ||= Entities::Resource.new(resource_name,
-                                                                current_example.metadata)
+      group.resources[resource_name] ||= Entities::Resource.new(resource_name, current_example.metadata)
     end
 
     def load_or_save_action_to_resource(resource)

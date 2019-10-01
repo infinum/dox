@@ -1,12 +1,13 @@
 module Dox
   module Entities
     class Action
-      attr_reader :name, :desc, :verb, :path, :uri_params
+      attr_reader :name, :desc, :verb, :path, :uri_params, :resource
       attr_accessor :examples
 
       def initialize(name, details, request)
         @request = request
         @name = name
+        @resource = details[:resource_name]
         @desc = details[:action_desc]
         @verb = details[:action_verb] || request.method
         @path = details[:action_path] || template_path

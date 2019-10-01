@@ -30,9 +30,11 @@ describe Dox::Printers::ExamplePrinter do
   describe '#print' do
     context 'without request parameters and response body' do
       context 'without whitelisted headers' do
+        # Sta se treba dogoditi kada bude ne whitelistan header?
       end
 
       context 'with whitelisted case sensitive headers' do
+        # Hmm?
       end
     end
 
@@ -57,6 +59,25 @@ describe Dox::Printers::ExamplePrinter do
           }'
         )
       end
+
+      let(:req_headers) { { 'Content-Type' => content_type } }
+
+      before do
+        allow(example).to receive(:request_body).and_return(request_body)
+        allow(example).to receive(:response_body).and_return(response_body)
+        printer.print(example)
+      end
+
+      it 'contains rsponse' do
+        content = hash['responses']['200']['content']
+
+        expect(content["Content-Type\: #{content_type}"]['example']).to eq(response_body_output)
+      end
+
+      it 'contains request' do
+        puts hash
+        expect(hash['request_body']['content']["Content-Type\: #{content_type}"]['example']).to eq(request_body_output)
+      end
     end
 
     context 'with empty string as a body' do
@@ -66,8 +87,7 @@ describe Dox::Printers::ExamplePrinter do
         printer.print(example)
       end
 
-      it 'deos not have example' do
-        #binding.pry
+      it 'deos not have example hash' do
         content = hash['responses']['200']['content']
 
         expect(content["Content-Type\: #{content_type}"].key?('example')).to eq(false)
@@ -91,12 +111,13 @@ describe Dox::Printers::ExamplePrinter do
       end
 
       before do
+        allow(example).to receive(:response_body).and_return(response_body)
+        allow(example).to receive(:request_body).and_return('')
         printer.print(example)
       end
 
       it 'contains formatted body' do
         content = hash['responses']['200']['content']
-
         expect(content["Content-Type\: #{content_type}"]['example']).to eq(response_body_output)
       end
     end

@@ -7,10 +7,12 @@ describe Dox::Printers::DocumentPrinter do
   let(:passed_example) { double(:passed_example) }
   let(:output) { double(:output) }
   let(:printer) { subject.new(output) }
-  let(:header_filepath) { 'api_header_demo.md' }
+  let(:header_filepath) { 'api_header_demo.json' }
+  let(:schema_folder_path) { File.join(File.dirname(__FILE__), '../schemas') }
   let(:config) do
     instance_double(Dox::Config, header_file_path: header_filepath,
-                                 desc_folder_path: fixtures_path.join('someuser'))
+                                 desc_folder_path: fixtures_path.join('someuser'),
+                                 schema_folder_path: schema_folder_path)
   end
 
   before do
@@ -22,7 +24,10 @@ describe Dox::Printers::DocumentPrinter do
   describe '#print' do
     context 'without passed_examples' do
       before { printer.print({}) }
-      it { expect(output).to have_received(:puts).with(api_header_demo_output) }
+      it do
+        puts JSON.parse(api_header_demo_output)
+        expect(output).to have_received(:puts).with(api_header_demo_output[0...-1])
+      end
     end
 
     context 'with one passed_example' do

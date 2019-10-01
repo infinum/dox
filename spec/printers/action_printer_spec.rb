@@ -17,25 +17,37 @@ describe Dox::Printers::ActionPrinter do
   let(:action_without_params) { Dox::Entities::Action.new('Get Pokemon', details.except(:action_params), request) }
   let(:action_with_params) { Dox::Entities::Action.new('Get Pokemon', details, request) }
 
-  let(:output) { double(:output) }
-  let(:printer) { described_class.new(output) }
+  let(:hash) { {} }
+  let(:printer) { described_class.new(hash) }
 
   before do
-    allow(output).to receive(:puts)
   end
 
   describe '#print' do
     let(:action_output) do
-      <<~HEREDOC
-
-        ### Get Pokemon [GET /pokemons/{id}]
-        Returns a Pokemon
-      HEREDOC
+      JSON.parse(
+        '{
+          "/pokemons/{id}": {
+            "get": {
+              "parameters": [
+                {
+                  "in": "header",
+                  "name": "id",
+                  "required": "required",
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          }
+        }'
+      )
     end
 
     it 'prints action header' do
       printer.print(action_without_params)
-      expect(output).to have_received(:puts).with(action_output).once
+      expect(hash).to eq(action_output)
     end
 
     context 'with uri params' do

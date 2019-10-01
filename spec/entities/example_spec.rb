@@ -4,6 +4,7 @@ describe Dox::Entities::Example do
   let(:response_body) { { hello: 'world' }.to_json }
   let(:content_type) { { content_type: 'application/json' } }
   let(:example_desc) { 'Dummy' }
+  let(:example_name) { 'Dum' }
   let(:query_params) { { 'color' => 'blue' } }
   let(:path_params) { { 'id' => 11 } }
   let(:body) { { 'data' => 'users' }.to_json }
@@ -18,7 +19,7 @@ describe Dox::Entities::Example do
            path: '/pokemons')
   end
 
-  let(:example) { subject.new({ description: example_desc }, request, response) }
+  let(:example) { subject.new({ description: example_desc, resource_name: example_name }, request, response) }
 
   describe '#request_body' do
     context 'when empty' do
