@@ -8,25 +8,15 @@ describe Dox::Printers::ResourceGroupPrinter do
   end
   let(:resource_group) { Dox::Entities::ResourceGroup.new('Pokemons', details) }
 
-  let(:output) { double(:output) }
-  let(:printer) { described_class.new(output) }
+  let(:hash) do
+    { 'x-tagGroups' => [] }
+  end
+  let(:printer) { described_class.new(hash) }
 
   describe '#print' do
-    let(:resource_group_output) do
-      <<~HEREDOC
-
-        # Group Pokemons
-        Pokemons desc
-      HEREDOC
-    end
-
-    before do
-      allow(output).to receive(:puts)
-    end
-
     it 'prints resource group header' do
       printer.print(resource_group)
-      expect(output).to have_received(:puts).with(resource_group_output)
+      hash['x-tagGroups'][0] = resource_group.name
     end
 
     context 'with one resource' do

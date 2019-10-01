@@ -4,6 +4,6 @@ module OutputHelper
   end
 
   def example_output
-    File.read('spec/fixtures/example.md')
+    File.read('spec/fixtures/example.json')
   end
 end

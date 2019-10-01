@@ -12,5 +12,11 @@
   "components": {
     "schemas": {
     }
-  }
+  },
+  "tags": [
+
+  ],
+  "x-tagGroups": [
+
+  ]
 }

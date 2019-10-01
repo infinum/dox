@@ -24,50 +24,25 @@ describe Dox::Printers::ActionPrinter do
   end
 
   describe '#print' do
-    let(:action_output) do
-      JSON.parse(
-        '{
-          "/pokemons/{id}": {
-            "get": {
-              "parameters": [
-                {
-                  "in": "header",
-                  "name": "id",
-                  "required": "required",
-                  "schema": {
-                    "type": "string"
-                  }
-                }
-              ]
-            }
-          }
-        }'
-      )
+    let(:action_uri_output) do
+      [{ in: :header, name: :id, required: :required, schema: { type: :string } }]
     end
 
     it 'prints action header' do
       printer.print(action_without_params)
-      expect(hash).to eq(action_output)
+      expect(hash['/pokemons/{id}']['get']['parameters']).to eq(action_uri_output)
     end
 
     context 'with uri params' do
-      let(:action_uri_output) do
-        <<~HEREDOC
-          + Parameters
-              + id: `2` (number, required) - pokemon id
-                  + Default: 1
-        HEREDOC
-      end
-
       it 'prints uri params' do
         printer.print(action_with_params)
-        expect(output).to have_received(:puts).with(action_uri_output).once
+        expect(hash['/pokemons/{id}']['get']['parameters'] == uri_params)
       end
     end
 
     context 'with one example' do
       let(:response) { double(:response) }
-      let(:example_details) { { description: 'Returns a Pokemon' } }
+      let(:example_details) { { description: 'Returns a Pokemon', resource_name: 'test' } }
       let(:example) { Dox::Entities::Example.new(example_details, request, response) }
 
       before do

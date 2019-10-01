@@ -47,7 +47,6 @@ describe Dox::Formatter do
         apidoc: true,
         dox: true,
         resource_group_name: 'Pokemons & Digimons',
-        resource_group_desc: 'Pokemons desc',
         resource_name: 'Pokemons',
         resource_endpoint: '/pokemons',
         action_name: 'Create pokemon',
@@ -86,7 +85,6 @@ describe Dox::Formatter do
         dox: true,
         resource_group_name: 'Pokemons & Digimons',
         resource_name: 'Digimons',
-        resource_desc: 'Digimons desc',
         resource_endpoint: '/digimons',
         action_name: 'Get digimons',
         action_desc: 'Returns all digimons',
@@ -161,10 +159,11 @@ describe Dox::Formatter do
   end
 
   context 'with all passed examples' do
-    let(:header_filepath) { 'api_header_demo.md' }
+    let(:header_filepath) { 'api_header_demo.json' }
     let(:config) do
       instance_double(Dox::Config, header_file_path: header_filepath,
                                    desc_folder_path: fixtures_path.join('someuser'),
+                                   schema_folder_path: File.join(fixtures_path, '../schemas'),
                                    headers_whitelist: nil)
     end
 
