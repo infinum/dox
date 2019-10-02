@@ -52,12 +52,7 @@ module Dox
 
       def add_example_and_schema(body, header_hash)
         header_hash['example'] = JSON.parse(body)
-        header_hash['schema'] = { '$ref' => "#/components/schemas/#{example.name}" } if schema?(example.name)
-      end
-
-      def schema?(name)
-        file_path = Dox.config.schema_folder_path.to_s + '/' + name + '_schema.json'
-        File.exist?(file_path)
+        header_hash['schema'] = { '$ref' => "#/components/schemas/#{example.schema}" } unless example.schema.nil?
       end
 
       def add_headers(headers)

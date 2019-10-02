@@ -3,7 +3,7 @@ module Dox
     class Example
       extend Forwardable
 
-      attr_reader :desc, :name
+      attr_reader :desc, :name, :schema
 
       def_delegator :response, :status, :response_status
       def_delegator :response, :content_type, :response_content_type
@@ -14,6 +14,7 @@ module Dox
       def initialize(details, request, response)
         @desc = details[:description]
         @name = details[:resource_name].downcase
+        @schema = details[:resource_schema]
         @request = request
         @response = response
       end

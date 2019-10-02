@@ -30,13 +30,13 @@ module Dox
       end
 
       def add_schemas
-        schemas = Dir[Dox.config.schema_folder_path + '/**/*_schema.json']
+        schemas = Dir[File.join(Dox.config.schema_folder_path, '/**/*.json')]
         schema_hash = {}
 
         schemas.each do |schema|
           next if schema.end_with?('output.json')
 
-          name = schema.match(%r{.*/(.*)_schema.json})[1]
+          name = schema.match(%r{.*/(.*).json})[1]
 
           schema_hash[name] = JSON.parse(File.read(schema))
         end
