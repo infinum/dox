@@ -9,7 +9,8 @@ describe Dox::DSL::Documentation do
         resource_endpoint: '/pokemons',
         resource_group_desc: 'Pokemons group desc',
         resource_group_name: 'Pokemons',
-        resource_name: 'Pokemons'
+        resource_name: 'Pokemons',
+        resource_schema: 'pokemons'
       }
     end
 
@@ -28,6 +29,7 @@ describe Dox::DSL::Documentation do
           resource_group_desc: 'Pokemons group desc',
           resource_group_name: 'Pokemons',
           resource_name: 'Pokemons',
+          resource_schema: 'pokemons',
           action_name: 'Get Pokemons',
           action_verb: nil,
           action_desc: nil,
@@ -50,6 +52,7 @@ describe Dox::DSL::Documentation do
           resource_group_desc: 'Pokemons group desc',
           resource_group_name: 'Pokemons',
           resource_name: 'Pokemons',
+          resource_schema: 'pokemons',
           action_name: 'Get Pokemon',
           action_verb: 'GET',
           action_desc: 'Returns a Pokemon',
