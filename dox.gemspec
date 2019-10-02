@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/infinum/dox'
   spec.license       = 'MIT'
 
-  spec.required_ruby_version = '>= 2.3.0'
+  spec.required_ruby_version = '>= 2.0.0'
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.

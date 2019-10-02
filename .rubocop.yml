@@ -7,11 +7,11 @@ Documentation:
 WordArray:
   Enabled: False
 
-AllCops:
-  TargetRubyVersion: 2.3
-
 Style/FrozenStringLiteralComment:
   Enabled: false
 
 BlockLength:
   Max: 200
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
