@@ -15,7 +15,7 @@ module Dox
       attr_accessor :example
 
       def add_example_request
-        request_body = existing_hash(@json_hash, 'request_body')
+        request_body = existing_hash(@json_hash, 'requestBody')
         request_body['content'] = add_request_content_and_hash
       end
 
