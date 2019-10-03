@@ -3,12 +3,13 @@ describe Dox::Printers::ResourcePrinter do
 
   let(:details) do
     {
+      resource_name: 'Pokemons',
       resource_desc: 'pokemons.md',
       resource_endpoint: '/pokemons',
       resource_group_name: 'Beings'
     }
   end
-  let(:resource) { Dox::Entities::Resource.new('Pokemons', details) }
+  let(:resource) { Dox::Entities::Resource.new(details) }
 
   let(:hash) do
     { 'x-tagGroups' => ['name' => resource.group, 'tags' => []], 'tags' => [] }
@@ -27,8 +28,8 @@ describe Dox::Printers::ResourcePrinter do
 
     context 'with two actions' do
       let(:request) { double(:request, method: 'GET', path_parameters: {}, path: '/pokemons') }
-      let(:action1) { Dox::Entities::Action.new('Get Pokemons 1', {}, request) }
-      let(:action2) { Dox::Entities::Action.new('Get Pokemons 2', {}, request) }
+      let(:action1) { Dox::Entities::Action.new({ action_name: 'Get Pokemons 1' }, request) }
+      let(:action2) { Dox::Entities::Action.new({ action_name: 'Get Pokemons 2' }, request) }
 
       before do
         resource.actions[action1.name] = action1

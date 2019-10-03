@@ -3,10 +3,11 @@ describe Dox::Printers::ResourceGroupPrinter do
 
   let(:details) do
     {
+      resource_group_name: 'Pokemons',
       resource_group_desc: 'Pokemons desc'
     }
   end
-  let(:resource_group) { Dox::Entities::ResourceGroup.new('Pokemons', details) }
+  let(:resource_group) { Dox::Entities::ResourceGroup.new(details) }
 
   let(:hash) do
     { 'x-tagGroups' => [] }
@@ -22,11 +23,12 @@ describe Dox::Printers::ResourceGroupPrinter do
     context 'with one resource' do
       let(:resource_details) do
         {
+          resource_name: 'Pokemons',
           resource_desc: 'Pokemons',
           resource_endpoint: '/pokemons'
         }
       end
-      let(:resource) { Dox::Entities::Resource.new('Pokemons', resource_details) }
+      let(:resource) { Dox::Entities::Resource.new(resource_details) }
 
       before do
         resource_group.resources[resource.name] = resource

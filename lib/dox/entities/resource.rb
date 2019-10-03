@@ -4,8 +4,8 @@ module Dox
       attr_reader :name, :desc, :endpoint, :group
       attr_accessor :actions
 
-      def initialize(name, details)
-        @name = name
+      def initialize(details)
+        @name = details[:resource_name]
         @group = details[:resource_group_name]
         @desc = details[:resource_desc]
         @endpoint = details[:resource_endpoint]

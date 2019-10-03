@@ -10,12 +10,13 @@ describe Dox::Printers::ActionPrinter do
 
   let(:details) do
     {
+      action_name: 'Get Pokemon',
       action_desc: 'Returns a Pokemon',
       action_params: uri_params
     }
   end
-  let(:action_without_params) { Dox::Entities::Action.new('Get Pokemon', details.except(:action_params), request) }
-  let(:action_with_params) { Dox::Entities::Action.new('Get Pokemon', details, request) }
+  let(:action_without_params) { Dox::Entities::Action.new(details.except(:action_params), request) }
+  let(:action_with_params) { Dox::Entities::Action.new(details, request) }
 
   let(:hash) { {} }
   let(:printer) { described_class.new(hash) }

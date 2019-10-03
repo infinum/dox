@@ -30,11 +30,33 @@ describe Dox::Printers::ExamplePrinter do
   describe '#print' do
     context 'without request parameters and response body' do
       context 'without whitelisted headers' do
-        # Sta se treba dogoditi kada bude ne whitelistan header?
+        before do
+          allow(example).to receive(:request_body).and_return('')
+          allow(example).to receive(:response_body).and_return('')
+          printer.print(example)
+        end
+
+        it do
+          expect(hash['responses'][response.status.to_s]['content']).to eq("Content-Type\: #{content_type}" => {})
+          expect(hash['request_body']['content']).to eq('' => {})
+        end
       end
 
       context 'with whitelisted case sensitive headers' do
-        # Hmm?
+        let(:response_header_output) { { "Content-Encoding: gzip\nContent-Type: application/json" => {} } }
+        let(:request_header_output) { { 'X-Auth-Token: 877da7da7fbc16216e' => {} } }
+
+        before do
+          Dox.config.headers_whitelist = ['X-Auth-Token', 'Content-Encoding', 'Cache-Control']
+          allow(example).to receive(:request_body).and_return('')
+          allow(example).to receive(:response_body).and_return('')
+          printer.print(example)
+        end
+
+        it do
+          expect(hash['responses'][response.status.to_s]['content']).to eq(response_header_output)
+          expect(hash['request_body']['content']).to eq(request_header_output)
+        end
       end
     end
 
@@ -63,6 +85,7 @@ describe Dox::Printers::ExamplePrinter do
       let(:req_headers) { { 'Content-Type' => content_type } }
 
       before do
+        Dox.config.headers_whitelist = nil
         allow(example).to receive(:request_body).and_return(request_body)
         allow(example).to receive(:response_body).and_return(response_body)
         printer.print(example)

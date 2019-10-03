@@ -4,9 +4,9 @@ module Dox
       attr_reader :name, :desc, :verb, :path, :uri_params, :resource
       attr_accessor :examples
 
-      def initialize(name, details, request)
+      def initialize(details, request)
         @request = request
-        @name = name
+        @name = details[:action_name]
         @resource = details[:resource_name]
         @desc = details[:action_desc]
         @verb = details[:action_verb] || request.method

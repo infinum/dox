@@ -20,7 +20,7 @@ module Dox
 
         @next_hash = existing_hash(@path_hash, action.verb.downcase.to_s)
 
-        @next_hash['tags'] = [action.resource] # Jeli moguce vise tagova?
+        @next_hash['tags'] = [action.resource]
       end
 
       def add_action_uri_params

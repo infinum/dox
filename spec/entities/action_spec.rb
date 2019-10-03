@@ -5,6 +5,7 @@ describe Dox::Entities::Action do
   let(:request) { double(:request, method: 'HEAD', path_parameters: { 'id' => 1 }, path: '/pokemons/1') }
   let(:details) do
     {
+      action_name: 'Get pokemons',
       action_desc: 'Returns a list of pokemons',
       action_verb: 'GET',
       action_path: '/pokemons',
@@ -12,7 +13,7 @@ describe Dox::Entities::Action do
     }
   end
 
-  let(:action) { subject.new(action_name, details, request) }
+  let(:action) { subject.new(details, request) }
 
   describe '#name' do
     it { expect(action.name).to eq(action_name) }
@@ -28,7 +29,7 @@ describe Dox::Entities::Action do
     end
 
     context 'when verb is not explicitly defined' do
-      let(:action) { subject.new(action_name, {}, request) }
+      let(:action) { subject.new({}, request) }
       it { expect(action.verb).to eq(request.method) }
     end
   end
@@ -39,7 +40,7 @@ describe Dox::Entities::Action do
     end
 
     context 'when path is not explicitly defined' do
-      let(:action) { subject.new(action_name, {}, request) }
+      let(:action) { subject.new({}, request) }
       context 'with one path param' do
         it { expect(action.path).to eq('/pokemons/{id}') }
       end
@@ -84,7 +85,7 @@ describe Dox::Entities::Action do
           { name: :type, schema: { type: :string }, required: :required, in: :header }
         ]
       end
-      let(:action) { subject.new(action_name, {}, request) }
+      let(:action) { subject.new({}, request) }
 
       before do
         allow(request).to receive(:path).and_return('/pokemons/electric/11')
