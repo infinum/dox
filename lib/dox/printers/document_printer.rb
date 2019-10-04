@@ -2,7 +2,7 @@ module Dox
   module Printers
     class DocumentPrinter < BasePrinter
       def initialize(output)
-        super(acquire_desc(api_desc_path))
+        super(acquire_header(api_info_path))
         @output = output
       end
 
@@ -48,7 +48,7 @@ module Dox
         @group_printer ||= ResourceGroupPrinter.new(@json_hash)
       end
 
-      def api_desc_path
+      def api_info_path
         Dox.config.header_file_path
       end
     end

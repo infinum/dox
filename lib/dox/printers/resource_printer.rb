@@ -26,7 +26,10 @@ module Dox
       end
 
       def acquire_tag
-        desc = resource.desc.nil? ? '' : File.read(File.join(Dox.config.desc_folder_path, resource.desc))
+        desc = resource.desc
+        desc = '' if desc.nil?
+        desc = File.read(File.join(Dox.config.desc_folder_path, desc)) if desc.end_with?('.md')
+
         { name: resource.name, description: desc }
       end
 

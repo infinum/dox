@@ -21,14 +21,15 @@ module Dox
         Dox.config.desc_folder_path
       end
 
-      def acquire_desc(desc, fullpath = false)
-        return if desc.blank?
+      def acquire_header(header, fullpath = false)
+        return if header.blank?
 
-        if desc.to_s =~ /.*\.json$/
-          content(acquire_path(desc, fullpath))
-        else
-          desc
+        if header.to_s =~ /.*\.json$/
+          header = content(acquire_path(header, fullpath))
+          adjust_description(header['info'])
         end
+
+        header
       end
 
       def acquire_path(desc, fullpath = false)
@@ -41,6 +42,14 @@ module Dox
 
       def content(path)
         JSON.parse(File.read(path))
+      end
+
+      def adjust_description(info)
+        info['description'] = acquire_desc(info['description']) if info['description'].end_with?('.md')
+      end
+
+      def acquire_desc(path)
+        File.read(File.join(Dox.config.desc_folder_path, path))
       end
     end
   end
