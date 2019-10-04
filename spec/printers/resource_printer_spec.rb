@@ -12,7 +12,7 @@ describe Dox::Printers::ResourcePrinter do
   let(:resource) { Dox::Entities::Resource.new(details) }
 
   let(:hash) do
-    { 'x-tagGroups' => ['name' => resource.group, 'tags' => []], 'tags' => [] }
+    { 'x-tagGroups' => [name: resource.group, 'tags' => []], 'tags' => [] }
   end
   let(:printer) { described_class.new(hash) }
 
@@ -22,7 +22,7 @@ describe Dox::Printers::ResourcePrinter do
       printer.print(resource)
 
       expect(hash['x-tagGroups'][0]['tags'][0] == resource.name)
-      expect(hash['tags'][0]['name'] == resource.name)
+      expect(hash['tags'][0][:name] == resource.name)
       expect(hash['tags'][0]['description'] == File.read(File.join(Dox.config.desc_folder_path, resource.desc)))
     end
 

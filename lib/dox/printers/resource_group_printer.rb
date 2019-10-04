@@ -17,11 +17,9 @@ module Dox
       def add_resource_group
         group_array = @json_hash['x-tagGroups']
 
-        group_hash = group_array.find do |group|
-          group['name'] == resource_group.name
-        end
+        group_hash = group_array.find { |group| group[:name] == resource_group.name }
 
-        group_array.push('name' => resource_group.name, 'tags' => []) if group_hash.nil?
+        group_array.push(name: resource_group.name, 'tags' => []) if group_hash.nil?
       end
 
       def resource_printer

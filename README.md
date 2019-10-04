@@ -161,7 +161,13 @@ Before running into any more details, here's roughly how the generated OpenApi d
               - schemas
                 - schema 1
                 - schema 2
-      - requests
+      - requestBody
+        - content
+          - header
+            - examples
+              - example 1
+            - schemas
+              - schema 1
 - x-tagGroups
   - group 1
       - name

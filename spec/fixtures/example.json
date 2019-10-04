@@ -14,7 +14,7 @@
           "Pokemons"
         ],
         "summary": "Creates pokemon",
-        "request_body": {
+        "requestBody": {
           "content": {
             "Content-Type: application/json": {
               "example": {
@@ -60,7 +60,7 @@
           }
         ],
         "summary": "Returns pokemon",
-        "request_body": {
+        "requestBody": {
           "content": {
             "Accept: application/json": {
             }
@@ -90,7 +90,7 @@
           "Digimons"
         ],
         "summary": "Returns digimons",
-        "request_body": {
+        "requestBody": {
           "content": {
             "Accept: application/json": {
             }

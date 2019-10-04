@@ -22,21 +22,16 @@ module Dox
       def add_to_tags
         tags = @json_hash['tags']
 
-        tags.push(acquire_tag) unless tags.any? { |tag| tag['name'] == resource.name }
+        tags.push(acquire_tag) unless tags.any? { |tag| tag[:name] == resource.name }
       end
 
       def acquire_tag
-        desc = ''
-        desc = File.read(File.join(Dox.config.desc_folder_path, resource.desc)) unless resource.desc.nil?
+        desc = resource.desc.nil? ? '' : File.read(File.join(Dox.config.desc_folder_path, resource.desc))
         { name: resource.name, description: desc }
       end
 
       def add_to_groups
-        group_hash = @json_hash['x-tagGroups'].find do |group|
-          group['name'] == resource.group
-        end
-
-        group_hash['tags'].push(resource.name)
+        @json_hash['x-tagGroups'].find { |group| group[:name] == resource.group }['tags'].push(resource.name)
       end
 
       def action_printer

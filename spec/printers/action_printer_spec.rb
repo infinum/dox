@@ -31,13 +31,13 @@ describe Dox::Printers::ActionPrinter do
 
     it 'prints action header' do
       printer.print(action_without_params)
-      expect(hash['/pokemons/{id}']['get']['parameters']).to eq(action_uri_output)
+      expect(hash['/pokemons/{id}'][:get][:parameters]).to eq(action_uri_output)
     end
 
     context 'with uri params' do
       it 'prints uri params' do
         printer.print(action_with_params)
-        expect(hash['/pokemons/{id}']['get']['parameters'] == uri_params)
+        expect(hash['/pokemons/{id}'][:get][:parameters] == uri_params)
       end
     end
 

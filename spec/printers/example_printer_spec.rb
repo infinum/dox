@@ -38,7 +38,7 @@ describe Dox::Printers::ExamplePrinter do
 
         it do
           expect(hash['responses'][response.status.to_s]['content']).to eq("Content-Type\: #{content_type}" => {})
-          expect(hash['request_body']['content']).to eq('' => {})
+          expect(hash['requestBody']['content']).to eq('' => {})
         end
       end
 
@@ -55,14 +55,14 @@ describe Dox::Printers::ExamplePrinter do
 
         it do
           expect(hash['responses'][response.status.to_s]['content']).to eq(response_header_output)
-          expect(hash['request_body']['content']).to eq(request_header_output)
+          expect(hash['requestBody']['content']).to eq(request_header_output)
         end
       end
     end
 
     context 'with request parameters and response body' do
       let(:response_body) { { id: 1, name: 'Pikachu' }.to_json }
-      let(:request_body) { { 'name' => 'Pikachu', type: 'Electric' }.to_json }
+      let(:request_body) { { name: 'Pikachu', type: 'Electric' }.to_json }
 
       let(:response_body_output) do
         JSON.parse(
@@ -99,7 +99,7 @@ describe Dox::Printers::ExamplePrinter do
 
       it 'contains request' do
         puts hash
-        expect(hash['request_body']['content']["Content-Type\: #{content_type}"]['example']).to eq(request_body_output)
+        expect(hash['requestBody']['content']["Content-Type\: #{content_type}"]['example']).to eq(request_body_output)
       end
     end
 
@@ -119,7 +119,7 @@ describe Dox::Printers::ExamplePrinter do
 
     context 'with regular body' do
       let(:content_type) { 'application/vnd.api+json' }
-      let(:response_body) { { 'data' => { 'id' => 1, 'attributes' => { 'name' => 'Pikachu' } } }.to_json }
+      let(:response_body) { { 'data' => { 'id' => 1, 'attributes' => { name: 'Pikachu' } } }.to_json }
       let(:response_body_output) do
         JSON.parse(
           '{

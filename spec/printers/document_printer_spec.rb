@@ -25,7 +25,7 @@ describe Dox::Printers::DocumentPrinter do
     context 'without passed_examples' do
       before { printer.print({}) }
       it do
-        puts JSON.parse(api_header_demo_output)
+        #puts JSON.parse(api_header_demo_output)
         expect(output).to have_received(:puts).with(api_header_demo_output[0...-1])
       end
     end
