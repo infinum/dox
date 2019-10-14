@@ -1,6 +1,6 @@
 module Dox
   class Config
-    attr_reader :header_file_path, :desc_folder_path, :schema_folder_path
+    attr_reader :header_file_path, :desc_folder_path, :schema_request_folder_path, :schema_response_folder_path
     attr_accessor :headers_whitelist
 
     def header_file_path=(file_path)
@@ -15,10 +15,16 @@ module Dox
       @desc_folder_path = folder_path
     end
 
-    def schema_folder_path=(folder_path)
+    def schema_request_folder_path=(folder_path)
       raise(Errors::FolderNotFoundError, folder_path) unless Dir.exist?(folder_path)
 
-      @schema_folder_path = folder_path
+      @schema_request_folder_path = folder_path
+    end
+
+    def schema_response_folder_path=(folder_path)
+      raise(Errors::FolderNotFoundError, folder_path) unless Dir.exist?(folder_path)
+
+      @schema_response_folder_path = folder_path
     end
   end
 end

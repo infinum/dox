@@ -163,7 +163,8 @@ describe Dox::Formatter do
     let(:config) do
       instance_double(Dox::Config, header_file_path: header_filepath,
                                    desc_folder_path: fixtures_path.join('someuser'),
-                                   schema_folder_path: File.join(fixtures_path, '../schemas'),
+                                   schema_request_folder_path: File.join(fixtures_path, '../schemas'),
+                                   schema_response_folder_path: File.join(fixtures_path, '../schemas'),
                                    headers_whitelist: nil)
     end
 

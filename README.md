@@ -60,8 +60,8 @@ Set these mandatory options in the rails_helper:
 | -- | -- | -- |
 | header_file_path | Pathname instance or fullpath string | Json file that will include openapi version, the basic information about the api, api title and api version. |
 | desc_folder_path | Pathname instance or fullpath string | Folder with markdown descriptions. |
-| schema_folder_path | Pathname instance or fullpath string | Folder with schemas of resources. |
-
+| schema_request_folder_path | Pathname instance or fullpath string | Folder with request schemas of resources. |
+| schema_response_folder_path | Pathname instance or fullpath string | Folder with response schemas of resources. |
 
 Optional settings:
 
@@ -75,7 +75,8 @@ Example:
 Dox.configure do |config|
   config.header_file_path = Rails.root.join('spec/docs/v1/descriptions/header.json')
   config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
-  config.schema_folder_path = Rails.root.join('spec/docs/v1/schemas')
+  config.schema_request_folder_path = Rails.root.join('spec/docs/v1/schemas')
+  config.schema_response_folder_path = Rails.root.join('spec/support/v1/schemas')
   config.headers_whitelist = ['Accept', 'X-Auth-Token']
 end
 ```

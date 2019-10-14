@@ -24,7 +24,10 @@ module Dox
         header_hash = {}
 
         content_hash[add_request_headers(example.request_headers)] = header_hash
-        add_example_and_schema(example.request_body, header_hash) unless example.request_body.empty?
+
+        unless example.request_body.empty?
+          add_example_and_schema(example.request_body, header_hash, Dox.config.schema_request_folder_path)
+        end
 
         content_hash
       end
@@ -45,14 +48,19 @@ module Dox
         header_hash = {}
 
         content_hash[add_response_headers(example.response_headers)] = header_hash
-        add_example_and_schema(example.response_body, header_hash) unless example.response_body.empty?
+
+        unless example.response_body.empty?
+          add_example_and_schema(example.response_body, header_hash, Dox.config.schema_response_folder_path)
+        end
 
         content_hash
       end
 
-      def add_example_and_schema(body, header_hash)
+      def add_example_and_schema(body, header_hash, path)
         header_hash['example'] = JSON.parse(body)
-        header_hash['schema'] = { '$ref' => "#/components/schemas/#{example.schema}" } unless example.schema.nil?
+        return if example.schema.nil?
+
+        header_hash['schema'] = { '$ref' => File.join(path, "#{example.schema}.json") }
       end
 
       def add_request_headers(headers)
