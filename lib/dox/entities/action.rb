@@ -11,7 +11,7 @@ module Dox
         @desc = details[:action_desc]
         @verb = details[:action_verb] || request.method
         @path = details[:action_path] || template_path
-        @uri_params = details[:action_params] || template_path_params
+        @uri_params = details[:action_params] || template_params
         @examples = []
 
         validate!
@@ -35,13 +35,33 @@ module Dox
           request.path_parameters.symbolize_keys.except(:action, :controller, :format, :subdomain)
       end
 
-      def template_path_params
-        h = []
-        path_params.each do |param, value|
+      def header_params
+        request.filtered_parameters.symbolize_keys.except(:id, :action, :controller, :format, :subdomain)
+      end
+
+      def query_params
+        return [] if request.env['RAW_POST_DATA'].nil?
+
+        data = JSON.parse(request.env['RAW_POST_DATA'])['data']
+
+        data['attributes'].symbolize_keys
+      end
+
+      def template_params
+        all_params = []
+
+        acquire_params(path_params, :path, all_params)
+        acquire_params(header_params, :header, all_params)
+        acquire_params(query_params, :query, all_params)
+
+        all_params
+      end
+
+      def acquire_params(params, within, all_params)
+        params.each do |param, value|
           param_type = guess_param_type(value)
-          h.push(name: param, in: :header, required: :required, schema: { type: param_type })
+          all_params.push(name: param, in: within, schema: { type: param_type })
         end
-        h
       end
 
       def guess_param_type(param)

@@ -2,7 +2,7 @@ describe Dox::Printers::ExamplePrinter do
   subject { described_class }
 
   let(:content_type) { 'application/json' }
-  let(:req_headers) { { 'X-Auth-Token' => '877da7da7fbc16216e' } }
+  let(:req_headers) { { 'X-Auth-Token' => '877da7da7fbc16216e', 'Accept' => content_type } }
   let(:res_headers) { { 'Content-Type' => content_type, 'Content-Encoding' => 'gzip', 'cache-control' => 'public' } }
   let(:response) { double('response', content_type: content_type, status: 200, body: nil, headers: res_headers) }
   let(:request) do
@@ -37,14 +37,13 @@ describe Dox::Printers::ExamplePrinter do
         end
 
         it do
-          expect(hash['responses'][response.status.to_s]['content']).to eq("Content-Type\: #{content_type}" => {})
-          expect(hash['requestBody']['content']).to eq('' => {})
+          expect(hash['responses'][response.status.to_s]['content']).to eq(content_type.to_s => {})
+          expect(hash['requestBody']['content']).to eq(content_type.to_s => {})
         end
       end
 
       context 'with whitelisted case sensitive headers' do
-        let(:response_header_output) { { "Content-Encoding: gzip\nContent-Type: application/json" => {} } }
-        let(:request_header_output) { { 'X-Auth-Token: 877da7da7fbc16216e' => {} } }
+        let(:response_header_output) { { 'application/json' => {} } }
 
         before do
           Dox.config.headers_whitelist = ['X-Auth-Token', 'Content-Encoding', 'Cache-Control']
@@ -55,7 +54,6 @@ describe Dox::Printers::ExamplePrinter do
 
         it do
           expect(hash['responses'][response.status.to_s]['content']).to eq(response_header_output)
-          expect(hash['requestBody']['content']).to eq(request_header_output)
         end
       end
     end
@@ -82,7 +80,7 @@ describe Dox::Printers::ExamplePrinter do
         )
       end
 
-      let(:req_headers) { { 'Content-Type' => content_type } }
+      let(:req_headers) { { 'Accept' => content_type } }
 
       before do
         Dox.config.headers_whitelist = nil
@@ -94,12 +92,11 @@ describe Dox::Printers::ExamplePrinter do
       it 'contains rsponse' do
         content = hash['responses']['200']['content']
 
-        expect(content["Content-Type\: #{content_type}"]['example']).to eq(response_body_output)
+        expect(content[content_type.to_s]['example']).to eq(response_body_output)
       end
 
       it 'contains request' do
-        puts hash
-        expect(hash['requestBody']['content']["Content-Type\: #{content_type}"]['example']).to eq(request_body_output)
+        expect(hash['requestBody']['content'][content_type.to_s]['example']).to eq(request_body_output)
       end
     end
 
@@ -113,7 +110,7 @@ describe Dox::Printers::ExamplePrinter do
       it 'deos not have example hash' do
         content = hash['responses']['200']['content']
 
-        expect(content["Content-Type\: #{content_type}"].key?('example')).to eq(false)
+        expect(content[content_type.to_s].key?('example')).to eq(false)
       end
     end
 
@@ -141,7 +138,7 @@ describe Dox::Printers::ExamplePrinter do
 
       it 'contains formatted body' do
         content = hash['responses']['200']['content']
-        expect(content["Content-Type\: #{content_type}"]['example']).to eq(response_body_output)
+        expect(content[content_type.to_s]['example']).to eq(response_body_output)
       end
     end
   end

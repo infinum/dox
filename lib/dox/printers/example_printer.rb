@@ -23,7 +23,7 @@ module Dox
         content_hash = {}
         header_hash = {}
 
-        content_hash[add_headers(example.request_headers)] = header_hash
+        content_hash[add_request_headers(example.request_headers)] = header_hash
         add_example_and_schema(example.request_body, header_hash) unless example.request_body.empty?
 
         content_hash
@@ -44,7 +44,7 @@ module Dox
         content_hash = {}
         header_hash = {}
 
-        content_hash[add_headers(example.response_headers)] = header_hash
+        content_hash[add_response_headers(example.response_headers)] = header_hash
         add_example_and_schema(example.response_body, header_hash) unless example.response_body.empty?
 
         content_hash
@@ -55,10 +55,16 @@ module Dox
         header_hash['schema'] = { '$ref' => "#/components/schemas/#{example.schema}" } unless example.schema.nil?
       end
 
-      def add_headers(headers)
+      def add_request_headers(headers)
         headers.map do |key, value|
-          "#{key}: #{value}"
-        end.join("\n")
+          return value if key == 'Accept'
+        end
+      end
+
+      def add_response_headers(headers)
+        headers.map do |key, value|
+          return value if key == 'Content-Type'
+        end
       end
     end
   end

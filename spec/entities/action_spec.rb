@@ -2,7 +2,14 @@ describe Dox::Entities::Action do
   subject { described_class }
 
   let(:action_name) { 'Get pokemons' }
-  let(:request) { double(:request, method: 'HEAD', path_parameters: { 'id' => 1 }, path: '/pokemons/1') }
+  let(:request) do
+    double(:request, method: 'HEAD',
+                     path_parameters: { 'id' => 1 },
+                     path: '/pokemons/1',
+                     filtered_parameters: {},
+                     env: {})
+  end
+
   let(:details) do
     {
       action_name: 'Get pokemons',
@@ -81,8 +88,8 @@ describe Dox::Entities::Action do
     context 'when not explicitly defined' do
       let(:uri_params) do
         [
-          { name: :id, schema: { type: :string }, required: :required, in: :header },
-          { name: :type, schema: { type: :string }, required: :required, in: :header }
+          { name: :id, schema: { type: :string }, in: :path },
+          { name: :type, schema: { type: :string }, in: :path }
         ]
       end
       let(:action) { subject.new({}, request) }

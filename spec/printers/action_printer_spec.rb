@@ -1,10 +1,16 @@
 describe Dox::Printers::ActionPrinter do
   subject { described_class }
 
-  let(:request) { double(:request, method: 'GET', path_parameters: { 'id' => 1 }, path: '/pokemons/1') }
+  let(:request) do
+    double(:request, method: 'GET',
+                     path_parameters: { 'id' => 1 },
+                     path: '/pokemons/1',
+                     filtered_parameters: {},
+                     env: {})
+  end
   let(:uri_params) do
     {
-      id: { type: :number, required: :required, value: 2, description: 'pokemon id', default: 1 }
+      id: { type: :number, value: 2, description: 'pokemon id', default: 1 }
     }
   end
 
@@ -26,7 +32,7 @@ describe Dox::Printers::ActionPrinter do
 
   describe '#print' do
     let(:action_uri_output) do
-      [{ in: :header, name: :id, required: :required, schema: { type: :string } }]
+      [{ in: :path, name: :id, schema: { type: :string } }]
     end
 
     it 'prints action header' do

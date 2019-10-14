@@ -27,7 +27,13 @@ describe Dox::Printers::ResourcePrinter do
     end
 
     context 'with two actions' do
-      let(:request) { double(:request, method: 'GET', path_parameters: {}, path: '/pokemons') }
+      let(:request) do
+        double(:request, method: 'GET',
+                         path_parameters: {},
+                         path: '/pokemons',
+                         filtered_parameters: {},
+                         env: {})
+      end
       let(:action1) { Dox::Entities::Action.new({ action_name: 'Get Pokemons 1' }, request) }
       let(:action2) { Dox::Entities::Action.new({ action_name: 'Get Pokemons 2' }, request) }
 

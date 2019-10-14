@@ -34,6 +34,14 @@ class DoxTestRequest
     @headers = request_data.fetch(:headers, {})
     @fullpath = request_data.fetch(:fullpath)
   end
+
+  def filtered_parameters
+    {}
+  end
+
+  def env
+    {}
+  end
 end
 
 class DoxTestResponse

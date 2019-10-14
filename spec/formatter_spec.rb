@@ -62,7 +62,7 @@ describe Dox::Formatter do
             type: 'electric'
           }
         },
-        headers: { 'Content-Type' => 'application/json' }
+        headers: { 'Accept' => 'application/json' }
       },
       response: {
         status: 201,

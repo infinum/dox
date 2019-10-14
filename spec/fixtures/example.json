@@ -16,7 +16,7 @@
         "summary": "Creates pokemon",
         "requestBody": {
           "content": {
-            "Content-Type: application/json": {
+            "application/json": {
               "example": {
                 "pokemon": {
                   "name": "Pikachu",
@@ -30,7 +30,7 @@
           "201": {
             "description": "Created",
             "content": {
-              "Content-Type: application/json": {
+              "application/json": {
                 "example": {
                   "pokemon": {
                     "id": 1,
@@ -52,8 +52,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "header",
-            "required": "required",
+            "in": "path",
             "schema": {
               "type": "string"
             }
@@ -62,7 +61,7 @@
         "summary": "Returns pokemon",
         "requestBody": {
           "content": {
-            "Accept: application/json": {
+            "application/json": {
             }
           }
         },
@@ -70,7 +69,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "Content-Type: application/json": {
+              "application/json": {
                 "example": {
                   "pokemon": {
                     "id": 14,
@@ -92,7 +91,7 @@
         "summary": "Returns digimons",
         "requestBody": {
           "content": {
-            "Accept: application/json": {
+            "application/json": {
             }
           }
         },
@@ -100,7 +99,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "Content-Type: application/json": {
+              "application/json": {
                 "example": [
                   {
                     "digimon": {
