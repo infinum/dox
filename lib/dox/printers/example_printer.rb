@@ -16,20 +16,23 @@ module Dox
 
       def add_example_request
         request_body = existing_hash(@json_hash, 'requestBody')
-        request_body['content'] = add_request_content_and_hash
+        add_request_content_and_hash(request_body)
       end
 
-      def add_request_content_and_hash
-        content_hash = {}
-        header_hash = {}
+      def add_request_content_and_hash(request_body)
+        content_hash = existing_hash(request_body, 'content')
+        request_body['content'] = content_hash
 
-        content_hash[add_request_headers(example.request_headers)] = header_hash
+        req_header = add_request_headers(example.request_headers)
+
+        header_hash = existing_hash(content_hash, req_header)
+        content_hash[req_header] = header_hash
 
         unless example.request_body.empty?
-          add_example_and_schema(example.request_body, header_hash, Dox.config.schema_request_folder_path)
+          add_example_and_schema(example.request_body,
+                                 header_hash,
+                                 Dox.config.schema_request_folder_path)
         end
-
-        content_hash
       end
 
       def add_example_response
@@ -40,24 +43,27 @@ module Dox
 
       def add_statuses(status_hash)
         status_hash['description'] = Util::Http::HTTP_STATUS_CODES[example.response_status]
-        status_hash['content'] = add_response_content_and_hash
+        add_response_content_and_hash(status_hash)
       end
 
-      def add_response_content_and_hash
-        content_hash = {}
-        header_hash = {}
+      def add_response_content_and_hash(request_body)
+        content_hash = existing_hash(request_body, 'content')
+        request_body['content'] = content_hash
 
-        content_hash[add_response_headers(example.response_headers)] = header_hash
+        resp_header = add_response_headers(example.response_headers)
+
+        header_hash = existing_hash(content_hash, resp_header)
+        content_hash[resp_header] = header_hash
 
         unless example.response_body.empty?
           add_example_and_schema(example.response_body, header_hash, Dox.config.schema_response_folder_path)
         end
-
-        content_hash
       end
 
       def add_example_and_schema(body, header_hash, path)
-        header_hash['example'] = JSON.parse(body)
+        example_hash = existing_hash(header_hash, 'examples')
+        header_hash['examples'] = example_hash
+        example_hash[example.desc] = { 'summary' => example.desc, 'value' => JSON.parse(body)['data'] }
         return if example.schema.nil?
 
         header_hash['schema'] = { '$ref' => File.join(path, "#{example.schema}.json") }

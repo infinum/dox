@@ -59,8 +59,8 @@ describe Dox::Printers::ExamplePrinter do
     end
 
     context 'with request parameters and response body' do
-      let(:response_body) { { id: 1, name: 'Pikachu' }.to_json }
-      let(:request_body) { { name: 'Pikachu', type: 'Electric' }.to_json }
+      let(:response_body) { { 'data' => { id: 1, name: 'Pikachu' } }.to_json }
+      let(:request_body) { { 'data' => { name: 'Pikachu', type: 'Electric' } }.to_json }
 
       let(:response_body_output) do
         JSON.parse(
@@ -92,11 +92,12 @@ describe Dox::Printers::ExamplePrinter do
       it 'contains rsponse' do
         content = hash['responses']['200']['content']
 
-        expect(content[content_type.to_s]['example']).to eq(response_body_output)
+        expect(content[content_type.to_s]['examples'][details[:description]]['value']).to eq(response_body_output)
       end
 
       it 'contains request' do
-        expect(hash['requestBody']['content'][content_type.to_s]['example']).to eq(request_body_output)
+        content = hash['requestBody']['content'][content_type.to_s]
+        expect(content['examples'][details[:description]]['value']).to eq(request_body_output)
       end
     end
 
@@ -110,7 +111,7 @@ describe Dox::Printers::ExamplePrinter do
       it 'deos not have example hash' do
         content = hash['responses']['200']['content']
 
-        expect(content[content_type.to_s].key?('example')).to eq(false)
+        expect(content[content_type.to_s].key?('examples')).to eq(false)
       end
     end
 
@@ -120,12 +121,10 @@ describe Dox::Printers::ExamplePrinter do
       let(:response_body_output) do
         JSON.parse(
           '{
-            "data": {
               "id": 1,
               "attributes": {
                 "name": "Pikachu"
               }
-            }
            }'
         )
       end
@@ -138,7 +137,7 @@ describe Dox::Printers::ExamplePrinter do
 
       it 'contains formatted body' do
         content = hash['responses']['200']['content']
-        expect(content[content_type.to_s]['example']).to eq(response_body_output)
+        expect(content[content_type.to_s]['examples'][details[:description]]['value']).to eq(response_body_output)
       end
     end
   end

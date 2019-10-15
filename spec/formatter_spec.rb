@@ -30,10 +30,12 @@ describe Dox::Formatter do
       response: {
         status: 200,
         body: {
-          pokemon: {
-            id: 14,
-            name: 'Pikachu',
-            type: 'electric'
+          data: {
+            pokemon: {
+              id: 14,
+              name: 'Pikachu',
+              type: 'electric'
+            }
           }
         },
         headers: { 'Content-Type' => 'application/json' }
@@ -57,9 +59,11 @@ describe Dox::Formatter do
         path: '/pokemons',
         fullpath: '/pokemons?name=Pikachu&type=Electric',
         body: {
-          pokemon: {
-            name: 'Pikachu',
-            type: 'electric'
+          data: {
+            pokemon: {
+              name: 'Pikachu',
+              type: 'electric'
+            }
           }
         },
         headers: { 'Accept' => 'application/json' }
@@ -67,10 +71,12 @@ describe Dox::Formatter do
       response: {
         status: 201,
         body: {
-          pokemon: {
-            id: 1,
-            name: 'Pikachu',
-            type: 'electric'
+          data: {
+            pokemon: {
+              id: 1,
+              name: 'Pikachu',
+              type: 'electric'
+            }
           }
         },
         headers: { 'Content-Type' => 'application/json' }
@@ -98,22 +104,24 @@ describe Dox::Formatter do
       },
       response: {
         status: 200,
-        body: [
-          {
-            digimon: {
-              id: 11,
-              name: 'Tanemon',
-              type: 'Bulb'
+        body: {
+          data: [
+            {
+              digimon: {
+                id: 11,
+                name: 'Tanemon',
+                type: 'Bulb'
+              }
+            },
+            {
+              digimon: {
+                id: 12,
+                name: 'Pyocomon',
+                type: 'Bulb'
+              }
             }
-          },
-          {
-            digimon: {
-              id: 12,
-              name: 'Pyocomon',
-              type: 'Bulb'
-            }
-          }
-        ],
+          ]
+        },
         headers: { 'Content-Type' => 'application/json' }
       }
     }
