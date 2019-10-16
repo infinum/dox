@@ -146,62 +146,43 @@ Before running into any more details, here's roughly how the generated OpenApi d
 - openapi
 - info
 - paths
-  - path
-    - verb
-      - tags
-        - tag 1
-      - summary
-      - parameters
-      - responses
-        - status
-          - content
-            - header
-              - examples
-                - example 1
-                - example 2
-              - schemas
-                - schema 1
-                - schema 2
-      - requestBody
-        - content
-          - header
-            - examples
-              - example 1
-            - schemas
-              - schema 1
+  - action 1
+    - example 1
+    - example 2
+  - action 2
+    - example 3
 - x-tagGroups
-  - group 1
-      - name
-      - tags
+  [
+      - tags1
         - tag 1
         - tag 2
+      - tags2
+        - tag 3
+        - tag 4
+  ]
 - tags
-  - tag 1
-    - name 1
-    - desc 1
-- components
-  - schemas
-    - schema 1
-    - schema 2
+  - tag1
+  - tag2
 
 
-OpenApi and info are defined in a json file as mentioned before. Examples are concrete test examples (you can have 2 examples for create 1 happy path, 1 fail path). They are completely automatically generated from the request/response objects.
+OpenApi and info are defined in a json file as mentioned before. Examples are concrete test examples (you can have multiple examples for both happy and fail paths). They are completely automatically generated from the request/response objects.
 And you can customize the following in the descriptors:
 
-- resource group
-- resource
+- x-tagGroup
+- tag
 - action
+- example
 
-#### Resource group
+#### X-tagGroup
 
-Resource group contains related resources and is defined with:
+x-tagGroup contains related tags and is defined with:
 - **name** (required)
 - desc (optional, inline string or relative filepath)
 
 Example:
 ``` ruby
 document :bids_group do
-  group 'Bids' do
+  x_tag 'Bids' do
     desc 'Here are all bid related resources'
   end
 end
@@ -209,8 +190,8 @@ end
 
 You can omit defining the resource group, if you don't have any description for it. Related resources will be linked in a group by the group option at the resource definition.
 
-#### Resource
-Resource contains actions and is defined with:
+#### Tag
+Tag contains actions and is defined with:
 - **name** (required)
 - **endpoint** (required)
 - **group** (required; to associate it with the related group)
@@ -220,26 +201,26 @@ Resource contains actions and is defined with:
 Example:
 ``` ruby
 document :bids do
-  resource 'Bids' do
+  tag 'Bids' do
     endpoint '/bids'
-    group 'Bids'
+    x_tag 'Bids'
     desc 'bids/bids.md'
     schema 'bids'
   end
 end
 ```
 
-Usually you'll want to define resource and resource group together, so you don't have to include 2 modules with common data per spec file:
+Usually you'll want to define tag and x-tagGroup together, so you don't have to include 2 modules with common data per spec file:
 
 ``` ruby
 document :bids_common do
-  group 'Bids' do
+  x_tag 'Bids' do
     desc 'Here are all bid related resources'
   end
 
-  resource 'Bids' do
+  tag 'Bids' do
     endpoint '/bids'
-    group 'Bids'
+    x_tag 'Bids'
     desc 'bids/bids.md'
     schema 'bids'
   end
@@ -247,8 +228,9 @@ end
 ```
 
 #### Action
-Action is defined with:
+Action contains examples and is defined with:
 - **name** (required)
+- **tag** (required, parent tag)
 - path* (optional)
 - verb* (optional)
 - params* (optional)
@@ -265,6 +247,7 @@ document :action do
   action 'Get bid' do
     path '/bids/{id}'
     verb 'GET'
+    tag 'Bids'
     params show_params
     desc 'Some description for get bid action'
   end
