@@ -9,8 +9,7 @@ describe Dox::DSL::Documentation do
         resource_endpoint: '/pokemons',
         resource_group_desc: 'Pokemons group desc',
         resource_group_name: 'Pokemons',
-        resource_name: 'Pokemons',
-        resource_schema: 'pokemons'
+        resource_name: 'Pokemons'
       }
     end
 
@@ -29,8 +28,10 @@ describe Dox::DSL::Documentation do
           resource_group_desc: 'Pokemons group desc',
           resource_group_name: 'Pokemons',
           resource_name: 'Pokemons',
-          resource_schema: 'pokemons',
           action_name: 'Get Pokemons',
+          action_request_schema: nil,
+          action_response_schema_success: nil,
+          action_response_schema_fail: nil,
           action_verb: nil,
           action_desc: nil,
           action_path: nil,
@@ -52,11 +53,13 @@ describe Dox::DSL::Documentation do
           resource_group_desc: 'Pokemons group desc',
           resource_group_name: 'Pokemons',
           resource_name: 'Pokemons',
-          resource_schema: 'pokemons',
           action_name: 'Get Pokemon',
           action_verb: 'GET',
           action_desc: 'Returns a Pokemon',
           action_path: '/pokemons/{id}',
+          action_request_schema: nil,
+          action_response_schema_success: nil,
+          action_response_schema_fail: nil,
           action_params: { id: { type: :number } }
         }
       end

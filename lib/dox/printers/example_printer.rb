@@ -31,7 +31,8 @@ module Dox
         unless example.request_body.empty?
           add_example_and_schema(example.request_body,
                                  header_hash,
-                                 Dox.config.schema_request_folder_path)
+                                 Dox.config.schema_request_folder_path,
+                                 example.request_schema)
         end
       end
 
@@ -56,17 +57,24 @@ module Dox
         content_hash[resp_header] = header_hash
 
         unless example.response_body.empty?
-          add_example_and_schema(example.response_body, header_hash, Dox.config.schema_response_folder_path)
+          add_example_and_schema(example.response_body,
+                                 header_hash,
+                                 Dox.config.schema_response_folder_path,
+                                 schema_type)
         end
       end
 
-      def add_example_and_schema(body, header_hash, path)
+      def schema_type
+        example.response_status.to_s.start_with?('2') ? example.response_schema_success : example.response_schema_fail
+      end
+
+      def add_example_and_schema(body, header_hash, path, schema)
         example_hash = existing_hash(header_hash, 'examples')
         header_hash['examples'] = example_hash
         example_hash[example.desc] = { 'summary' => example.desc, 'value' => JSON.parse(body)['data'] }
-        return if example.schema.nil?
+        return if schema.nil?
 
-        header_hash['schema'] = { '$ref' => File.join(path, "#{example.schema}.json") }
+        header_hash['schema'] = { '$ref' => File.join(path, "#{schema}.json") }
       end
 
       def add_request_headers(headers)

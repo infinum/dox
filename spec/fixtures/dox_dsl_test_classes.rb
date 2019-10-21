@@ -11,7 +11,6 @@ module Pokemons
     resource 'Pokemons' do
       endpoint '/pokemons'
       group 'Pokemons'
-      schema 'pokemons'
     end
   end
 

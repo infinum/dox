@@ -8,7 +8,6 @@ module Dox
       attr_writer :endpoint
 
       attr_writer :desc
-      attr_writer :schema
 
       def initialize(name, &block)
         self.name = name
@@ -22,7 +21,6 @@ module Dox
 
       def config
         {
-          resource_schema: @schema.presence,
           resource_name: @name.presence,
           resource_desc: @desc.presence,
           resource_group_name: @group.presence,
