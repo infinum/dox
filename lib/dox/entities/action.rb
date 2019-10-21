@@ -35,7 +35,7 @@ module Dox
           request.path_parameters.symbolize_keys.except(:action, :controller, :format, :subdomain)
       end
 
-      def header_params
+      def filtered_params
         request.filtered_parameters.symbolize_keys.except(:id, :action, :controller, :format, :subdomain)
       end
 
@@ -51,7 +51,7 @@ module Dox
         all_params = []
 
         acquire_params(path_params, :path, all_params)
-        acquire_params(header_params, :header, all_params)
+        acquire_params(filtered_params, :query, all_params)
         acquire_params(query_params, :query, all_params)
 
         all_params

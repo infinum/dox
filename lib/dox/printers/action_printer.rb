@@ -20,11 +20,13 @@ module Dox
 
         @next_hash = existing_hash(@path_hash, action.verb.downcase.to_sym)
 
+        @next_hash['summary'] = action.name
+
         @next_hash['tags'] = [action.resource]
       end
 
       def add_action_uri_params
-        @next_hash[:parameters] = action.uri_params
+        @next_hash['parameters'] = action.uri_params
       end
 
       def example_printer

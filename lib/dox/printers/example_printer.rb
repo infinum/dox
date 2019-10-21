@@ -5,7 +5,6 @@ module Dox
     class ExamplePrinter < BasePrinter
       def print(example)
         self.example = example
-        @json_hash['summary'] = example.desc.capitalize
         add_example_request
         add_example_response
       end
@@ -19,6 +18,7 @@ module Dox
 
         request_body = existing_hash(@json_hash, 'requestBody')
         add_request_content_and_hash(request_body)
+        add_header_params(existing_array(@json_hash, 'parameters'), example.request_headers)
       end
 
       def add_request_content_and_hash(request_body)
@@ -47,6 +47,7 @@ module Dox
       def add_statuses(status_hash)
         status_hash['description'] = Util::Http::HTTP_STATUS_CODES[example.response_status]
         add_response_content_and_hash(status_hash)
+        add_headers(status_hash, example.response_headers)
       end
 
       def add_response_content_and_hash(request_body)
@@ -88,6 +89,23 @@ module Dox
       def add_response_headers(headers)
         headers.map do |key, value|
           return value if key == 'Content-Type'
+        end
+      end
+
+      def add_header_params(body, raw_headers)
+        raw_headers.map do |key, value|
+          next if body.any? { |h| h[:name] == key }
+
+          body.push(name: key, in: :header, example: value)
+        end
+      end
+
+      def add_headers(body, raw_headers)
+        hash = {}
+        body['headers'] = hash
+
+        raw_headers.map do |key, value|
+          hash[key] = { description: value }
         end
       end
     end

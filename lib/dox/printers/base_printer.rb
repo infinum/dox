@@ -15,6 +15,12 @@ module Dox
         hash[key] = {}
       end
 
+      def existing_array(hash, key)
+        return hash[key] if hash.key?(key)
+
+        hash[key] = []
+      end
+
       private
 
       def descriptions_folder_path
