@@ -1,7 +1,7 @@
 module Dox
   module Entities
     class Action
-      attr_reader :name, :desc, :verb, :path, :uri_params, :resource
+      attr_reader :name, :desc, :verb, :path, :uri_params, :resource, :params
       attr_accessor :examples
 
       def initialize(details, request)
@@ -11,7 +11,8 @@ module Dox
         @desc = details[:action_desc]
         @verb = details[:action_verb] || request.method
         @path = details[:action_path] || template_path
-        @uri_params = details[:action_params] || template_params
+        @params = details[:action_params]
+        @uri_params = template_params
         @examples = []
 
         validate!
@@ -35,29 +36,28 @@ module Dox
           request.path_parameters.symbolize_keys.except(:action, :controller, :format, :subdomain)
       end
 
-      def filtered_params
-        request.filtered_parameters.symbolize_keys.except(:id, :action, :controller, :format, :subdomain)
-      end
-
-      def query_params
-        return [] if request.env['RAW_POST_DATA'].nil?
-
-        data = JSON.parse(request.env['RAW_POST_DATA'])['data']
-
-        data['attributes'].symbolize_keys
-      end
-
       def template_params
         all_params = []
 
-        acquire_params(path_params, :path, all_params)
-        acquire_params(filtered_params, :query, all_params)
-        acquire_params(query_params, :query, all_params)
+        acquire_path_params(path_params, :path, all_params)
+        acquire_defined_params(params, all_params)
 
         all_params
       end
 
-      def acquire_params(params, within, all_params)
+      def acquire_defined_params(defined_params, all_params)
+        return if defined_params.nil?
+
+        params.each do |key, value|
+          all_params.push(name: key,
+                          in: 'query',
+                          required: value[:required],
+                          description: value[:description],
+                          schema: { type: [:type] })
+        end
+      end
+
+      def acquire_path_params(params, within, all_params)
         params.each do |param, value|
           param_type = guess_param_type(value)
           all_params.push(name: param, in: within, schema: { type: param_type })

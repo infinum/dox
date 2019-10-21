@@ -14,6 +14,19 @@ describe Dox::Printers::ActionPrinter do
     }
   end
 
+  let(:all_params) do
+    [
+      { in: :path,
+        name: :id,
+        schema: { type: :string } },
+      { description: 'pokemon id',
+        in: 'query',
+        name: :id,
+        required: nil,
+        schema: { type: [:type] } }
+    ]
+  end
+
   let(:details) do
     {
       action_name: 'Get Pokemon',
@@ -26,9 +39,6 @@ describe Dox::Printers::ActionPrinter do
 
   let(:hash) { {} }
   let(:printer) { described_class.new(hash) }
-
-  before do
-  end
 
   describe '#print' do
     let(:action_uri_output) do
@@ -43,7 +53,7 @@ describe Dox::Printers::ActionPrinter do
     context 'with uri params' do
       it 'prints uri params' do
         printer.print(action_with_params)
-        expect(hash['/pokemons/{id}'][:get]['parameters']).to eq(uri_params)
+        expect(hash['/pokemons/{id}'][:get]['parameters']).to eq(all_params)
       end
     end
 

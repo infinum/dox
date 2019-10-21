@@ -152,14 +152,12 @@ Before running into any more details, here's roughly how the generated OpenApi d
   - action 2
     - example 3
 - x-tagGroups
-  [
       - tags1
         - tag 1
         - tag 2
       - tags2
         - tag 3
         - tag 4
-  ]
 - tags
   - tag1
   - tag2
@@ -168,21 +166,21 @@ Before running into any more details, here's roughly how the generated OpenApi d
 OpenApi and info are defined in a json file as mentioned before. Examples are concrete test examples (you can have multiple examples for both happy and fail paths). They are completely automatically generated from the request/response objects.
 And you can customize the following in the descriptors:
 
-- x-tagGroup
-- tag
+- x-tagGroup (**resourceGroup**)
+- tag (**resource**)
 - action
 - example
 
-#### X-tagGroup
+#### ResourceGroup
 
-x-tagGroup contains related tags and is defined with:
+ResourceGroup contains related tags and is defined with:
 - **name** (required)
 - desc (optional, inline string or relative filepath)
 
 Example:
 ``` ruby
 document :bids_group do
-  x_tag 'Bids' do
+  group 'Bids' do
     desc 'Here are all bid related resources'
   end
 end
@@ -201,26 +199,26 @@ Tag contains actions and is defined with:
 Example:
 ``` ruby
 document :bids do
-  tag 'Bids' do
+  resource 'Bids' do
     endpoint '/bids'
-    x_tag 'Bids'
+    group 'Bids'
     desc 'bids/bids.md'
     schema 'bids'
   end
 end
 ```
 
-Usually you'll want to define tag and x-tagGroup together, so you don't have to include 2 modules with common data per spec file:
+Usually you'll want to define resourceGroup and resource together, so you don't have to include 2 modules with common data per spec file:
 
 ``` ruby
 document :bids_common do
-  x_tag 'Bids' do
+  group 'Bids' do
     desc 'Here are all bid related resources'
   end
 
-  tag 'Bids' do
+  resource 'Bids' do
     endpoint '/bids'
-    x_tag 'Bids'
+    group 'Bids'
     desc 'bids/bids.md'
     schema 'bids'
   end
@@ -230,7 +228,7 @@ end
 #### Action
 Action contains examples and is defined with:
 - **name** (required)
-- **tag** (required, parent tag)
+- **resource** (required, parent resource)
 - path* (optional)
 - verb* (optional)
 - params* (optional)
@@ -247,7 +245,7 @@ document :action do
   action 'Get bid' do
     path '/bids/{id}'
     verb 'GET'
-    tag 'Bids'
+    resource 'Bids'
     params show_params
     desc 'Some description for get bid action'
   end
@@ -258,7 +256,7 @@ end
 Documentation is generated in 2 steps:
 
 1. generate OpenApi json file:
-```bundle exec rspec --tag apidoc -f Dox::Formatter --order defined --out spec/api_doc/v1/schemas/docs.json```
+```bundle exec rspec --tag apidoc -f Dox::Formatter --order defined --tag dox --out spec/api_doc/v1/schemas/docs.json```
 
 2. render HTML with Redoc:
 ```redoc-cli bundle -o public/api/docs/v2/docs.html spec/api_doc/v1/schemas/docs.json```

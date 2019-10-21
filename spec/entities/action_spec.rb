@@ -82,7 +82,7 @@ describe Dox::Entities::Action do
 
   describe '#uri_params' do
     context 'when explicitly defined' do
-      it { expect(action.uri_params).to eq(details[:action_params]) }
+      it { expect(action.uri_params).to eq([{ in: :path, name: :id, schema: { type: :string } }]) }
     end
 
     context 'when not explicitly defined' do
