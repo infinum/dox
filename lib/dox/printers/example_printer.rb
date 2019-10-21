@@ -15,6 +15,8 @@ module Dox
       attr_accessor :example
 
       def add_example_request
+        return if example.request_body.empty?
+
         request_body = existing_hash(@json_hash, 'requestBody')
         add_request_content_and_hash(request_body)
       end
@@ -71,7 +73,7 @@ module Dox
       def add_example_and_schema(body, header_hash, path, schema)
         example_hash = existing_hash(header_hash, 'examples')
         header_hash['examples'] = example_hash
-        example_hash[example.desc] = { 'summary' => example.desc, 'value' => JSON.parse(body)['data'] }
+        example_hash[example.desc] = { 'summary' => example.desc, 'value' => JSON.parse(body) }
         return if schema.nil?
 
         header_hash['schema'] = { '$ref' => File.join(path, "#{schema}.json") }
