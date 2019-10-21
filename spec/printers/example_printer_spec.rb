@@ -38,7 +38,7 @@ describe Dox::Printers::ExamplePrinter do
 
         it do
           expect(hash['responses'][response.status.to_s]['content']).to eq(content_type.to_s => {})
-          expect(hash['requestBody']['content']).to eq(content_type.to_s => {})
+          expect(hash['requestBody']).to eq(nil)
         end
       end
 
@@ -65,18 +65,24 @@ describe Dox::Printers::ExamplePrinter do
       let(:response_body_output) do
         JSON.parse(
           '{
-            "id": 1,
-            "name": "Pikachu"
-          }'
+          "data":
+            {
+              "id": 1,
+              "name": "Pikachu"
+              }
+           }'
         )
       end
 
       let(:request_body_output) do
         JSON.parse(
           '{
-            "name": "Pikachu",
-            "type": "Electric"
-          }'
+          "data":
+            {
+              "name": "Pikachu",
+              "type": "Electric"
+              }
+           }'
         )
       end
 
@@ -121,10 +127,13 @@ describe Dox::Printers::ExamplePrinter do
       let(:response_body_output) do
         JSON.parse(
           '{
+          "data":
+            {
               "id": 1,
               "attributes": {
                 "name": "Pikachu"
               }
+            }
            }'
         )
       end

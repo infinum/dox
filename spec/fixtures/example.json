@@ -10,10 +10,10 @@
   "paths": {
     "/pokemons": {
       "post": {
+        "summary": "Create pokemon",
         "tags": [
           "Pokemons"
         ],
-        "summary": "Creates pokemon",
         "requestBody": {
           "content": {
             "application/json": {
@@ -21,27 +21,8 @@
                 "creates pokemon": {
                   "summary": "creates pokemon",
                   "value": {
-                    "pokemon": {
-                      "name": "Pikachu",
-                      "type": "electric"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "examples": {
-                  "creates pokemon": {
-                    "summary": "creates pokemon",
-                    "value": {
+                    "data": {
                       "pokemon": {
-                        "id": 1,
                         "name": "Pikachu",
                         "type": "electric"
                       }
@@ -51,11 +32,47 @@
               }
             }
           }
+        },
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "creates pokemon": {
+                    "summary": "creates pokemon",
+                    "value": {
+                      "data": {
+                        "pokemon": {
+                          "id": 1,
+                          "name": "Pikachu",
+                          "type": "electric"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "application/json"
+              }
+            }
+          }
         }
       }
     },
     "/pokemons/{id}": {
       "get": {
+        "summary": "Get pokemon",
         "tags": [
           "Pokemons"
         ],
@@ -68,13 +85,6 @@
             }
           }
         ],
-        "summary": "Returns pokemon",
-        "requestBody": {
-          "content": {
-            "application/json": {
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -84,14 +94,21 @@
                   "returns pokemon": {
                     "summary": "returns pokemon",
                     "value": {
-                      "pokemon": {
-                        "id": 14,
-                        "name": "Pikachu",
-                        "type": "electric"
+                      "data": {
+                        "pokemon": {
+                          "id": 14,
+                          "name": "Pikachu",
+                          "type": "electric"
+                        }
                       }
                     }
                   }
                 }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "application/json"
               }
             }
           }
@@ -100,16 +117,10 @@
     },
     "/digimons": {
       "get": {
+        "summary": "Get digimons",
         "tags": [
           "Digimons"
         ],
-        "summary": "Returns digimons",
-        "requestBody": {
-          "content": {
-            "application/json": {
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -118,24 +129,31 @@
                 "examples": {
                   "returns digimons": {
                     "summary": "returns digimons",
-                    "value": [
-                      {
-                        "digimon": {
-                          "id": 11,
-                          "name": "Tanemon",
-                          "type": "Bulb"
+                    "value": {
+                      "data": [
+                        {
+                          "digimon": {
+                            "id": 11,
+                            "name": "Tanemon",
+                            "type": "Bulb"
+                          }
+                        },
+                        {
+                          "digimon": {
+                            "id": 12,
+                            "name": "Pyocomon",
+                            "type": "Bulb"
+                          }
                         }
-                      },
-                      {
-                        "digimon": {
-                          "id": 12,
-                          "name": "Pyocomon",
-                          "type": "Bulb"
-                        }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "application/json"
               }
             }
           }
