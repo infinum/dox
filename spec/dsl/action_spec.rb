@@ -2,7 +2,7 @@ describe Dox::DSL::Action do
   subject { described_class }
 
   ACTION_NAME = 'Get pokemons'.freeze
-  ACTION_URI_PARAMS = { id: 1 }.freeze
+  ACTION_PARAMS = { id: 1 }.freeze
   ACTION_VERB = 'GET'.freeze
   ACTION_PATH = '/pokemons'.freeze
   ACTION_DESC = 'Returns list of Pokemons'.freeze
@@ -12,7 +12,7 @@ describe Dox::DSL::Action do
       verb ACTION_VERB
       path ACTION_PATH
       desc ACTION_DESC
-      params ACTION_URI_PARAMS
+      params ACTION_PARAMS
     end
   end
 
@@ -22,7 +22,7 @@ describe Dox::DSL::Action do
       verb ACTION_VERB
       path ACTION_PATH
       desc ACTION_DESC
-      params ACTION_URI_PARAMS
+      params ACTION_PARAMS
     end
   end
 
@@ -66,6 +66,6 @@ describe Dox::DSL::Action do
     it { expect(action.config[:action_verb]).to eq(ACTION_VERB) }
     it { expect(action.config[:action_path]).to eq(ACTION_PATH) }
     it { expect(action.config[:action_desc]).to eq(ACTION_DESC) }
-    it { expect(action.config[:action_params]).to eq(ACTION_URI_PARAMS) }
+    it { expect(action.config[:action_params]).to eq(ACTION_PARAMS) }
   end
 end

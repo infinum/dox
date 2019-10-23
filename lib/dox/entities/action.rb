@@ -1,7 +1,7 @@
 module Dox
   module Entities
     class Action
-      attr_reader :name, :desc, :verb, :path, :uri_params, :resource, :params
+      attr_reader :name, :desc, :verb, :path, :resource, :params
       attr_accessor :examples
 
       def initialize(details, request)
@@ -11,8 +11,7 @@ module Dox
         @desc = details[:action_desc]
         @verb = details[:action_verb] || request.method
         @path = details[:action_path] || template_path
-        @params = details[:action_params]
-        @uri_params = template_params
+        @params = template_params(details[:action_params])
         @examples = []
 
         validate!
@@ -28,39 +27,37 @@ module Dox
         path_params.each do |key, value|
           path.sub!(%r{\/#{value}(\/|$)}, "/{#{key}}\\1")
         end
+
         path
       end
 
+      def template_params(defined_params)
+        acquire_path_params(path_params) + acquire_defined_params(defined_params)
+      end
+
       def path_params
-        @path_params ||=
-          request.path_parameters.symbolize_keys.except(:action, :controller, :format, :subdomain)
+        request.path_parameters.symbolize_keys.except(:action, :controller, :format, :subdomain)
       end
 
-      def template_params
-        all_params = []
+      def acquire_path_params(path_params)
+        return [] if path_params.nil?
 
-        acquire_path_params(path_params, :path, all_params)
-        acquire_defined_params(params, all_params)
-
-        all_params
-      end
-
-      def acquire_defined_params(defined_params, all_params)
-        return if defined_params.nil?
-
-        params.each do |key, value|
-          all_params.push(name: key,
-                          in: 'query',
-                          required: value[:required],
-                          description: value[:description],
-                          schema: { type: [:type] })
+        path_params.map do |param, value|
+          { name: param,
+            in: :path,
+            schema: { type: guess_param_type(value) } }
         end
       end
 
-      def acquire_path_params(params, within, all_params)
-        params.each do |param, value|
-          param_type = guess_param_type(value)
-          all_params.push(name: param, in: within, schema: { type: param_type })
+      def acquire_defined_params(defined_params)
+        return [] if defined_params.nil?
+
+        defined_params.map do |key, value|
+          { name: key,
+            in: 'query',
+            required: value[:required],
+            description: value[:description],
+            schema: { type: value[:type] } }
         end
       end
 

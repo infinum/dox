@@ -58,7 +58,7 @@ Set these mandatory options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
-| header_file_path | Pathname instance or fullpath string | Json file that will include openapi version, the basic information about the api, api title and api version. |
+| body_file_path | Pathname instance or fullpath string | Json file that will include openapi version, the basic information about the api, api title and api version. |
 | desc_folder_path | Pathname instance or fullpath string | Folder with markdown descriptions. |
 | schema_request_folder_path | Pathname instance or fullpath string | Folder with request schemas of resources. |
 | schema_response_folder_path | Pathname instance or fullpath string | Folder with response schemas of resources. |
@@ -73,7 +73,7 @@ Example:
 
 ``` ruby
 Dox.configure do |config|
-  config.header_file_path = Rails.root.join('spec/docs/v1/descriptions/header.json')
+  config.body_file_path = Rails.root.join('spec/docs/v1/descriptions/header.json')
   config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
   config.schema_request_folder_path = Rails.root.join('spec/docs/v1/schemas')
   config.schema_response_folder_path = Rails.root.join('spec/support/v1/schemas')
@@ -96,7 +96,6 @@ module Docs
         resource 'Bids' do
           endpoint '/bids'
           group 'Bids'
-          schema 'bids'
           desc 'bids.md'
         end
       end
@@ -147,9 +146,11 @@ Before running into any more details, here's roughly how the generated OpenApi d
 - info
 - paths
   - action 1
+    - tag1
     - example 1
     - example 2
   - action 2
+    - tag2
     - example 3
 - x-tagGroups
       - tags1
@@ -173,7 +174,7 @@ And you can customize the following in the descriptors:
 
 #### ResourceGroup
 
-ResourceGroup contains related tags and is defined with:
+ResourceGroup contains related resources and is defined with:
 - **name** (required)
 - desc (optional, inline string or relative filepath)
 
@@ -188,13 +189,12 @@ end
 
 You can omit defining the resource group, if you don't have any description for it. Related resources will be linked in a group by the group option at the resource definition.
 
-#### Tag
-Tag contains actions and is defined with:
+#### Resource
+Resource contains actions and is defined with:
 - **name** (required)
 - **endpoint** (required)
 - **group** (required; to associate it with the related group)
 - desc (optional; inline string or relative filepath)
-- schema (optional; inline string or relative filepath)
 
 Example:
 ``` ruby
@@ -203,7 +203,6 @@ document :bids do
     endpoint '/bids'
     group 'Bids'
     desc 'bids/bids.md'
-    schema 'bids'
   end
 end
 ```
@@ -220,7 +219,6 @@ document :bids_common do
     endpoint '/bids'
     group 'Bids'
     desc 'bids/bids.md'
-    schema 'bids'
   end
 end
 ```
@@ -233,6 +231,9 @@ Action contains examples and is defined with:
 - verb* (optional)
 - params* (optional)
 - desc (optional; inline string or relative filepath)
+- request_schema (optional; inline string or relative filepath)
+- response_schema_success (optional; inline string or relative filepath)
+- response_schema_fail (optional; inline string or relative filepath)
 
 \* these optional attributes are guessed (if not defined) from the request object of the test example and you can override them.
 
@@ -248,6 +249,9 @@ document :action do
     resource 'Bids'
     params show_params
     desc 'Some description for get bid action'
+    request_schema 'namespace/bids'
+    response_schema_success 'namespace/bids_s'
+    response_schema_fail 'namespace/bids_f'
   end
 end
 ```

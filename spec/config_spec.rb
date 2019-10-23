@@ -3,16 +3,16 @@ describe Dox::Config do
 
   let(:config) { subject.new }
 
-  describe '#header_file_path=' do
+  describe '#body_file_path=' do
     it 'raises an error when the file does not exist' do
       expect do
-        config.header_file_path = 'Randomfile.md'
+        config.body_file_path = 'Randomfile.md'
       end.to raise_error(Dox::Errors::FileNotFoundError, 'Randomfile.md')
     end
 
     it 'sets the attribute when the file exists' do
-      config.header_file_path = 'Rakefile'
-      expect(config.header_file_path).to eq('Rakefile')
+      config.body_file_path = 'Rakefile'
+      expect(config.body_file_path).to eq('Rakefile')
     end
   end
 

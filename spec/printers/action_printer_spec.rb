@@ -8,7 +8,7 @@ describe Dox::Printers::ActionPrinter do
                      filtered_parameters: {},
                      env: {})
   end
-  let(:uri_params) do
+  let(:params) do
     {
       id: { type: :number, value: 2, description: 'pokemon id', default: 1 }
     }
@@ -23,7 +23,7 @@ describe Dox::Printers::ActionPrinter do
         in: 'query',
         name: :id,
         required: nil,
-        schema: { type: [:type] } }
+        schema: { type: :number } }
     ]
   end
 
@@ -31,7 +31,7 @@ describe Dox::Printers::ActionPrinter do
     {
       action_name: 'Get Pokemon',
       action_desc: 'Returns a Pokemon',
-      action_params: uri_params
+      action_params: params
     }
   end
   let(:action_without_params) { Dox::Entities::Action.new(details.except(:action_params), request) }
@@ -41,17 +41,17 @@ describe Dox::Printers::ActionPrinter do
   let(:printer) { described_class.new(hash) }
 
   describe '#print' do
-    let(:action_uri_output) do
+    let(:action_output) do
       [{ in: :path, name: :id, schema: { type: :string } }]
     end
 
     it 'prints action header' do
       printer.print(action_without_params)
-      expect(hash['/pokemons/{id}'][:get]['parameters']).to eq(action_uri_output)
+      expect(hash['/pokemons/{id}'][:get]['parameters']).to eq(action_output)
     end
 
-    context 'with uri params' do
-      it 'prints uri params' do
+    context 'with params' do
+      it 'prints params' do
         printer.print(action_with_params)
         expect(hash['/pokemons/{id}'][:get]['parameters']).to eq(all_params)
       end
@@ -64,7 +64,8 @@ describe Dox::Printers::ActionPrinter do
 
       before do
         action_without_params.examples << example
-        expect_any_instance_of(Dox::Printers::ExamplePrinter).to receive(:print).once
+        expect_any_instance_of(Dox::Printers::ExampleRequestPrinter).to receive(:print).once
+        expect_any_instance_of(Dox::Printers::ExampleResponsePrinter).to receive(:print).once
       end
 
       it 'triggers example printer once' do

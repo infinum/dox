@@ -1,12 +1,12 @@
 module Dox
   class Config
-    attr_reader :header_file_path, :desc_folder_path, :schema_request_folder_path, :schema_response_folder_path
+    attr_reader :body_file_path, :desc_folder_path, :schema_request_folder_path, :schema_response_folder_path
     attr_accessor :headers_whitelist
 
-    def header_file_path=(file_path)
+    def body_file_path=(file_path)
       raise(Errors::FileNotFoundError, file_path) unless File.exist?(file_path)
 
-      @header_file_path = file_path
+      @body_file_path = file_path
     end
 
     def desc_folder_path=(folder_path)

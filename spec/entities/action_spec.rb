@@ -80,13 +80,13 @@ describe Dox::Entities::Action do
     end
   end
 
-  describe '#uri_params' do
+  describe '#params' do
     context 'when explicitly defined' do
-      it { expect(action.uri_params).to eq([{ in: :path, name: :id, schema: { type: :string } }]) }
+      it { expect(action.params).to eq([{ in: :path, name: :id, schema: { type: :string } }]) }
     end
 
     context 'when not explicitly defined' do
-      let(:uri_params) do
+      let(:params) do
         [
           { name: :id, schema: { type: :string }, in: :path },
           { name: :type, schema: { type: :string }, in: :path }
@@ -99,7 +99,7 @@ describe Dox::Entities::Action do
         allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'electric')
       end
 
-      it { expect(action.uri_params).to eq(uri_params) }
+      it { expect(action.params).to eq(params) }
     end
   end
 

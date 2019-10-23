@@ -3,7 +3,7 @@ module Dox
     class ResourceGroupPrinter < BasePrinter
       def print(resource_group)
         self.resource_group = resource_group
-        add_resource_group
+        add_resource_group_to_spec
 
         resource_group.resources.each do |_, resource|
           resource_printer.print(resource)
@@ -14,16 +14,16 @@ module Dox
 
       attr_accessor :resource_group
 
-      def add_resource_group
-        group_array = @json_hash['x-tagGroups']
+      def add_resource_group_to_spec
+        spec['x-tagGroups'].push(name: resource_group.name, 'tags' => []) unless find_group(spec['x-tagGroups'])
+      end
 
-        group_hash = group_array.find { |group| group[:name] == resource_group.name }
-
-        group_array.push(name: resource_group.name, 'tags' => []) if group_hash.nil?
+      def find_group(group_array)
+        group_array.find { |group| group[:name] == resource_group.name }
       end
 
       def resource_printer
-        @resource_printer ||= ResourcePrinter.new(@json_hash)
+        @resource_printer ||= ResourcePrinter.new(spec)
       end
     end
   end

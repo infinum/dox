@@ -20,25 +20,23 @@ module Dox
       end
 
       def add_to_tags
-        tags = @json_hash['tags']
-
-        tags.push(acquire_tag) unless tags.any? { |tag| tag[:name] == resource.name }
+        spec['tags'] = spec['tags'].push(name: resource.name, description: desc).uniq
       end
 
-      def acquire_tag
+      def desc
         desc = resource.desc
         desc = '' if desc.nil?
         desc = File.read(File.join(Dox.config.desc_folder_path, desc)) if desc.end_with?('.md')
 
-        { name: resource.name, description: desc }
+        desc
       end
 
       def add_to_groups
-        @json_hash['x-tagGroups'].find { |group| group[:name] == resource.group }['tags'].push(resource.name)
+        spec['x-tagGroups'].find { |group| group[:name] == resource.group }['tags'].push(resource.name)
       end
 
       def action_printer
-        @action_printer ||= ActionPrinter.new(@json_hash['paths'])
+        @action_printer ||= ActionPrinter.new(spec['paths'])
       end
     end
   end

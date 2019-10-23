@@ -1,4 +1,4 @@
-describe Dox::Printers::ExamplePrinter do
+describe Dox::Printers::ExampleResponsePrinter do
   subject { described_class }
 
   let(:content_type) { 'application/json' }
@@ -24,21 +24,18 @@ describe Dox::Printers::ExamplePrinter do
 
   before do
     allow(output).to receive(:puts)
-    allow(request).to receive(:parameters).and_return({})
   end
 
   describe '#print' do
-    context 'without request parameters and response body' do
+    context 'without response body' do
       context 'without whitelisted headers' do
         before do
-          allow(example).to receive(:request_body).and_return('')
           allow(example).to receive(:response_body).and_return('')
           printer.print(example)
         end
 
         it do
           expect(hash['responses'][response.status.to_s]['content']).to eq(content_type.to_s => {})
-          expect(hash['requestBody']).to eq(nil)
         end
       end
 
@@ -47,7 +44,6 @@ describe Dox::Printers::ExamplePrinter do
 
         before do
           Dox.config.headers_whitelist = ['X-Auth-Token', 'Content-Encoding', 'Cache-Control']
-          allow(example).to receive(:request_body).and_return('')
           allow(example).to receive(:response_body).and_return('')
           printer.print(example)
         end
@@ -58,9 +54,8 @@ describe Dox::Printers::ExamplePrinter do
       end
     end
 
-    context 'with request parameters and response body' do
+    context 'with response body' do
       let(:response_body) { { 'data' => { id: 1, name: 'Pikachu' } }.to_json }
-      let(:request_body) { { 'data' => { name: 'Pikachu', type: 'Electric' } }.to_json }
 
       let(:response_body_output) do
         JSON.parse(
@@ -74,42 +69,20 @@ describe Dox::Printers::ExamplePrinter do
         )
       end
 
-      let(:request_body_output) do
-        JSON.parse(
-          '{
-          "data":
-            {
-              "name": "Pikachu",
-              "type": "Electric"
-              }
-           }'
-        )
-      end
-
-      let(:req_headers) { { 'Accept' => content_type } }
-
       before do
         Dox.config.headers_whitelist = nil
-        allow(example).to receive(:request_body).and_return(request_body)
         allow(example).to receive(:response_body).and_return(response_body)
         printer.print(example)
       end
 
       it 'contains rsponse' do
         content = hash['responses']['200']['content']
-
         expect(content[content_type.to_s]['examples'][details[:description]]['value']).to eq(response_body_output)
-      end
-
-      it 'contains request' do
-        content = hash['requestBody']['content'][content_type.to_s]
-        expect(content['examples'][details[:description]]['value']).to eq(request_body_output)
       end
     end
 
     context 'with empty string as a body' do
       before do
-        allow(example).to receive(:request_body).and_return('')
         allow(example).to receive(:response_body).and_return('')
         printer.print(example)
       end
@@ -140,7 +113,6 @@ describe Dox::Printers::ExamplePrinter do
 
       before do
         allow(example).to receive(:response_body).and_return(response_body)
-        allow(example).to receive(:request_body).and_return('')
         printer.print(example)
       end
 

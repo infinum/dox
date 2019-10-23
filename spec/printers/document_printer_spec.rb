@@ -10,7 +10,7 @@ describe Dox::Printers::DocumentPrinter do
   let(:header_filepath) { 'api_header_demo.json' }
   let(:schema_request_folder_path) { File.join(File.dirname(__FILE__), '../schemas') }
   let(:config) do
-    instance_double(Dox::Config, header_file_path: header_filepath,
+    instance_double(Dox::Config, body_file_path: header_filepath,
                                  desc_folder_path: fixtures_path.join('someuser'),
                                  schema_request_folder_path: schema_request_folder_path)
   end
