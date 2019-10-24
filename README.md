@@ -246,7 +246,6 @@ document :action do
   action 'Get bid' do
     path '/bids/{id}'
     verb 'GET'
-    resource 'Bids'
     params show_params
     desc 'Some description for get bid action'
     request_schema 'namespace/bids'

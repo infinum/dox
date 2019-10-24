@@ -2,7 +2,7 @@ module Dox
   module Printers
     class DocumentPrinter < BasePrinter
       def initialize(output)
-        super(acquire_body(api_info_path))
+        super(acquire_body(Dox.config.body_file_path))
         @output = output
       end
 
@@ -30,14 +30,14 @@ module Dox
           return body
         end
 
-        raise Dox::Errors::FileNotFoundError, 'No such .json file was found.'
+        raise Dox::Errors::FileNotFoundError, body.to_s + ' file was not found.'
       end
 
-      def acquire_path(desc, fullpath = false)
+      def acquire_path(body, fullpath = false)
         if fullpath
-          desc
+          body
         else
-          descriptions_folder_path.join(desc).to_s
+          descriptions_folder_path.join(body).to_s
         end
       end
 
@@ -55,10 +55,6 @@ module Dox
 
       def content(path)
         JSON.parse(File.read(path))
-      end
-
-      def api_info_path
-        Dox.config.body_file_path
       end
 
       def group_printer

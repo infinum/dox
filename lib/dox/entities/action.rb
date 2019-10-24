@@ -32,14 +32,14 @@ module Dox
       end
 
       def template_params(defined_params)
-        acquire_path_params(path_params) + acquire_defined_params(defined_params)
+        acquire_path_params + acquire_defined_params(defined_params)
       end
 
       def path_params
         request.path_parameters.symbolize_keys.except(:action, :controller, :format, :subdomain)
       end
 
-      def acquire_path_params(path_params)
+      def acquire_path_params
         return [] if path_params.nil?
 
         path_params.map do |param, value|
@@ -57,7 +57,8 @@ module Dox
             in: 'query',
             required: value[:required],
             description: value[:description],
-            schema: { type: value[:type] } }
+            schema: { type: value[:type] },
+            example: value[:value] }
         end
       end
 

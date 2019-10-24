@@ -20,6 +20,7 @@ describe Dox::Printers::ActionPrinter do
         name: :id,
         schema: { type: :string } },
       { description: 'pokemon id',
+        example: 2,
         in: 'query',
         name: :id,
         required: nil,

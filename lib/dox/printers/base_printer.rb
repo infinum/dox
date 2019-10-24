@@ -11,16 +11,30 @@ module Dox
         raise NotImplementedError
       end
 
-      def find_or_add_hash(hash, key)
+      def find_or_add(hash, key, default = {})
         return hash[key] if hash.key?(key)
 
-        hash[key] = {}
+        hash[key] = default
       end
 
-      def find_or_add_array(hash, key)
-        return hash[key] if hash.key?(key)
+      def formatted_body(body_str, content_type)
+        case content_type
+        when %r{application\/.*json}
+          JSON.parse(body_str)
+        when /xml/
+          pretty_xml(body_str)
+        else
+          body_str
+        end
+      end
 
-        hash[key] = []
+      def pretty_xml(xml_string)
+        doc = REXML::Document.new(xml_string)
+        formatter = REXML::Formatters::Pretty.new
+        formatter.compact = true
+        result = ''
+        formatter.write(doc, result)
+        result
       end
     end
   end
