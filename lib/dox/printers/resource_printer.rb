@@ -26,7 +26,7 @@ module Dox
       def desc
         desc = resource.desc
         desc = '' if desc.nil?
-        desc = File.read(File.join(Dox.config.desc_folder_path, desc)) if desc.end_with?('.md')
+        desc = join_and_read_path(Dox.config.desc_folder_path, desc) if desc.end_with?('.md')
 
         desc
       end

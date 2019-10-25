@@ -226,7 +226,6 @@ end
 #### Action
 Action contains examples and is defined with:
 - **name** (required)
-- **resource** (required, parent resource)
 - path* (optional)
 - verb* (optional)
 - params* (optional)

@@ -82,7 +82,8 @@
             "in": "path",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": 14
           }
         ],
         "responses": {

@@ -82,21 +82,21 @@ describe Dox::Entities::Action do
 
   describe '#params' do
     context 'when explicitly defined' do
-      it { expect(action.params).to eq([{ in: :path, name: :id, schema: { type: :string } }]) }
+      it { expect(action.params).to eq([{ example: 1, in: :path, name: :id, schema: { type: :string } }]) }
     end
 
     context 'when not explicitly defined' do
       let(:params) do
         [
-          { name: :id, schema: { type: :string }, in: :path },
-          { name: :type, schema: { type: :string }, in: :path }
+          { example: 11, name: :id, schema: { type: :string }, in: :path },
+          { example: :electric, name: :type, schema: { type: :string }, in: :path }
         ]
       end
       let(:action) { subject.new({}, request) }
 
       before do
         allow(request).to receive(:path).and_return('/pokemons/electric/11')
-        allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'electric')
+        allow(request).to receive(:path_parameters).and_return('id' => 11, type: :electric)
       end
 
       it { expect(action.params).to eq(params) }

@@ -1,3 +1,5 @@
+require 'rexml/document'
+
 module Dox
   module Printers
     class BasePrinter
@@ -15,6 +17,10 @@ module Dox
         return hash[key] if hash.key?(key)
 
         hash[key] = default
+      end
+
+      def join_and_read_path(first_path_part, second_path_part)
+        File.read(File.join(first_path_part, second_path_part))
       end
 
       def formatted_body(body_str, content_type)

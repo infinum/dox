@@ -45,7 +45,8 @@ module Dox
         path_params.map do |param, value|
           { name: param,
             in: :path,
-            schema: { type: guess_param_type(value) } }
+            schema: { type: guess_param_type(value) },
+            example: value }
         end
       end
 

@@ -1,5 +1,3 @@
-require 'rexml/document'
-
 module Dox
   module Printers
     class ExampleResponsePrinter < BasePrinter
