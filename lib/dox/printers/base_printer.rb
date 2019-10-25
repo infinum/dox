@@ -19,8 +19,8 @@ module Dox
         hash[key] = default
       end
 
-      def join_and_read_path(first_path_part, second_path_part)
-        File.read(File.join(first_path_part, second_path_part))
+      def read_file(path, root_path: Dox.config.desc_folder_path)
+        File.read(File.join(root_path, path))
       end
 
       def formatted_body(body_str, content_type)

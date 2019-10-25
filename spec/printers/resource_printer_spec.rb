@@ -23,7 +23,7 @@ describe Dox::Printers::ResourcePrinter do
 
       expect(hash['x-tagGroups'][0]['tags'][0] == resource.name)
       expect(hash['tags'][0][:name] == resource.name)
-      expect(hash['tags'][0]['description'] == printer.join_and_read_path(Dox.config.desc_folder_path, resource.desc))
+      expect(hash['tags'][0]['description'] == printer.read_file(resource.desc))
     end
 
     context 'with two actions' do

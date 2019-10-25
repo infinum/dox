@@ -46,7 +46,7 @@ module Dox
       end
 
       def acquire_desc(path)
-        join_and_read_path(Dox.config.desc_folder_path, path)
+        read_file(path)
       end
 
       def descriptions_folder_path
