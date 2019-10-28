@@ -11,10 +11,10 @@ module Dox
       attr_accessor :example
 
       def add_example_request
+        spec['parameters'] = add_new_header_params(find_or_add(spec, 'parameters', []))
         return if example.request_body.empty?
 
         add_content(find_or_add(spec, 'requestBody'))
-        spec['parameters'] = find_or_add(spec, 'parameters', []).push(*add_header_params).uniq
       end
 
       def add_content(body)
@@ -28,8 +28,6 @@ module Dox
       end
 
       def add_example(body)
-        return if example.request_body.empty?
-
         add_desc(body['examples'] = find_or_add(body, 'examples'))
       end
 
@@ -49,10 +47,19 @@ module Dox
         headers.find { |key, _| key == 'Accept' }&.last || 'any'
       end
 
-      def add_header_params
+      def acquire_header_params
         example.request_headers.map do |key, value|
           { name: key, in: :header, example: value }
         end
+      end
+
+      def add_new_header_params(old_params)
+        example.request_headers.map do |key, value|
+          old_params.push(name: key, in: :header, example: value) unless
+            old_params.map { |hash| hash[:name] }.include?(key)
+        end
+
+        old_params
       end
     end
   end

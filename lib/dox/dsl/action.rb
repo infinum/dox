@@ -23,13 +23,17 @@ module Dox
         {
           action_request_schema: @request_schema.presence,
           action_response_schema_success: @response_schema_success.presence,
-          action_response_schema_fail: @response_schema_fail.presence,
+          action_response_schema_fail: @response_schema_fail.presence || default_fail,
           action_name: @name.presence,
           action_verb: @verb.presence,
           action_path: @path.presence,
           action_desc: @desc.presence,
           action_params: @params.presence
         }
+      end
+
+      def default_fail
+        Dox.config.schema_request_fail_file_path.presence
       end
     end
   end

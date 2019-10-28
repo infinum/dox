@@ -14,6 +14,13 @@
         "tags": [
           "Pokemons"
         ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -33,13 +40,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "Accept",
-            "in": "header",
-            "example": "application/json"
-          }
-        ],
         "responses": {
           "201": {
             "description": "Created",
@@ -84,6 +84,11 @@
               "type": "string"
             },
             "example": 14
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
           }
         ],
         "responses": {
@@ -121,6 +126,13 @@
         "summary": "Get digimons",
         "tags": [
           "Digimons"
+        ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
+          }
         ],
         "responses": {
           "200": {

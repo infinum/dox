@@ -1,6 +1,7 @@
 module Dox
   class Config
-    attr_reader :body_file_path, :desc_folder_path, :schema_request_folder_path, :schema_response_folder_path
+    attr_reader :body_file_path, :desc_folder_path, :schema_request_folder_path, :schema_response_folder_path,
+                :schema_request_fail_file_path
     attr_accessor :headers_whitelist
 
     def body_file_path=(file_path)
@@ -25,6 +26,13 @@ module Dox
       raise(Errors::FolderNotFoundError, folder_path) unless Dir.exist?(folder_path)
 
       @schema_response_folder_path = folder_path
+    end
+
+    def schema_response_fail_file_path=(file_path)
+      raise(Errors::FileNotFoundError, file_path) unless
+        File.exist?(File.join(schema_response_folder_path, file_path + '.json'))
+
+      @schema_request_fail_file_path = file_path
     end
   end
 end
