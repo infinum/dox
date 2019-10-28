@@ -62,6 +62,7 @@ Set these mandatory options in the rails_helper:
 | desc_folder_path | Pathname instance or fullpath string | Folder with markdown descriptions. |
 | schema_request_folder_path | Pathname instance or fullpath string | Folder with request schemas of resources. |
 | schema_response_folder_path | Pathname instance or fullpath string | Folder with response schemas of resources. |
+| schema_response_fail_file_path | Pathname inside the schema_response_folder_path without extension | Json file that with the default schema of a failed response. |
 
 Optional settings:
 
@@ -77,6 +78,7 @@ Dox.configure do |config|
   config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
   config.schema_request_folder_path = Rails.root.join('spec/docs/v1/schemas')
   config.schema_response_folder_path = Rails.root.join('spec/support/v1/schemas')
+  config.schema_response_fail_file_path = 'books_f'
   config.headers_whitelist = ['Accept', 'X-Auth-Token']
 end
 ```
