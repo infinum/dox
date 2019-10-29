@@ -4,7 +4,14 @@ describe Dox::Printers::ExampleResponsePrinter do
   let(:content_type) { 'application/json' }
   let(:req_headers) { { 'X-Auth-Token' => '877da7da7fbc16216e', 'Accept' => content_type } }
   let(:res_headers) { { 'Content-Type' => content_type, 'Content-Encoding' => 'gzip', 'cache-control' => 'public' } }
-  let(:response) { double('response', content_type: content_type, status: 200, body: nil, headers: res_headers) }
+  let(:response) do
+    double('response',
+           content_type: content_type,
+           status: 200,
+           body: nil,
+           headers: res_headers,
+           success?: true)
+  end
   let(:request) do
     double('request',
            content_type: content_type,

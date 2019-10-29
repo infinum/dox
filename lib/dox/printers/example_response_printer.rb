@@ -48,24 +48,28 @@ module Dox
       end
 
       def add_schema(body, path)
-        schema = example.response_schema_success
+        schema = find_schema
 
-        if example.response_status.to_s.start_with?('4')
-          schema = example.response_schema_fail
+        return unless schema
 
-          if schema.nil?
-            add_default_schema(body)
-            schema = nil
-          end
-        end
-
-        return if schema.nil?
-
-        body['schema'] = { '$ref' => File.join(path, "#{schema}.json") }
+        add_schema_to_hash(body, path, schema)
       end
 
-      def add_default_schema(body)
-        body['schema'] = { '$ref' => Dox.config.schema_response_fail_file_path }
+      def find_schema
+        if example.response_success?
+          example.response_schema_success
+        else
+          example.response_schema_fail || Dox.config.schema_response_fail_file_path
+        end
+      end
+
+      def add_schema_to_hash(body, path, schema)
+        body['schema'] =
+          if schema.is_a?(Pathname)
+            { '$ref' => schema }
+          else
+            { '$ref' => File.join(path, "#{schema}.json") }
+          end
       end
 
       def find_headers(headers)

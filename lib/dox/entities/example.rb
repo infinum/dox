@@ -37,6 +37,10 @@ module Dox
         @request_headers ||= filter_headers(request)
       end
 
+      def response_success?
+        response.success?
+      end
+
       # Rails 4 includes the body params in the request_fullpath
       def request_fullpath
         if request.query_parameters.present?

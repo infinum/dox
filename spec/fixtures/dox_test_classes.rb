@@ -53,4 +53,8 @@ class DoxTestResponse
     @content_type = response_data.fetch(:content_type, 'application/json')
     @headers = response_data.fetch(:headers, {})
   end
+
+  def success?
+    status.to_s.starts_with?('2')
+  end
 end
