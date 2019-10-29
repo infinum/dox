@@ -53,13 +53,13 @@ module Dox
         end
       end
 
-      def add_new_header_params(old_params)
-        example.request_headers.map do |key, value|
-          old_params.push(name: key, in: :header, example: value) unless
-            old_params.map { |hash| hash[:name] }.include?(key)
+      def add_new_header_params(header_params)
+        example.request_headers.each do |key, value|
+          header_params.push(name: key, in: :header, example: value) unless
+            header_params.detect { |hash| hash[:name] == key }
         end
 
-        old_params
+        header_params
       end
     end
   end

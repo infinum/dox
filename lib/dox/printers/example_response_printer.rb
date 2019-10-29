@@ -32,11 +32,7 @@ module Dox
         resp_header = find_headers(example.response_headers)
 
         add_example(body[resp_header] = find_or_add(body, resp_header))
-        add_schema(body[resp_header], Dox.config.schema_response_folder_path, schema_type)
-      end
-
-      def schema_type
-        example.response_status.to_s.start_with?('2') ? example.response_schema_success : example.response_schema_fail
+        add_schema(body[resp_header], Dox.config.schema_response_folder_path)
       end
 
       def add_example(body)
@@ -51,10 +47,25 @@ module Dox
                                                          find_headers(example.response_headers)) }
       end
 
-      def add_schema(body, path, schema)
+      def add_schema(body, path)
+        schema = example.response_schema_success
+
+        if example.response_status.to_s.start_with?('4')
+          schema = example.response_schema_fail
+
+          if schema.nil?
+            add_default_schema(body)
+            schema = nil
+          end
+        end
+
         return if schema.nil?
 
         body['schema'] = { '$ref' => File.join(path, "#{schema}.json") }
+      end
+
+      def add_default_schema(body)
+        body['schema'] = { '$ref' => Dox.config.schema_response_fail_file_path }
       end
 
       def find_headers(headers)
