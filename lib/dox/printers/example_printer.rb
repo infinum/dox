@@ -54,7 +54,7 @@ module Dox
 
     + Body
 
-#{indent_lines(12, formatted_body(example.request_body, example.request_content_type))}
+#{indent_lines(12, example.request_body)}
         HEREDOC
       end
 
@@ -79,40 +79,8 @@ module Dox
 
     + Body
 
-#{indent_lines(12, formatted_body(example.response_body, example.response_content_type))}
+#{indent_lines(12, example.response_body)}
         HEREDOC
-      end
-
-      def formatted_body(body_str, content_type)
-        case content_type
-        when %r{application\/.*json}
-          pretty_json(safe_json_parse(body_str))
-        when /xml/
-          pretty_xml(body_str)
-        else
-          body_str
-        end
-      end
-
-      def safe_json_parse(json_string)
-        json_string.length >= 2 ? JSON.parse(json_string) : nil
-      end
-
-      def pretty_json(json_string)
-        if json_string.present?
-          JSON.pretty_generate(json_string)
-        else
-          ''
-        end
-      end
-
-      def pretty_xml(xml_string)
-        doc = REXML::Document.new(xml_string)
-        formatter = REXML::Formatters::Pretty.new
-        formatter.compact = true
-        result = ''
-        formatter.write(doc, result)
-        result
       end
 
       def print_headers(headers)
