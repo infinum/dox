@@ -4,7 +4,7 @@
 
 # Dox
 
-Automate your documentation writing proces! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [API Blueprint](https://apiblueprint.org) format. Choose one of the [renderers](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io)
+Automate your documentation writing process! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the test's output in the [API Blueprint](https://apiblueprint.org) format. Choose one of the [renderers](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io)
 
 Here's a [demo app](https://github.com/infinum/dox-demo) and here are some examples:
 
