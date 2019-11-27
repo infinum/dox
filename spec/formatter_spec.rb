@@ -165,7 +165,8 @@ describe Dox::Formatter do
     let(:config) do
       instance_double(Dox::Config, header_file_path: header_filepath,
                                    desc_folder_path: fixtures_path.join('someuser'),
-                                   headers_whitelist: nil)
+                                   headers_whitelist: nil,
+                                   guess_params_from_path: true)
     end
 
     before do
