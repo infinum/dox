@@ -40,7 +40,9 @@ module Dox
       def add_schema(body, path)
         return if example.request_schema.nil?
 
-        body['schema'] = { '$ref' => File.join(path, "#{example.request_schema}.json") }
+        file_path = File.join(path, "#{example.request_schema}.json")
+
+        body['schema'] = File.file?(file_path) ? { '$ref' => file_path } : JSON.parse(example.request_schema)
       end
 
       def find_headers(headers)
