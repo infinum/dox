@@ -25,8 +25,7 @@ describe Dox::Printers::ActionPrinter do
         in: 'query',
         name: :id,
         required: nil,
-        schema: nil,
-        type: :number }
+        schema: {type: :number} }
     ]
   end
 
