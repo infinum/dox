@@ -74,11 +74,11 @@ Example:
 
 ``` ruby
 Dox.configure do |config|
-  config.body_file_path = Rails.root.join('spec/docs/v1/descriptions/header.json')
+  config.body_file_path = Rails.root.join('spec/docs/v1/descriptions/body.json')
   config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
   config.schema_request_folder_path = Rails.root.join('spec/docs/v1/schemas')
   config.schema_response_folder_path = Rails.root.join('spec/support/v1/schemas')
-  config.schema_response_fail_file_path = Rails.root.join('spec/support/v1/schemas/books_f.json')
+  config.schema_response_fail_file_path = Rails.root.join('spec/support/v1/schemas/error.json')
   config.headers_whitelist = ['Accept', 'X-Auth-Token']
 end
 ```
@@ -230,7 +230,8 @@ Action contains examples and is defined with:
 - **name** (required)
 - path* (optional)
 - verb* (optional)
-- params* (optional)
+- params (optional; _depricated_)
+- query_params (optional; [more info](https://swagger.io/docs/specification/describing-parameters/#query-parameters))
 - desc (optional; inline string or relative filepath)
 - request_schema (optional; inline string or relative filepath)
 - response_schema_success (optional; inline string or relative filepath)
@@ -242,12 +243,33 @@ Example:
 
 ``` ruby
 show_params = { id: { type: :number, required: :required, value: 1, description: 'bid id' } }
+query_params = [ {
+  "in": "query",
+  "name": "filter",
+  "required": false,
+  "style": "deepObject",
+  "explode": true,
+  "schema": {
+    "type": "object",
+    "required": ["updated_at_gt"],
+    "example": {
+      "updated_at_gt": "2018-02-03 10:30:00"
+    },
+    "properties": {
+      "updated_at_gt": {
+        "type": "string",
+        "title": "date"
+      }
+    }
+  }
+]
 
 document :action do
   action 'Get bid' do
     path '/bids/{id}'
     verb 'GET'
     params show_params
+    query_params query_params
     desc 'Some description for get bid action'
     request_schema 'namespace/bids'
     response_schema_success 'namespace/bids_s'
@@ -299,6 +321,24 @@ end
 You can render the HTML yourself with ReDoc:
 
 - [Redoc](https://github.com/Redocly/redoc)
+
+## Updating from 1.x
+
+* `header.md` change to `body.json`
+    ```json
+      {
+        "openapi": "3.0.0",
+        "info": {
+          "title": "Dox Example",
+          "description": "description.md",
+          "contact": {},
+          "version": "2.0"
+        }
+      }
+    ```
+* update rspec config file
+  * `header_file_path` -> `body_file_path`
+* Add needed schema paths
 
 ## Development
 
