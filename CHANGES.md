@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 1.2.0
+
+Released on November 27, 2019
+
+New:
+- Support Multipart payload with pretty formatting (based on `content-type` header)
+
+Fix:
+- Explicit passing of an empty hash for `params` in actions now works as expected
+
+
 ## Version 1.1.0
 
 Released on February 19, 2018

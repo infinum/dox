@@ -29,7 +29,7 @@ module Dox
           action_verb: @verb.presence,
           action_path: @path.presence,
           action_desc: @desc.presence,
-          action_params: @params.presence,
+          action_params: @params,
           action_query_params: @query_params.presence || []
         }
       end

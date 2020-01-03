@@ -7,7 +7,6 @@ module Dox
 
       def_delegator :response, :status, :response_status
       def_delegator :response, :content_type, :response_content_type
-      def_delegator :response, :body, :response_body
       def_delegator :request, :content_type, :request_content_type
       def_delegator :request, :method, :request_method
 
@@ -22,7 +21,11 @@ module Dox
       end
 
       def request_body
-        @request_body ||= request.body.read
+        @request_body ||= format_content(request, request_content_type)
+      end
+
+      def response_body
+        @response_body ||= format_content(response, response_content_type)
       end
 
       def request_identifier
@@ -51,6 +54,23 @@ module Dox
       end
 
       private
+
+      def format_content(http_env, content_type)
+        formatter(content_type).new(http_env).format
+      end
+
+      def formatter(content_type)
+        case content_type
+        when %r{application\/.*json}
+          Dox::Formatters::Json
+        when /xml/
+          Dox::Formatters::Xml
+        when /multipart/
+          Dox::Formatters::Multipart
+        else
+          Dox::Formatters::Plain
+        end
+      end
 
       # Rails 5.0.2 returns "" for request.path
       def request_path

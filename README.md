@@ -340,6 +340,15 @@ You can render the HTML yourself with ReDoc:
   * `header_file_path` -> `body_file_path`
 * Add needed schema paths
 
+### Common issues
+
+You might experience some strange issues when generating the documentation. Here are a few examples of what we've encountered so far.
+
+#### Uninitialized constant errors
+
+There seems to be a problem with **rspec-rails** versions 3.7 and later not automatically requiring the project's rails_helper.rb when run with the `--format` flag.
+
+To fix this issue, generate your documentation with `--require rails_helper`:
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
