@@ -8,6 +8,7 @@ module Dox
       attr_writer :path
       attr_writer :desc
       attr_writer :params
+      attr_writer :query_params
       attr_writer :request_schema
       attr_writer :response_schema_success
       attr_writer :response_schema_fail
@@ -28,7 +29,8 @@ module Dox
           action_verb: @verb.presence,
           action_path: @path.presence,
           action_desc: @desc.presence,
-          action_params: @params.presence
+          action_params: @params.presence,
+          action_query_params: @query_params.presence || []
         }
       end
     end

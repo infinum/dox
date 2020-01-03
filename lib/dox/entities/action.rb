@@ -11,7 +11,7 @@ module Dox
         @desc = details[:action_desc]
         @verb = details[:action_verb] || request.method
         @path = details[:action_path] || template_path
-        @params = template_params(details[:action_params])
+        @params = template_params(details[:action_params], details[:action_query_params] || [])
         @examples = []
 
         validate!
@@ -31,8 +31,8 @@ module Dox
         path
       end
 
-      def template_params(defined_params)
-        acquire_path_params + acquire_defined_params(defined_params)
+      def template_params(defined_params, query_params)
+        acquire_path_params + acquire_defined_params(defined_params) + query_params
       end
 
       def path_params
@@ -58,31 +58,9 @@ module Dox
             in: 'query',
             required: value[:required],
             example: value[:value],
-            type: value[:type],
             description: value[:description],
-            schema: resolve_schema(value[:schema]) }
+            schema: value[:type] }
         end
-      end
-
-      def resolve_schema(schema)
-        return if schema.nil?
-
-        {}.tap do |property|
-          add_basic_attributes(schema, property)
-
-          next unless schema[:properties]
-
-          property[:properties] = next_property = {}
-          schema[:properties].each do |name, next_scheme|
-            next_property[name] = resolve_schema(next_scheme)
-          end
-        end
-      end
-
-      def add_basic_attributes(from, to)
-        to[:type] = from[:type]
-        to[:required] = from[:required]
-        to[:description] = from[:description]
       end
 
       def guess_param_type(param)
