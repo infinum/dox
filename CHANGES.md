@@ -5,7 +5,7 @@
 Released on February 13, 2020
 
 Add:
-- Request schema functionality
+- Request schemas can now be defined.
 - Schemas can now be defined inline
 - Query parameters can now be defined.
 
