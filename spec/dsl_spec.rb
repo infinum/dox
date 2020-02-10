@@ -33,7 +33,7 @@ describe Dox::DSL::Documentation do
           action_response_schema_success: nil,
           action_response_schema_fail: nil,
           action_verb: nil,
-          action_desc: nil,
+          action_desc: '',
           action_path: nil,
           action_params: nil,
           action_query_params: []
