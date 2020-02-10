@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Melita Kokot', 'Vedran Hrnčić']
   spec.email         = ['melita.kokot@gmail.com', 'vrabac266@gmail.com']
 
-  spec.summary       = 'Generates API documentation for rspec in api blueprint format.'
+  spec.summary       = 'Generates API documentation for rspec in OpenAPI format.'
   spec.homepage      = 'https://github.com/infinum/dox'
   spec.license       = 'MIT'
 
