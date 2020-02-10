@@ -7,13 +7,13 @@ Released on February 13, 2020
 Add:
 - Request schema functionality
 - Schemas can now be defined inline
+- Query parameters can now be defined.
 
 Change:
-- Changed the API description format from API-blueprint to OpenAPI.
-- Query parameters can now be defined.
-- Base structure is now defined in .json format
-- Output is written to a .json file
-- Html is rendered with Redoc instead of Aglio
+- BREAKING CHANGE The API description format changed from API-blueprint to OpenAPI.
+- BREAKING CHANGE Base structure is now defined in .json format
+- BREAKING CHANGE Output is written to a .json file
+- BREAKING CHANGE Html is rendered with Redoc instead of Aglio
 
 ## Version 1.2.0
 
