@@ -41,7 +41,7 @@ module Dox
       end
 
       def response_success?
-        response.success?
+        response.successful?
       end
 
       # Rails 4 includes the body params in the request_fullpath

@@ -54,7 +54,7 @@ class DoxTestResponse
     @headers = response_data.fetch(:headers, {})
   end
 
-  def success?
+  def successful?
     status.to_s.starts_with?('2')
   end
 end

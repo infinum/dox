@@ -10,7 +10,7 @@ describe Dox::Printers::ExampleResponsePrinter do
            status: 200,
            body: nil,
            headers: res_headers,
-           success?: true)
+           successful?: true)
   end
   let(:request) do
     double('request',
