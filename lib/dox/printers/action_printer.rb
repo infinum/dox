@@ -8,10 +8,7 @@ module Dox
         add_action
         add_action_params
 
-        action.examples.each do |example|
-          ExampleRequestPrinter.new(action_hash).print(example)
-          ExampleResponsePrinter.new(action_hash).print(example)
-        end
+        print_examples
       end
 
       private
@@ -27,6 +24,13 @@ module Dox
         return unless action.params.present?
 
         action_hash['parameters'] = action.params
+      end
+
+      def print_examples
+        action.examples.each do |example|
+          ExampleRequestPrinter.new(action_hash).print(example)
+          ExampleResponsePrinter.new(action_hash).print(example)
+        end
       end
     end
   end

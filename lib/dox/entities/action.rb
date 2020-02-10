@@ -54,14 +54,12 @@ module Dox
         return [] if defined_params.nil?
 
         defined_params.map do |key, value|
-          {
-            name: key,
+          { name: key,
             in: 'query',
             required: value[:required],
             example: value[:value],
-            description: value[:description],
-            schema: { type: value[:type] }
-          }
+            description: value[:description].presence || '',
+            schema: { type: value[:type] } }
         end
       end
 
