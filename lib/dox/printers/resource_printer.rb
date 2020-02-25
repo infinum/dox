@@ -20,15 +20,7 @@ module Dox
       end
 
       def add_to_tags
-        spec['tags'] = spec['tags'].push(name: resource.name, description: desc).uniq
-      end
-
-      def desc
-        desc = resource.desc
-        desc = '' if desc.nil?
-        desc = read_file(desc) if desc.end_with?('.md')
-
-        desc
+        spec['tags'] = spec['tags'].push(name: resource.name, description: format_desc(resource.desc)).uniq
       end
 
       def add_to_groups

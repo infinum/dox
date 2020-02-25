@@ -42,6 +42,14 @@ module Dox
         formatter.write(doc, result)
         result
       end
+
+      def format_desc(description)
+        desc = description
+        desc = '' if desc.nil?
+        desc = read_file(desc) if desc.end_with?('.md')
+
+        desc
+      end
     end
   end
 end

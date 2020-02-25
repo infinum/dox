@@ -18,7 +18,7 @@ module Dox
       def add_action
         action_hash['summary'] = action.name
         action_hash['tags'] = [action.resource]
-        action_hash['description'] = action.desc
+        action_hash['description'] = format_desc(action.desc)
       end
 
       def add_action_params
