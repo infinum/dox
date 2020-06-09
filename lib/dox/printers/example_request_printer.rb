@@ -34,7 +34,7 @@ module Dox
       def add_desc(body)
         body[example.desc] = { 'summary' => example.desc,
                                'value' => formatted_body(example.request_body,
-                                                         find_headers(example.request_headers)) }
+                                                         example.request_content_type) }
       end
 
       def add_schema(body, path)
