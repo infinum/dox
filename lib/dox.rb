@@ -49,4 +49,11 @@ module Dox
   def self.full_headers_whitelist
     (config.headers_whitelist.to_a + DEFAULT_HEADERS_WHITELIST).uniq
   end
+
+  RSpec.configure do |config|
+    config.after(:each, :dox) do |example|
+      example.metadata[:request] = request
+      example.metadata[:response] = response
+    end
+  end
 end

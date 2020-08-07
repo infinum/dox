@@ -40,17 +40,6 @@ $ gem install dox
  require 'dox'
  ```
 
-and configure rspec with this:
-
-``` ruby
-RSpec.configure do |config|
-  config.after(:each, :dox) do |example|
-    example.metadata[:request] = request
-    example.metadata[:response] = response
-  end
-end
-```
-
 ### Configure it
 Set these optiional options in the rails_helper:
 
