@@ -45,14 +45,14 @@ Set these optional options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
-| descriptions_location | Pathname instance or fullpath string | Folder with markdown descriptions. |
+| descriptions_location | Pathname instance or fullpath string | Folder containing markdown descriptions of resources. |
 | schema_request_folder_path | Pathname instance or fullpath string | Folder with request schemas of resources. |
 | schema_response_folder_path | Pathname instance or fullpath string | Folder with response schemas of resources. |
-| schema_response_fail_file_path | Pathname instance or fullpath string | Json file that with the default schema of a failed response. |
+| schema_response_fail_file_path | Pathname instance or fullpath string | Json file that contains the default schema of a failed response. |
 | openapi_version | string | Openapi version (default: '3.0.0' ) |
 | api_version | string | Api Version (default: '1.0') |
 | title | string | Documentation title (default: 'API Documentation') |
-| header_description | Pathname instance or string | Description (header) of the documentation (default: ''). If pathanme ends with `.md`, the file is looked in `descriptions_location` folder |
+| header_description | Pathname instance or string | Description (header) of the documentation (default: ''). If pathname ends with `.md`, the file is looked in `descriptions_location` folder |
 | headers_whitelist | Array of headers (strings) | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
 
 Example:
@@ -308,17 +308,6 @@ end
 You can render the HTML yourself with ReDoc:
 
 - [Redoc](https://github.com/Redocly/redoc)
-
-## Configuration changes in 1.x
-
-* Depricated
-  * Dox.config.header_file_path
-* Renamed
-  * Dox.config.desc_folder_path -> Dox.config.descriptions_location
-* Added
-  * Dox.config.title = 'Dox Example'
-  * Dox.config.header_description = 'description.md'
-  * Dox.config.version = '2.0'
 
 ### Common issues
 
