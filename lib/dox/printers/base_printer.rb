@@ -19,7 +19,9 @@ module Dox
         hash[key] = default
       end
 
-      def read_file(path, root_path: Dox.config.desc_folder_path)
+      def read_file(path, root_path: Dox.config.descriptions_location)
+        return '' unless root_path
+
         File.read(File.join(root_path, path))
       end
 

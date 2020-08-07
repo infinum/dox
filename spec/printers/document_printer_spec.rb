@@ -7,12 +7,16 @@ describe Dox::Printers::DocumentPrinter do
   let(:passed_example) { double(:passed_example) }
   let(:output) { double(:output) }
   let(:printer) { subject.new(output) }
-  let(:header_filepath) { 'api_header_demo.json' }
   let(:schema_request_folder_path) { File.join(File.dirname(__FILE__), '../schemas') }
   let(:config) do
-    instance_double(Dox::Config, body_file_path: header_filepath,
-                                 desc_folder_path: fixtures_path.join('someuser'),
-                                 schema_request_folder_path: schema_request_folder_path)
+    instance_double(Dox::Config, descriptions_location: fixtures_path.join('someuser'),
+                                 schema_request_folder_path: schema_request_folder_path,
+                                 schema_response_folder_path: File.join(fixtures_path, '../schemas'),
+                                 openapi_version: '3.0.0',
+                                 title: 'Header demo',
+                                 description: 'Test demo',
+                                 api_version: '2.0',
+                                 headers_whitelist: nil)
   end
 
   before do

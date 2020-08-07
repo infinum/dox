@@ -52,32 +52,32 @@ end
 ```
 
 ### Configure it
-Set these mandatory options in the rails_helper:
+Set these optiional options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
-| body_file_path | Pathname instance or fullpath string | Json file that will include openapi version, the basic information about the api, api title and api version. |
-| desc_folder_path | Pathname instance or fullpath string | Folder with markdown descriptions. |
+| descriptions_location | Pathname instance or fullpath string | Folder with markdown descriptions. |
 | schema_request_folder_path | Pathname instance or fullpath string | Folder with request schemas of resources. |
 | schema_response_folder_path | Pathname instance or fullpath string | Folder with response schemas of resources. |
 | schema_response_fail_file_path | Pathname instance or fullpath string | Json file that with the default schema of a failed response. |
-
-Optional settings:
-
-| Option | Value| Description |
-| -- | -- | -- |
+| openapi_version | string | Openapi version (default: '3.0.0' ) |
+| api_version | string | Api Version (default: '1.0') |
+| title | string | Documentation title (default: 'API Documentation') |
+| description | Pathname instance or fullpath string or string | Description of the documentation (default: '') |
 | headers_whitelist | Array of headers (strings) | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
 
 Example:
 
 ``` ruby
 Dox.configure do |config|
-  config.body_file_path = Rails.root.join('spec/docs/v1/descriptions/body.json')
   config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
   config.schema_request_folder_path = Rails.root.join('spec/docs/v1/schemas')
   config.schema_response_folder_path = Rails.root.join('spec/support/v1/schemas')
   config.schema_response_fail_file_path = Rails.root.join('spec/support/v1/schemas/error.json')
   config.headers_whitelist = ['Accept', 'X-Auth-Token']
+  config.title = 'API'
+  config.api_version = '2.0'
+  config.description = 'api_description.md'
 end
 ```
 
@@ -322,21 +322,14 @@ You can render the HTML yourself with ReDoc:
 
 ## Updating from 1.x
 
-* `header.md` change to `body.json`
-    ```json
-      {
-        "openapi": "3.0.0",
-        "info": {
-          "title": "Dox Example",
-          "description": "description.md",
-          "contact": {},
-          "version": "2.0"
-        }
-      }
-    ```
-* update rspec config file
-  * `header_file_path` -> `body_file_path`
-* Add needed schema paths
+* remove depricated configs
+  * Dox.config.header_file_path
+* Rename new configs
+  * Dox.config.desc_folder_path -> Dox.config.descriptions_location
+* add optinal configs
+  * Dox.config.title = 'Dox Example'
+  * Dox.config.description = 'description.md'
+  * Dox.config.version = '2.0'
 
 ### Common issues
 

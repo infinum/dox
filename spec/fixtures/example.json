@@ -3,8 +3,6 @@
   "info": {
     "title": "Header demo",
     "description": "Test demo",
-    "contact": {
-    },
     "version": "2.0"
   },
   "paths": {
@@ -175,10 +173,6 @@
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
     }
   },
   "tags": [

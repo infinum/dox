@@ -2,7 +2,7 @@ module Dox
   module Printers
     class DocumentPrinter < BasePrinter
       def initialize(output)
-        super(acquire_body(Dox.config.body_file_path))
+        super(body)
         @output = output
       end
 
@@ -20,41 +20,23 @@ module Dox
 
       private
 
-      def acquire_body(body, fullpath = false)
-        return if body.blank?
-
-        if body.to_s =~ /.*\.json$/
-          body = content(acquire_path(body, fullpath))
-          adjust_description(body['info'])
-
-          return body
-        end
-
-        raise Dox::Errors::FileNotFoundError, body.to_s + ' file was not found.'
+      def body
+        {
+          openapi: Dox.config.openapi_version || '3.0.0',
+          info: {
+            title: Dox.config.title || 'API Documentation',
+            description: adjust_description(Dox.config.description || ''),
+            version: Dox.config.api_version || '1.0'
+          }
+        }
       end
 
-      def acquire_path(body, fullpath = false)
-        if fullpath
-          body
-        else
-          descriptions_folder_path.join(body).to_s
-        end
-      end
-
-      def adjust_description(info)
-        info['description'] = acquire_desc(info['description']) if info['description'].end_with?('.md')
+      def adjust_description(description)
+        description.end_with?('.md') ? acquire_desc(description) : description
       end
 
       def acquire_desc(path)
         read_file(path)
-      end
-
-      def descriptions_folder_path
-        Dox.config.desc_folder_path
-      end
-
-      def content(path)
-        JSON.parse(File.read(path))
       end
 
       def group_printer

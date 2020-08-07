@@ -1,19 +1,19 @@
 module Dox
   class Config
-    attr_reader :body_file_path, :desc_folder_path, :schema_request_folder_path, :schema_response_folder_path,
-                :schema_response_fail_file_path
+    attr_reader :schema_request_folder_path
+    attr_reader :schema_response_folder_path
+    attr_reader :schema_response_fail_file_path
     attr_accessor :headers_whitelist
+    attr_accessor :openapi_version
+    attr_accessor :api_version
+    attr_accessor :title
+    attr_accessor :description
+    attr_reader :descriptions_location
 
-    def body_file_path=(file_path)
-      raise(Errors::FileNotFoundError, file_path) unless File.exist?(file_path)
-
-      @body_file_path = file_path
-    end
-
-    def desc_folder_path=(folder_path)
+    def descriptions_location=(folder_path)
       raise(Errors::FolderNotFoundError, folder_path) unless Dir.exist?(folder_path)
 
-      @desc_folder_path = folder_path
+      @descriptions_location = folder_path
     end
 
     def schema_request_folder_path=(folder_path)
@@ -32,6 +32,18 @@ module Dox
       raise(Errors::FileNotFoundError, file_path) unless File.exist?(file_path)
 
       @schema_response_fail_file_path = file_path
+    end
+
+    def desc_folder_path=(folder_path)
+      warn(
+        'DEPRICATION WARNING: desc_folder_path is no loger used. Please use descriptions_location'
+      )
+
+      self.descriptions_location = folder_path
+    end
+
+    def header_file_path=(_file_path)
+      warn('WARNING: header_file_path is not used anymore. Please take a look at migration readme')
     end
   end
 end

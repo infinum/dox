@@ -48,6 +48,8 @@ module Dox
       end
 
       def add_schema(body, path)
+        return unless path
+
         schema = find_schema
 
         return unless schema

@@ -167,12 +167,14 @@ describe Dox::Formatter do
   end
 
   context 'with all passed examples' do
-    let(:header_filepath) { 'api_header_demo.json' }
     let(:config) do
-      instance_double(Dox::Config, body_file_path: header_filepath,
-                                   desc_folder_path: fixtures_path.join('someuser'),
+      instance_double(Dox::Config, descriptions_location: fixtures_path.join('someuser'),
                                    schema_request_folder_path: File.join(fixtures_path, '../schemas'),
                                    schema_response_folder_path: File.join(fixtures_path, '../schemas'),
+                                   openapi_version: '3.0.0',
+                                   title: 'Header demo',
+                                   description: 'Test demo',
+                                   api_version: '2.0',
                                    headers_whitelist: nil)
     end
 

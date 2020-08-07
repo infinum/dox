@@ -39,6 +39,7 @@ module Dox
 
       def add_schema(body, path)
         return if example.request_schema.nil?
+        return unless path
 
         file_path = File.join(path, "#{example.request_schema}.json")
 
