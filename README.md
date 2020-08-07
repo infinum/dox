@@ -41,7 +41,7 @@ $ gem install dox
  ```
 
 ### Configure it
-Set these optiional options in the rails_helper:
+Set these optional options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
@@ -52,21 +52,21 @@ Set these optiional options in the rails_helper:
 | openapi_version | string | Openapi version (default: '3.0.0' ) |
 | api_version | string | Api Version (default: '1.0') |
 | title | string | Documentation title (default: 'API Documentation') |
-| description | Pathname instance or fullpath string or string | Description of the documentation (default: '') |
+| header_description | Pathname instance or string | Description (header) of the documentation (default: ''). If pathanme ends with `.md`, the file is looked in `descriptions_location` folder |
 | headers_whitelist | Array of headers (strings) | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
 
 Example:
 
 ``` ruby
 Dox.configure do |config|
-  config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
+  config.descriptions_location  = Rails.root.join('spec/docs/v1/descriptions')
   config.schema_request_folder_path = Rails.root.join('spec/docs/v1/schemas')
   config.schema_response_folder_path = Rails.root.join('spec/support/v1/schemas')
   config.schema_response_fail_file_path = Rails.root.join('spec/support/v1/schemas/error.json')
   config.headers_whitelist = ['Accept', 'X-Auth-Token']
   config.title = 'API'
   config.api_version = '2.0'
-  config.description = 'api_description.md'
+  config.header_description = 'api_description.md'
 end
 ```
 
@@ -309,15 +309,15 @@ You can render the HTML yourself with ReDoc:
 
 - [Redoc](https://github.com/Redocly/redoc)
 
-## Updating from 1.x
+## Configuration changes in 1.x
 
-* remove depricated configs
+* Depricated
   * Dox.config.header_file_path
-* Rename new configs
+* Renamed
   * Dox.config.desc_folder_path -> Dox.config.descriptions_location
-* add optinal configs
+* Added
   * Dox.config.title = 'Dox Example'
-  * Dox.config.description = 'description.md'
+  * Dox.config.header_description = 'description.md'
   * Dox.config.version = '2.0'
 
 ### Common issues

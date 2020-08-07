@@ -36,14 +36,14 @@ module Dox
 
     def desc_folder_path=(folder_path)
       warn(
-        'DEPRICATION WARNING: desc_folder_path is no loger used. Please use descriptions_location'
+        'DEPRECATION WARNING: desc_folder_path will be removed in the nex release, please use descriptions_location instead' # rubocop:disable Layout/LineLength
       )
 
       self.descriptions_location = folder_path
     end
 
     def header_file_path=(_file_path)
-      warn('WARNING: header_file_path is not used anymore. Please take a look at migration readme')
+      warn('WARNING: header_file_path is no longer used. Move description to config.header_description.')
     end
   end
 end
