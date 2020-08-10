@@ -27,7 +27,8 @@ require 'dox/formatters/xml'
 require 'dox/printers/base_printer'
 require 'dox/printers/action_printer'
 require 'dox/printers/document_printer'
-require 'dox/printers/example_printer'
+require 'dox/printers/example_request_printer'
+require 'dox/printers/example_response_printer'
 require 'dox/printers/resource_group_printer'
 require 'dox/printers/resource_printer'
 require 'dox/util/http'
@@ -47,5 +48,12 @@ module Dox
   DEFAULT_HEADERS_WHITELIST = ['Accept', 'Content-Type'].freeze
   def self.full_headers_whitelist
     (config.headers_whitelist.to_a + DEFAULT_HEADERS_WHITELIST).uniq
+  end
+
+  RSpec.configure do |config|
+    config.after(:each, :dox) do |example|
+      example.metadata[:request] = request
+      example.metadata[:response] = response
+    end
   end
 end

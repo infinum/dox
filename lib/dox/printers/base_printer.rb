@@ -1,37 +1,56 @@
+require 'rexml/document'
+
 module Dox
   module Printers
     class BasePrinter
-      def initialize(output)
-        @output = output
+      attr_reader :spec
+
+      def initialize(spec)
+        @spec = spec || {}
       end
 
       def print
         raise NotImplementedError
       end
 
-      private
+      def find_or_add(hash, key, default = {})
+        return hash[key] if hash.key?(key)
 
-      def descriptions_folder_path
-        Dox.config.desc_folder_path
+        hash[key] = default
       end
 
-      def print_desc(desc, fullpath = false)
-        return if desc.blank?
+      def read_file(path, root_path: Dox.config.descriptions_location)
+        return '' unless root_path
 
-        if desc.to_s =~ /.*\.md$/
-          path = if fullpath
-                   desc
-                 else
-                   descriptions_folder_path.join(desc).to_s
-                 end
-          content(path)
+        File.read(File.join(root_path, path))
+      end
+
+      def formatted_body(body_str, content_type)
+        case content_type
+        when %r{application\/.*json}
+          JSON.parse(body_str)
+        when /xml/
+          pretty_xml(body_str)
         else
-          desc
+          body_str
         end
       end
 
-      def content(path)
-        File.read(path)
+      def pretty_xml(xml_string)
+        doc = REXML::Document.new(xml_string)
+        formatter = REXML::Formatters::Pretty.new
+        formatter.compact = true
+        result = ''
+        formatter.write(doc, result)
+        result
+      end
+
+      def format_desc(description)
+        desc = description
+        desc = '' if desc.nil?
+        desc = read_file(desc) if desc.end_with?('.md')
+
+        desc
       end
     end
   end

@@ -14,6 +14,8 @@ module Dox
         self._resource = Resource.new(name, &block)
       end
 
+      alias tag resource
+
       def action(name, &block)
         self._action = Action.new(name, &block)
       end
@@ -21,6 +23,8 @@ module Dox
       def group(name, &block)
         self._group = ResourceGroup.new(name, &block)
       end
+
+      alias x_tag group
 
       def config
         {}.merge(_resource ? _resource.config : {})

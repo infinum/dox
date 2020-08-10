@@ -1,5 +1,22 @@
 # Changelog
 
+## Version 2.0.0
+
+Released on August 8, 2020
+
+Change:
+- BREAKING CHANGE The API description format changed from API-blueprint to OpenAPI.
+- BREAKING CHANGE Base structure is now defined in .json format
+- BREAKING CHANGE Output is written to a .json file
+- BREAKING CHANGE Html is rendered with Redoc instead of Aglio
+- Renamed Dox.config.desc_folder_path -> Dox.config.descriptions_location
+- Depricated Dox.config.header_file_path
+
+New:
+- Added Dox.config.title
+- Added Dox.config.header_description
+- Added Dox.config.version
+
 ## Version 1.2.0
 
 Released on November 27, 2019

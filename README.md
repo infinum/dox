@@ -4,13 +4,9 @@
 
 # Dox
 
-Automate your documentation writing process! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the test's output in the [API Blueprint](https://apiblueprint.org) format. Choose one of the [renderers](#renderers) to convert it to HTML or host it on [Apiary.io](https://apiary.io)
+Automate your documentation writing process! Dox generates API documentation from Rspec controller/request specs in a Rails application. It formats the tests output in the [OpenApi](https://www.openapis.org/) format. Use the ReDoc renderer for generating and displaying the documentation as HTML.
 
-Here's a [demo app](https://github.com/infinum/dox-demo) and here are some examples:
-
-- [Dox demo - Apiary](http://docs.doxdemo.apiary.io/#reference/books/books)
-- [Dox demo - Aglio](https://infinum.github.io/dox-demo/aglio)
-- [Dox demo - Snowboard](https://infinum.github.io/dox-demo/snowboard)
+Here's a [demo app](https://github.com/infinum/dox-demo).
 
 
 ## Installation
@@ -44,39 +40,33 @@ $ gem install dox
  require 'dox'
  ```
 
-and configure rspec with this:
-
-``` ruby
-RSpec.configure do |config|
-  config.after(:each, :dox) do |example|
-    example.metadata[:request] = request
-    example.metadata[:response] = response
-  end
-end
-```
-
 ### Configure it
-Set these mandatory options in the rails_helper:
+Set these optional options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
-| header_file_path | Pathname instance or fullpath string | Markdown file that will be included at the top of the documentation. It should contain title and some basic info about the api. |
-| desc_folder_path | Pathname instance or fullpath string | Folder with markdown descriptions. |
-
-
-Optional settings:
-
-| Option | Value| Description |
-| -- | -- | -- |
+| descriptions_location | Pathname instance or fullpath string | Folder containing markdown descriptions of resources. |
+| schema_request_folder_path | Pathname instance or fullpath string | Folder with request schemas of resources. |
+| schema_response_folder_path | Pathname instance or fullpath string | Folder with response schemas of resources. |
+| schema_response_fail_file_path | Pathname instance or fullpath string | Json file that contains the default schema of a failed response. |
+| openapi_version | string | Openapi version (default: '3.0.0' ) |
+| api_version | string | Api Version (default: '1.0') |
+| title | string | Documentation title (default: 'API Documentation') |
+| header_description | Pathname instance or string | Description (header) of the documentation (default: ''). If pathname ends with `.md`, the file is looked in `descriptions_location` folder |
 | headers_whitelist | Array of headers (strings) | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
 
 Example:
 
 ``` ruby
 Dox.configure do |config|
-  config.header_file_path = Rails.root.join('spec/docs/v1/descriptions/header.md')
-  config.desc_folder_path = Rails.root.join('spec/docs/v1/descriptions')
+  config.descriptions_location  = Rails.root.join('spec/docs/v1/descriptions')
+  config.schema_request_folder_path = Rails.root.join('spec/docs/v1/schemas')
+  config.schema_response_folder_path = Rails.root.join('spec/support/v1/schemas')
+  config.schema_response_fail_file_path = Rails.root.join('spec/support/v1/schemas/error.json')
   config.headers_whitelist = ['Accept', 'X-Auth-Token']
+  config.title = 'API'
+  config.api_version = '2.0'
+  config.header_description = 'api_description.md'
 end
 ```
 
@@ -95,6 +85,7 @@ module Docs
         resource 'Bids' do
           endpoint '/bids'
           group 'Bids'
+          desc 'bids.md'
         end
       end
 
@@ -138,34 +129,41 @@ And [generate the documentation](#generate-documentation).
 
 ### Advanced options
 
-Before running into any more details, here's roughly how is the generated API Blueprint document structured:
+Before running into any more details, here's roughly how the generated OpenApi document is structured:
 
-- header
-- resource group
-  - resource
-    - action
-      - example 1
-      - example 2
-    - action
-    - ...
-  - resource
-    - action
-  - ...
-- resource group
-  - resource
-    - action
+- openapi
+- info
+- paths
+  - action 1
+    - tag1
+    - example 1
+    - example 2
+  - action 2
+    - tag2
+    - example 3
+- x-tagGroups
+      - tags1
+        - tag 1
+        - tag 2
+      - tags2
+        - tag 3
+        - tag 4
+- tags
+  - tag1
+  - tag2
 
 
-Header is defined in a markdown file as mentioned before. Examples are concrete test examples (you can have 2 examples for create 1 happy path, 1 fail path). They are completely automatically generated from the request/response objects.
+OpenApi and info are defined in a json file as mentioned before. Examples are concrete test examples (you can have multiple examples for both happy and fail paths). They are completely automatically generated from the request/response objects.
 And you can customize the following in the descriptors:
 
-- resource group
-- resource
+- x-tagGroup (**resourceGroup**)
+- tag (**resource**)
 - action
+- example
 
-#### Resource group
+#### ResourceGroup
 
-Resource group contains related resources and is defined with:
+ResourceGroup contains related resources and is defined with:
 - **name** (required)
 - desc (optional, inline string or relative filepath)
 
@@ -198,7 +196,7 @@ document :bids do
 end
 ```
 
-Usually you'll want to define resource and resource group together, so you don't have to include 2 modules with common data per spec file:
+Usually you'll want to define resourceGroup and resource together, so you don't have to include 2 modules with common data per spec file:
 
 ``` ruby
 document :bids_common do
@@ -215,12 +213,16 @@ end
 ```
 
 #### Action
-Action is defined with:
+Action contains examples and is defined with:
 - **name** (required)
 - path* (optional)
 - verb* (optional)
-- params* (optional)
+- params (optional; _depricated_)
+- query_params (optional; [more info](https://swagger.io/docs/specification/describing-parameters/#query-parameters))
 - desc (optional; inline string or relative filepath)
+- request_schema (optional; inline string or relative filepath)
+- response_schema_success (optional; inline string or relative filepath)
+- response_schema_fail (optional; inline string or relative filepath)
 
 \* these optional attributes are guessed (if not defined) from the request object of the test example and you can override them.
 
@@ -228,13 +230,37 @@ Example:
 
 ``` ruby
 show_params = { id: { type: :number, required: :required, value: 1, description: 'bid id' } }
+query_params = [ {
+  "in": "query",
+  "name": "filter",
+  "required": false,
+  "style": "deepObject",
+  "explode": true,
+  "schema": {
+    "type": "object",
+    "required": ["updated_at_gt"],
+    "example": {
+      "updated_at_gt": "2018-02-03 10:30:00"
+    },
+    "properties": {
+      "updated_at_gt": {
+        "type": "string",
+        "title": "date"
+      }
+    }
+  }
+]
 
 document :action do
   action 'Get bid' do
     path '/bids/{id}'
     verb 'GET'
     params show_params
+    query_params query_params
     desc 'Some description for get bid action'
+    request_schema 'namespace/bids'
+    response_schema_success 'namespace/bids_s'
+    response_schema_fail 'namespace/bids_f'
   end
 end
 ```
@@ -242,11 +268,11 @@ end
 ### Generate documentation
 Documentation is generated in 2 steps:
 
-1. generate API Blueprint markdown:
-```bundle exec rspec spec/controllers/api/v1 -f Dox::Formatter --order defined --tag dox --out docs.md```
+1. generate OpenApi json file:
+```bundle exec rspec --tag apidoc -f Dox::Formatter --order defined --tag dox --out spec/api_doc/v1/schemas/docs.json```
 
-2. render HTML with some renderer, for example, with Aglio:
-```aglio -i docs.md -o docs.html```
+2. render HTML with Redoc:
+```redoc-cli bundle -o public/api/docs/v2/docs.html spec/api_doc/v1/schemas/docs.json```
 
 
 #### Use rake tasks
@@ -256,42 +282,32 @@ It's recommendable to write a few rake tasks to make things easier. Here's an ex
 namespace :api do
   namespace :doc do
     desc 'Generate API documentation markdown'
-    task :md do
+    task :json do
       require 'rspec/core/rake_task'
 
       RSpec::Core::RakeTask.new(:api_spec) do |t|
         t.pattern = 'spec/controllers/api/v1/'
-        t.rspec_opts = "-f Dox::Formatter --order defined --tag dox --out public/api/docs/v1/apispec.md"
+        t.rspec_opts = "-f Dox::Formatter --order defined --tag dox --out public/api/docs/v1/docs.json"
       end
 
       Rake::Task['api_spec'].invoke
     end
 
-    task html: :md do
-      `aglio -i public/api/docs/v1/apispec.md -o public/api/docs/v1/index.html`
+    task html: :json do
+      `redoc-cli bundle -o public/api/docs/v2/index.html spec/api_doc/v1/schemas/docs.json`
     end
 
     task open: :html do
       `open public/api/docs/v1/index.html`
-    end
-
-    task publish: :md do
-      `apiary publish --path=public/api/docs/v1/apispec.md --api-name=doxdemo`
     end
   end
 end
 ```
 
 #### Renderers
-You can render the HTML yourself with one of the renderers:
+You can render the HTML yourself with ReDoc:
 
-- [Aglio](https://github.com/danielgtaylor/aglio)
-- [Snowboard](https://github.com/subosito/snowboard)
-
-Both support multiple themes and template customization.
-
-Or you can just take your generated markdown and host your documentation on [Apiary.io](https://apiary.io).
-
+- [Redoc](https://github.com/Redocly/redoc)
 
 ### Common issues
 
@@ -302,39 +318,6 @@ You might experience some strange issues when generating the documentation. Here
 There seems to be a problem with **rspec-rails** versions 3.7 and later not automatically requiring the project's rails_helper.rb when run with the `--format` flag.
 
 To fix this issue, generate your documentation with `--require rails_helper`:
-
-```
-bundle exec rspec -f Dox::Formatter --order defined --tag dox --out docs.md --require rails_helper
-```
-
-#### Wrap parameters issue
-Rails wraps JSON parameters on all requests by default, which results with documented requests looking like this:
-
-```
-+ Request get pokemons
-    {
-      "pokemon": {}
-    }
-```
-
-To disable wrapping parameters with a resource name, turn off this feature in `config/initializers/wrap_parameters.rb`:
-
-``` ruby
-# Enable parameter wrapping for JSON. You can disable this by setting :format to an empty array.
-ActiveSupport.on_load(:action_controller) do
-  wrap_parameters format: []
-end
-```
-
-#### Rendering warnings with Aglio
-You might get the following warnings when rendering HTML with Aglio:
-
-* `no headers specified (warning code 3)`
-* `empty request message-body (warning code 6)`
-
-This usually happens on GET requests examples when there are no headers. To solve this issue, add at least one header to the tests' requests, like `Accept: application/json`.
-
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -354,4 +337,3 @@ Dox is maintained and sponsored by [Infinum](https://infinum.co).
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-

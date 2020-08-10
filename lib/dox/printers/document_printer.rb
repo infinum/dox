@@ -1,26 +1,46 @@
 module Dox
   module Printers
     class DocumentPrinter < BasePrinter
+      def initialize(output)
+        super(body)
+        @output = output
+      end
+
       def print(passed_examples)
-        print_meta_info
+        spec['paths'] = {}
+        spec['tags'] = []
+        spec['x-tagGroups'] = []
 
         passed_examples.sort.each do |_, resource_group|
           group_printer.print(resource_group)
         end
+
+        @output.puts(JSON.pretty_generate(spec))
       end
 
       private
 
+      def body
+        {
+          openapi: Dox.config.openapi_version || '3.0.0',
+          info: {
+            title: Dox.config.title || 'API Documentation',
+            description: adjust_description(Dox.config.description || ''),
+            version: Dox.config.api_version || '1.0'
+          }
+        }
+      end
+
+      def adjust_description(description)
+        description.end_with?('.md') ? acquire_desc(description) : description
+      end
+
+      def acquire_desc(path)
+        read_file(path)
+      end
+
       def group_printer
-        @group_printer ||= ResourceGroupPrinter.new(@output)
-      end
-
-      def print_meta_info
-        @output.puts(print_desc(api_desc_path))
-      end
-
-      def api_desc_path
-        Dox.config.header_file_path
+        @group_printer ||= ResourceGroupPrinter.new(spec)
       end
     end
   end

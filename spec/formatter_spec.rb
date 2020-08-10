@@ -30,10 +30,12 @@ describe Dox::Formatter do
       response: {
         status: 200,
         body: {
-          pokemon: {
-            id: 14,
-            name: 'Pikachu',
-            type: 'electric'
+          data: {
+            pokemon: {
+              id: 14,
+              name: 'Pikachu',
+              type: 'electric'
+            }
           }
         },
         headers: { 'Content-Type' => 'application/json' }
@@ -47,7 +49,6 @@ describe Dox::Formatter do
         apidoc: true,
         dox: true,
         resource_group_name: 'Pokemons & Digimons',
-        resource_group_desc: 'Pokemons desc',
         resource_name: 'Pokemons',
         resource_endpoint: '/pokemons',
         action_name: 'Create pokemon',
@@ -58,20 +59,24 @@ describe Dox::Formatter do
         path: '/pokemons',
         fullpath: '/pokemons?name=Pikachu&type=Electric',
         body: {
-          pokemon: {
-            name: 'Pikachu',
-            type: 'electric'
+          data: {
+            pokemon: {
+              name: 'Pikachu',
+              type: 'electric'
+            }
           }
         },
-        headers: { 'Content-Type' => 'application/json' }
+        headers: { 'Accept' => 'application/json' }
       },
       response: {
         status: 201,
         body: {
-          pokemon: {
-            id: 1,
-            name: 'Pikachu',
-            type: 'electric'
+          data: {
+            pokemon: {
+              id: 1,
+              name: 'Pikachu',
+              type: 'electric'
+            }
           }
         },
         headers: { 'Content-Type' => 'application/json' }
@@ -86,7 +91,6 @@ describe Dox::Formatter do
         dox: true,
         resource_group_name: 'Pokemons & Digimons',
         resource_name: 'Digimons',
-        resource_desc: 'Digimons desc',
         resource_endpoint: '/digimons',
         action_name: 'Get digimons',
         action_desc: 'Returns all digimons',
@@ -100,22 +104,24 @@ describe Dox::Formatter do
       },
       response: {
         status: 200,
-        body: [
-          {
-            digimon: {
-              id: 11,
-              name: 'Tanemon',
-              type: 'Bulb'
+        body: {
+          data: [
+            {
+              digimon: {
+                id: 11,
+                name: 'Tanemon',
+                type: 'Bulb'
+              }
+            },
+            {
+              digimon: {
+                id: 12,
+                name: 'Pyocomon',
+                type: 'Bulb'
+              }
             }
-          },
-          {
-            digimon: {
-              id: 12,
-              name: 'Pyocomon',
-              type: 'Bulb'
-            }
-          }
-        ],
+          ]
+        },
         headers: { 'Content-Type' => 'application/json' }
       }
     }
@@ -161,10 +167,14 @@ describe Dox::Formatter do
   end
 
   context 'with all passed examples' do
-    let(:header_filepath) { 'api_header_demo.md' }
     let(:config) do
-      instance_double(Dox::Config, header_file_path: header_filepath,
-                                   desc_folder_path: fixtures_path.join('someuser'),
+      instance_double(Dox::Config, descriptions_location: fixtures_path.join('someuser'),
+                                   schema_request_folder_path: File.join(fixtures_path, '../schemas'),
+                                   schema_response_folder_path: File.join(fixtures_path, '../schemas'),
+                                   openapi_version: '3.0.0',
+                                   title: 'Header demo',
+                                   description: 'Test demo',
+                                   api_version: '2.0',
                                    headers_whitelist: nil)
     end
 

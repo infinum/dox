@@ -10,6 +10,7 @@ module Dox
 
       def const_missing(name)
         documentation = _subjects[infer_subject(name)]
+
         return super unless documentation
 
         Module.new do

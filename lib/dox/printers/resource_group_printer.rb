@@ -3,7 +3,7 @@ module Dox
     class ResourceGroupPrinter < BasePrinter
       def print(resource_group)
         self.resource_group = resource_group
-        @output.puts resource_group_title
+        add_resource_group
 
         resource_group.resources.each do |_, resource|
           resource_printer.print(resource)
@@ -14,16 +14,16 @@ module Dox
 
       attr_accessor :resource_group
 
-      def resource_group_title
-        <<-HEREDOC
+      def add_resource_group
+        spec['x-tagGroups'].push(name: resource_group.name, 'tags' => []) unless group_included?
+      end
 
-# Group #{resource_group.name}
-#{print_desc(resource_group.desc)}
-        HEREDOC
+      def group_included?
+        spec['x-tagGroups'].find { |group| group[:name] == resource_group.name }
       end
 
       def resource_printer
-        @resource_printer ||= ResourcePrinter.new(@output)
+        @resource_printer ||= ResourcePrinter.new(spec)
       end
     end
   end

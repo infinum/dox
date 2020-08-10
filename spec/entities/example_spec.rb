@@ -4,15 +4,22 @@ describe Dox::Entities::Example do
   let(:response_body) { { hello: 'world' }.to_json }
   let(:content_type) { { content_type: 'application/json' } }
   let(:example_desc) { 'Dummy' }
-  let(:query_params) { { 'color' => 'blue'} }
+  let(:example_name) { 'Dum' }
+  let(:query_params) { { 'color' => 'blue' } }
   let(:path_params) { { 'id' => 11 } }
   let(:body) { { 'data' => 'users' }.to_json }
   let(:request_fullpath) { '/pokemons?color=blue' }
 
   let(:response) { double('response', content_type: content_type, status: 200, body: response_body) }
-  let(:request) { double('request', content_type: content_type, query_parameters: query_params, path_parameters: path_params, path: '/pokemons') }
+  let(:request) do
+    double('request',
+           content_type: content_type,
+           query_parameters: query_params,
+           path_parameters: path_params,
+           path: '/pokemons')
+  end
 
-  let(:example) { subject.new({ description: example_desc }, request, response) }
+  let(:example) { subject.new({ description: example_desc, resource_name: example_name }, request, response) }
 
   describe '#request_body' do
     context 'when empty' do

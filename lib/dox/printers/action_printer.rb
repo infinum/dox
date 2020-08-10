@@ -3,44 +3,35 @@ module Dox
     class ActionPrinter < BasePrinter
       def print(action)
         self.action = action
-        @output.puts action_title
-        @output.puts action_uri_params if action.uri_params.present?
+        @action_hash = find_or_add(find_or_add(spec, action.path.to_s), action.verb.downcase.to_sym)
 
-        action.examples.each do |example|
-          example_printer.print(example)
-        end
+        add_action
+        add_action_params
+
+        print_examples
       end
 
       private
 
-      attr_accessor :action
+      attr_accessor :action, :action_hash
 
-      def action_title
-        <<-HEREDOC
-
-### #{action.name} [#{action.verb.upcase} #{action.path}]
-#{print_desc(action.desc)}
-        HEREDOC
+      def add_action
+        action_hash['summary'] = action.name
+        action_hash['tags'] = [action.resource]
+        action_hash['description'] = format_desc(action.desc)
       end
 
-      def action_uri_params
-        <<-HEREDOC
-+ Parameters
-#{formatted_params(action.uri_params)}
-        HEREDOC
+      def add_action_params
+        return unless action.params.present?
+
+        action_hash['parameters'] = action.params
       end
 
-      def example_printer
-        @example_printer ||= ExamplePrinter.new(@output)
-      end
-
-      def formatted_params(uri_params)
-        uri_params.map do |param, details|
-          desc = "    + #{CGI.escape(param.to_s)}: `#{CGI.escape(details[:value].to_s)}` (#{details[:type]}, #{details[:required]})"
-          desc += " - #{details[:description]}" if details[:description].present?
-          desc += "\n        + Default: #{details[:default]}" if details[:default].present?
-          desc
-        end.flatten.join("\n")
+      def print_examples
+        action.examples.each do |example|
+          ExampleRequestPrinter.new(action_hash).print(example)
+          ExampleResponsePrinter.new(action_hash).print(example)
+        end
       end
     end
   end

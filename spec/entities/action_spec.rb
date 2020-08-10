@@ -2,9 +2,17 @@ describe Dox::Entities::Action do
   subject { described_class }
 
   let(:action_name) { 'Get pokemons' }
-  let(:request) { double(:request, method: 'HEAD', path_parameters: { 'id' => 1 }, path: '/pokemons/1') }
+  let(:request) do
+    double(:request, method: 'HEAD',
+                     path_parameters: { 'id' => 1 },
+                     path: '/pokemons/1',
+                     filtered_parameters: {},
+                     env: {})
+  end
+
   let(:details) do
     {
+      action_name: 'Get pokemons',
       action_desc: 'Returns a list of pokemons',
       action_verb: 'GET',
       action_path: '/pokemons',
@@ -12,7 +20,7 @@ describe Dox::Entities::Action do
     }
   end
 
-  let(:action) { subject.new(action_name, details, request) }
+  let(:action) { subject.new(details, request) }
 
   describe '#name' do
     it { expect(action.name).to eq(action_name) }
@@ -28,7 +36,7 @@ describe Dox::Entities::Action do
     end
 
     context 'when verb is not explicitly defined' do
-      let(:action) { subject.new(action_name, {}, request) }
+      let(:action) { subject.new({}, request) }
       it { expect(action.verb).to eq(request.method) }
     end
   end
@@ -39,7 +47,7 @@ describe Dox::Entities::Action do
     end
 
     context 'when path is not explicitly defined' do
-      let(:action) { subject.new(action_name, {}, request) }
+      let(:action) { subject.new({}, request) }
       context 'with one path param' do
         it { expect(action.path).to eq('/pokemons/{id}') }
       end
@@ -72,26 +80,26 @@ describe Dox::Entities::Action do
     end
   end
 
-  describe '#uri_params' do
+  describe '#params' do
     context 'when explicitly defined' do
-      it { expect(action.uri_params).to eq(details[:action_params]) }
+      it { expect(action.params).to eq([{ example: 1, in: :path, name: :id, schema: { type: :string } }]) }
     end
 
     context 'when not explicitly defined' do
-      let(:uri_params) do
-        {
-          id: { type: :string, required: :required, value: 11 },
-          type: { type: :string, required: :required, value: 'electric' }
-        }
+      let(:params) do
+        [
+          { example: 11, name: :id, schema: { type: :string }, in: :path },
+          { example: :electric, name: :type, schema: { type: :string }, in: :path }
+        ]
       end
-      let(:action) { subject.new(action_name, {}, request) }
+      let(:action) { subject.new({}, request) }
 
       before do
         allow(request).to receive(:path).and_return('/pokemons/electric/11')
-        allow(request).to receive(:path_parameters).and_return('id' => 11, 'type' => 'electric')
+        allow(request).to receive(:path_parameters).and_return('id' => 11, type: :electric)
       end
 
-      it { expect(action.uri_params).to eq(uri_params) }
+      it { expect(action.params).to eq(params) }
     end
   end
 

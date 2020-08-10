@@ -34,6 +34,14 @@ class DoxTestRequest
     @headers = request_data.fetch(:headers, {})
     @fullpath = request_data.fetch(:fullpath)
   end
+
+  def filtered_parameters
+    {}
+  end
+
+  def env
+    {}
+  end
 end
 
 class DoxTestResponse
@@ -44,5 +52,9 @@ class DoxTestResponse
     @body = response_data.fetch(:body).to_json
     @content_type = response_data.fetch(:content_type, 'application/json')
     @headers = response_data.fetch(:headers, {})
+  end
+
+  def successful?
+    status.to_s.starts_with?('2')
   end
 end

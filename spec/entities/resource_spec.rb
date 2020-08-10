@@ -1,18 +1,18 @@
 describe Dox::Entities::Resource do
   subject { described_class }
 
-  let(:resource_name) { 'Pokemons' }
   let(:details) do
     {
+      resource_name: 'Pokemons',
       resource_desc: 'Pokemons',
-      resource_endpoint: '/pokemons',
+      resource_endpoint: '/pokemons'
     }
   end
 
-  let(:resource) { subject.new(resource_name, details) }
+  let(:resource) { subject.new(details) }
 
   describe '#name' do
-    it { expect(resource.name).to eq(resource_name) }
+    it { expect(resource.name).to eq(details[:resource_name]) }
   end
 
   describe '#desc' do

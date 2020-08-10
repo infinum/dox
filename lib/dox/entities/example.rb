@@ -3,6 +3,8 @@ module Dox
     class Example
       extend Forwardable
 
+      attr_reader :desc, :name, :request_schema, :response_schema_success, :response_schema_fail
+
       def_delegator :response, :status, :response_status
       def_delegator :response, :content_type, :response_content_type
       def_delegator :request, :content_type, :request_content_type
@@ -10,6 +12,10 @@ module Dox
 
       def initialize(details, request, response)
         @desc = details[:description]
+        @name = details[:resource_name].downcase
+        @request_schema = details[:action_request_schema]
+        @response_schema_success = details[:action_response_schema_success]
+        @response_schema_fail = details[:action_response_schema_fail]
         @request = request
         @response = response
       end
@@ -32,6 +38,10 @@ module Dox
 
       def request_headers
         @request_headers ||= filter_headers(request)
+      end
+
+      def response_success?
+        response.successful?
       end
 
       # Rails 4 includes the body params in the request_fullpath
@@ -67,7 +77,7 @@ module Dox
         request.path.presence || request.fullpath.split('?')[0]
       end
 
-      attr_reader :desc, :request, :response
+      attr_reader :request, :response
 
       def filter_headers(obj)
         headers_whitelist.map do |header|

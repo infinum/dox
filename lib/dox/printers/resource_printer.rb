@@ -3,7 +3,7 @@ module Dox
     class ResourcePrinter < BasePrinter
       def print(resource)
         self.resource = resource
-        @output.puts resource_title
+        add_resources
 
         resource.actions.each do |_, action|
           action_printer.print(action)
@@ -14,16 +14,21 @@ module Dox
 
       attr_accessor :resource
 
-      def resource_title
-        <<-HEREDOC
+      def add_resources
+        add_to_tags
+        add_to_groups
+      end
 
-## #{resource.name} [#{resource.endpoint}]
-#{print_desc(resource.desc)}
-        HEREDOC
+      def add_to_tags
+        spec['tags'] = spec['tags'].push(name: resource.name, description: format_desc(resource.desc)).uniq
+      end
+
+      def add_to_groups
+        spec['x-tagGroups'].find { |group| group[:name] == resource.group }['tags'].push(resource.name)
       end
 
       def action_printer
-        @action_printer ||= ActionPrinter.new(@output)
+        @action_printer ||= ActionPrinter.new(spec['paths'])
       end
     end
   end

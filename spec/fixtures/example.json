@@ -1,0 +1,197 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Header demo",
+    "description": "Test demo",
+    "version": "2.0"
+  },
+  "paths": {
+    "/pokemons": {
+      "post": {
+        "summary": "Create pokemon",
+        "tags": [
+          "Pokemons"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "creates pokemon": {
+                  "summary": "creates pokemon",
+                  "value": {
+                    "data": {
+                      "pokemon": {
+                        "name": "Pikachu",
+                        "type": "electric"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "creates pokemon": {
+                    "summary": "creates pokemon",
+                    "value": {
+                      "data": {
+                        "pokemon": {
+                          "id": 1,
+                          "name": "Pikachu",
+                          "type": "electric"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "application/json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pokemons/{id}": {
+      "get": {
+        "summary": "Get pokemon",
+        "tags": [
+          "Pokemons"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "example": 14
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "returns pokemon": {
+                    "summary": "returns pokemon",
+                    "value": {
+                      "data": {
+                        "pokemon": {
+                          "id": 14,
+                          "name": "Pikachu",
+                          "type": "electric"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "application/json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digimons": {
+      "get": {
+        "summary": "Get digimons",
+        "tags": [
+          "Digimons"
+        ],
+        "description": "Returns all digimons",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "returns digimons": {
+                    "summary": "returns digimons",
+                    "value": {
+                      "data": [
+                        {
+                          "digimon": {
+                            "id": 11,
+                            "name": "Tanemon",
+                            "type": "Bulb"
+                          }
+                        },
+                        {
+                          "digimon": {
+                            "id": 12,
+                            "name": "Pyocomon",
+                            "type": "Bulb"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "application/json"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Pokemons",
+      "description": ""
+    },
+    {
+      "name": "Digimons",
+      "description": ""
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Pokemons & Digimons",
+      "tags": [
+        "Pokemons",
+        "Digimons"
+      ]
+    }
+  ]
+}
