@@ -173,7 +173,7 @@ describe Dox::Formatter do
                                    schema_response_folder_path: File.join(fixtures_path, '../schemas'),
                                    openapi_version: '3.0.0',
                                    title: 'Header demo',
-                                   description: 'Test demo',
+                                   header_description: 'Test demo',
                                    api_version: '2.0',
                                    headers_whitelist: nil)
     end

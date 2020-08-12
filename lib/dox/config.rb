@@ -7,7 +7,7 @@ module Dox
     attr_accessor :openapi_version
     attr_accessor :api_version
     attr_accessor :title
-    attr_accessor :description
+    attr_accessor :header_description
     attr_reader :descriptions_location
 
     def descriptions_location=(folder_path)

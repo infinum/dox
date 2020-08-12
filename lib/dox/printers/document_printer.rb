@@ -25,7 +25,7 @@ module Dox
           openapi: Dox.config.openapi_version || '3.0.0',
           info: {
             title: Dox.config.title || 'API Documentation',
-            description: adjust_description(Dox.config.description || ''),
+            description: adjust_description(Dox.config.header_description || ''),
             version: Dox.config.api_version || '1.0'
           }
         }
