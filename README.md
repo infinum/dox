@@ -279,27 +279,34 @@ Documentation is generated in 2 steps:
 It's recommendable to write a few rake tasks to make things easier. Here's an example:
 
 ```ruby
-namespace :api do
-  namespace :doc do
-    desc 'Generate API documentation markdown'
-    task :json do
-      require 'rspec/core/rake_task'
+namespace :dox do
+  desc 'Generate API documentation markdown'
 
-      RSpec::Core::RakeTask.new(:api_spec) do |t|
-        t.pattern = 'spec/controllers/api/v1/'
-        t.rspec_opts = "-f Dox::Formatter --order defined --tag dox --out public/api/docs/v1/docs.json"
-      end
+  task :json, [:version, :docs_path, :host] => :environment do |_, args|
+    require 'rspec/core/rake_task'
+    version = args[:version] || :v1
 
-      Rake::Task['api_spec'].invoke
+    RSpec::Core::RakeTask.new(:api_spec) do |t|
+      t.pattern = "spec/requests/api/#{version}"
+      t.rspec_opts =
+        "-f Dox::Formatter --tag dox --order defined --out spec/docs/#{version}/apispec.json"
     end
 
-    task html: :json do
-      `redoc-cli bundle -o public/api/docs/v2/index.html spec/api_doc/v1/schemas/docs.json`
-    end
+    Rake::Task['api_spec'].invoke
+  end
 
-    task open: :html do
-      `open public/api/docs/v1/index.html`
-    end
+  task :html, [:version, :docs_path, :host] => :json do |_, args|
+    version = args[:version] || :v1
+    docs_path = args[:docs_path] || "api/#{version}/docs"
+
+    `yarn run redoc-cli bundle -o public/#{docs_path}/index.html spec/docs/#{version}/apispec.json`
+  end
+
+  task :open, [:version, :docs_path, :host] => :html do |_, args|
+    version = args[:version] || :v1
+    docs_path = args[:docs_path] || "api/#{version}/docs"
+
+    `open public/#{docs_path}/index.html`
   end
 end
 ```
