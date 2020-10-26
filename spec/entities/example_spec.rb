@@ -2,7 +2,7 @@ describe Dox::Entities::Example do
   subject { described_class }
 
   let(:response_body) { { hello: 'world' }.to_json }
-  let(:content_type) { { content_type: 'application/json' } }
+  let(:content_type) { 'application/json' }
   let(:example_desc) { 'Dummy' }
   let(:example_name) { 'Dum' }
   let(:query_params) { { 'color' => 'blue' } }
@@ -31,7 +31,7 @@ describe Dox::Entities::Example do
     context 'when present' do
       before { allow(request).to receive(:body).and_return(StringIO.new(body)) }
 
-      it { expect(example.request_body).to eq(body) }
+      it { expect(JSON.parse(example.request_body)).to eq(JSON.parse(body)) }
     end
   end
 
@@ -77,6 +77,6 @@ describe Dox::Entities::Example do
   end
 
   describe '#response_body' do
-    it { expect(example.response_body).to eq(response_body) }
+    it { expect(JSON.parse(example.response_body)).to eq(JSON.parse(response_body)) }
   end
 end
