@@ -1,3 +1,3 @@
 module Dox
-  VERSION = '2.0.0.beta2'.freeze
+  VERSION = '2.0.0.beta3'.freeze
 end
