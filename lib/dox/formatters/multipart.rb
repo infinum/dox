@@ -1,3 +1,5 @@
+require 'rack'
+
 module Dox
   module Formatters
     class Multipart
