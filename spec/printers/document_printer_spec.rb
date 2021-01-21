@@ -13,6 +13,7 @@ describe Dox::Printers::DocumentPrinter do
                                  schema_request_folder_path: schema_request_folder_path,
                                  schema_response_folder_path: File.join(fixtures_path, '../schemas'),
                                  openapi_version: '3.0.0',
+                                 groups_order: [],
                                  title: 'Header demo',
                                  header_description: 'Test demo',
                                  api_version: '2.0',

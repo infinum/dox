@@ -6,6 +6,49 @@
     "version": "2.0"
   },
   "paths": {
+    "/auth": {
+      "get": {
+        "summary": "Auth",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Auth",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Auth": {
+                    "summary": "Auth",
+                    "value": {
+                      "data": {
+                        "user": {
+                          "id": 11,
+                          "name": "Me"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "application/json"
+              }
+            }
+          }
+        }
+      }
+    },
     "/pokemons": {
       "post": {
         "summary": "Create pokemon",
@@ -177,6 +220,10 @@
   },
   "tags": [
     {
+      "name": "Auth",
+      "description": ""
+    },
+    {
       "name": "Pokemons",
       "description": ""
     },
@@ -191,6 +238,12 @@
       "tags": [
         "Pokemons",
         "Digimons"
+      ]
+    },
+    {
+      "name": "Auth",
+      "tags": [
+        "Auth"
       ]
     }
   ]
