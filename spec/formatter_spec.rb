@@ -127,6 +127,39 @@ describe Dox::Formatter do
     }
   end
 
+  let(:get_auth_data) do
+    {
+      meta: {
+        apidoc: true,
+        dox: true,
+        resource_group_name: 'Auth',
+        resource_name: 'Auth',
+        resource_endpoint: '/auth',
+        action_name: 'Auth',
+        action_desc: 'Auth',
+        description: 'Auth'
+      },
+      request: {
+        method: 'get',
+        path: '/auth',
+        fullpath: '/auth',
+        headers: { 'Accept' => 'application/json' }
+      },
+      response: {
+        status: 200,
+        body: {
+          data: {
+            user: {
+              id: 11,
+              name: 'Me'
+            }
+          }
+        },
+        headers: { 'Content-Type' => 'application/json' }
+      }
+    }
+  end
+
   context 'skipped examples' do
     let(:printer) { instance_double(Dox::Printers::DocumentPrinter, print: nil) }
     let(:example_group) { RSpec::Core::ExampleGroup.describe('Pokemon', meta) }
@@ -172,6 +205,7 @@ describe Dox::Formatter do
                                    schema_request_folder_path: File.join(fixtures_path, '../schemas'),
                                    schema_response_folder_path: File.join(fixtures_path, '../schemas'),
                                    openapi_version: '3.0.0',
+                                   groups_order: ['Pokemons & Digimons', 'Auth'],
                                    title: 'Header demo',
                                    header_description: 'Test demo',
                                    api_version: '2.0',
@@ -185,6 +219,7 @@ describe Dox::Formatter do
     let(:create_pokemon) { DoxTestNotification.new(create_pokemon_data) }
     let(:get_pokemon) { DoxTestNotification.new(get_pokemon_data) }
     let(:get_digimons) { DoxTestNotification.new(get_digimons_data) }
+    let(:get_auth) { DoxTestNotification.new(get_auth_data) }
 
     let(:stop_notification) do
       instance_double(RSpec::Core::Notifications::ExamplesNotification,
@@ -196,6 +231,7 @@ describe Dox::Formatter do
       formatter.example_passed(create_pokemon)
       formatter.example_passed(get_pokemon)
       formatter.example_passed(get_digimons)
+      formatter.example_passed(get_auth)
 
       formatter.stop(stop_notification)
     end

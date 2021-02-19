@@ -15,6 +15,8 @@ module Dox
           group_printer.print(resource_group)
         end
 
+        order_groups
+
         @output.puts(JSON.pretty_generate(spec))
       end
 
@@ -41,6 +43,14 @@ module Dox
 
       def group_printer
         @group_printer ||= ResourceGroupPrinter.new(spec)
+      end
+
+      def order_groups
+        return if (Dox.config.groups_order || []).empty?
+
+        spec['x-tagGroups'] = spec['x-tagGroups'].sort_by do |tag|
+          Dox.config.groups_order.index(tag[:name]) || 100
+        end
       end
     end
   end
