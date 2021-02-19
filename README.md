@@ -83,7 +83,6 @@ module Docs
       # define common resource data for each action
       document :api do
         resource 'Bids' do
-          endpoint '/bids'
           group 'Bids'
           desc 'bids.md'
         end
@@ -181,7 +180,6 @@ You can omit defining the resource group, if you don't have any description for 
 #### Resource
 Resource contains actions and is defined with:
 - **name** (required)
-- **endpoint** (required)
 - **group** (required; to associate it with the related group)
 - desc (optional; inline string or relative filepath)
 
@@ -189,7 +187,6 @@ Example:
 ``` ruby
 document :bids do
   resource 'Bids' do
-    endpoint '/bids'
     group 'Bids'
     desc 'bids/bids.md'
   end
@@ -205,7 +202,6 @@ document :bids_common do
   end
 
   resource 'Bids' do
-    endpoint '/bids'
     group 'Bids'
     desc 'bids/bids.md'
   end

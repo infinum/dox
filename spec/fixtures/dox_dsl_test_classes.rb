@@ -29,7 +29,6 @@ module Pokemons
     end
 
     resource 'Pokemons' do
-      endpoint '/pokemons'
       group 'Pokemons'
     end
   end

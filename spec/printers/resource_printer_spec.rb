@@ -5,7 +5,6 @@ describe Dox::Printers::ResourcePrinter do
     {
       resource_name: 'Pokemons',
       resource_desc: 'pokemons.md',
-      resource_endpoint: '/pokemons',
       resource_group_name: 'Beings'
     }
   end
