@@ -16,7 +16,6 @@ module Dox
 
         raise(Dox::Errors::InvalidResourceError, 'Resource name is required!') if @name.blank?
         raise(Dox::Errors::InvalidResourceError, 'Resource group is required!') if @group.blank?
-        raise(Dox::Errors::InvalidResourceError, 'Resource endpoint is required!') if @endpoint.blank?
       end
 
       def config
@@ -24,7 +23,6 @@ module Dox
           resource_name: @name.presence,
           resource_desc: @desc.presence,
           resource_group_name: @group.presence,
-          resource_endpoint: @endpoint.presence,
           apidoc: true
         }
       end

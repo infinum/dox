@@ -4,8 +4,7 @@ describe Dox::Entities::Resource do
   let(:details) do
     {
       resource_name: 'Pokemons',
-      resource_desc: 'Pokemons',
-      resource_endpoint: '/pokemons'
+      resource_desc: 'Pokemons'
     }
   end
 
@@ -17,10 +16,6 @@ describe Dox::Entities::Resource do
 
   describe '#desc' do
     it { expect(resource.desc).to eq(details[:resource_desc]) }
-  end
-
-  describe '#endpoint' do
-    it { expect(resource.endpoint).to eq(details[:resource_endpoint]) }
   end
 
   describe '#actions' do

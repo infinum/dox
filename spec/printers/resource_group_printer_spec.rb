@@ -24,8 +24,7 @@ describe Dox::Printers::ResourceGroupPrinter do
       let(:resource_details) do
         {
           resource_name: 'Pokemons',
-          resource_desc: 'Pokemons',
-          resource_endpoint: '/pokemons'
+          resource_desc: 'Pokemons'
         }
       end
       let(:resource) { Dox::Entities::Resource.new(resource_details) }

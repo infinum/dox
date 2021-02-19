@@ -6,7 +6,6 @@ describe Dox::DSL::Documentation do
       {
         apidoc: true,
         resource_desc: nil,
-        resource_endpoint: '/pokemons',
         resource_group_desc: 'Pokemons group desc',
         resource_group_name: 'Pokemons',
         resource_name: 'Pokemons'
@@ -24,7 +23,6 @@ describe Dox::DSL::Documentation do
         {
           apidoc: true,
           resource_desc: nil,
-          resource_endpoint: '/pokemons',
           resource_group_desc: 'Pokemons group desc',
           resource_group_name: 'Pokemons',
           resource_name: 'Pokemons',
@@ -50,7 +48,6 @@ describe Dox::DSL::Documentation do
         {
           apidoc: true,
           resource_desc: nil,
-          resource_endpoint: '/pokemons',
           resource_group_desc: 'Pokemons group desc',
           resource_group_name: 'Pokemons',
           resource_name: 'Pokemons',

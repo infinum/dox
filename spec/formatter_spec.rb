@@ -16,7 +16,6 @@ describe Dox::Formatter do
         dox: true,
         resource_group_name: 'Pokemons & Digimons',
         resource_name: 'Pokemons',
-        resource_endpoint: '/pokemons',
         action_name: 'Get pokemon',
         description: 'returns pokemon'
       },
@@ -50,7 +49,6 @@ describe Dox::Formatter do
         dox: true,
         resource_group_name: 'Pokemons & Digimons',
         resource_name: 'Pokemons',
-        resource_endpoint: '/pokemons',
         action_name: 'Create pokemon',
         description: 'creates pokemon'
       },
@@ -91,7 +89,6 @@ describe Dox::Formatter do
         dox: true,
         resource_group_name: 'Pokemons & Digimons',
         resource_name: 'Digimons',
-        resource_endpoint: '/digimons',
         action_name: 'Get digimons',
         action_desc: 'Returns all digimons',
         description: 'returns digimons'
@@ -134,7 +131,6 @@ describe Dox::Formatter do
         dox: true,
         resource_group_name: 'Auth',
         resource_name: 'Auth',
-        resource_endpoint: '/auth',
         action_name: 'Auth',
         action_desc: 'Auth',
         description: 'Auth'
