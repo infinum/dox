@@ -5,4 +5,4 @@ gemspec
 
 rails_version = ENV['RAILS_VERSION'] || '5.0.1'
 
-gem 'rails', "~> #{rails_version}"
+gem 'activesupport', "~> #{rails_version}"
