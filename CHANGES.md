@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 2.1.0
+
+Released on March 26, 2021
+
+Add:
+- 'activesupport' as a runtime dependency
+
+Drop:
+- 'rails' as a runtime dependency
+
 ## Version 2.0.0
 
 Released on August 8, 2020
