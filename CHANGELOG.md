@@ -1,7 +1,6 @@
 # Changelog
 
-## [v2.1.0](https://github.com/infinum/dox/releases/tag/v2.1.0) (2021-03-26)
-[Full Changelog](https://github.com/infinum/dox/compare/v2.0.0...v2.1.0)
+## v2.1.0 (2021-03-26)
 
 ### Enhancements
 
@@ -9,8 +8,7 @@
 - Dropped 'rails' as a runtime dependency
 
 
-## [v2.0.0](https://github.com/infinum/dox/releases/tag/v2.0.0) (2020-08-08)
-[Full Changelog](https://github.com/infinum/dox/compare/v1.2.0...v2.0.0)
+## v2.0.0 (2020-08-08)
 
 ### Enhancements
 
@@ -30,8 +28,7 @@
 - [DEPRECATED] `Dox.config.header_file_path`
 
 
-## [v1.3.0](https://github.com/infinum/dox/releases/tag/v1.3.0) (2021-03-26)
-[Full Changelog](https://github.com/infinum/dox/compare/v1.2.0...v1.3.0)
+## v1.3.0 (2021-03-26)
 
 ### Enhancements
 
@@ -39,8 +36,7 @@
 - Dropped 'rails' as a runtime dependency
 
 
-## [v1.2.0](https://github.com/infinum/dox/releases/tag/v1.2.0) (2019-11-27)
-[Full Changelog](https://github.com/infinum/dox/compare/v1.1.0...v1.2.0)
+## v1.2.0 (2019-11-27)
 
 ### Enhancements
 
@@ -52,8 +48,7 @@
 - Explicit passing of an empty hash for `params` in actions now works as expected
 
 
-## [v1.1.0](https://github.com/infinum/dox/releases/tag/v1.1.0) (2018-02-19)
-[Full Changelog](https://github.com/infinum/dox/compare/v1.0.2...v1.1.0)
+## v1.1.0 (2018-02-19)
 
 ### Enhancements
 
@@ -66,8 +61,7 @@
 - Ignore subdomain request header in headers output
 
 
-## [v1.0.2](https://github.com/infinum/dox/releases/tag/v1.0.2) (2017-06-10)
-[Full Changelog](https://github.com/infinum/dox/compare/v1.0.1...v1.0.2)
+## v1.0.2 (2017-06-10)
 
 ### Enhancements
 
@@ -79,8 +73,7 @@
 - Fixed parsing blank request body string
 
 
-## [v1.0.1](https://github.com/infinum/dox/releases/tag/v1.0.1) (2017-06-10)
-[Full Changelog](https://github.com/infinum/dox/compare/v1.0.0...v1.0.1)
+## v1.0.1 (2017-06-10)
 
 ### Enhancements
 
@@ -92,8 +85,7 @@
 - Fix printing request body for test examples
 
 
-## [v1.0.0](https://github.com/infinum/dox/releases/tag/v1.0.0) (2017-05-06)
-[Full Changelog](https://github.com/infinum/dox/compare/1.0.0.alpha...v1.0.0)
+## v1.0.0 (2017-05-06)
 
 ### Enhancements
 
@@ -111,8 +103,7 @@
 - Pull request and response objects from example metadata
 
 
-## [v1.0.0.alpha](https://github.com/infinum/dox/releases/tag/1.0.0.alpha) (2016-10-18)
-[Full Changelog](https://github.com/infinum/dox/compare/v0.0.3...1.0.0.alpha)
+## v1.0.0.alpha (2016-10-18)
 
 ### Enhancements
 
@@ -125,15 +116,14 @@
 - [BREAKING] Raise errors on missing required dox attributes in descriptors
 
 
-## [v0.0.3](https://github.com/infinum/dox/releases/tag/v0.0.3) (2016-06-22)
-[Full Changelog](https://github.com/infinum/dox/compare/v0.0.2...v0.0.3)
+## v0.0.3 (2016-06-22)
 
 ### Bugfixes
 
 - Fixed example identifier for examples with query params
 
 
-## [v0.0.2](https://github.com/infinum/dox/releases/tag/v0.0.2) (2016-06-14)
+## v0.0.2 (2016-06-14)
 
 ### Enhancements
 
