@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.2.0 (2022-11-03)
+
+### Enhancements
+
+- Prepare dox for Rails 7.1 - Start using `#media_type` on request and response objects (removes following deprecation message):
+
+```bash
+DEPRECATION WARNING: Rails 7.1 will return Content-Type header without modification. If you want just the MIME type, please use `#media_type` instead.
+```
+
 ## v2.1.0 (2021-03-26)
 
 ### Enhancements
