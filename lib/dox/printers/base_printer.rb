@@ -19,10 +19,15 @@ module Dox
         hash[key] = default
       end
 
-      def read_file(path, root_path: Dox.config.descriptions_location)
-        return '' unless root_path
+      def read_file(path, config_root_path: Dox.config.descriptions_location)
+        return '' unless config_root_path
 
-        File.read(File.join(root_path, path))
+        config_root_path.each do |root_path|
+          file_path = File.join(root_path, path)
+          next unless File.exist?(file_path)
+
+          return File.read(file_path)
+        end
       end
 
       def formatted_body(body_str, content_type)

@@ -45,7 +45,7 @@ Set these optional options in the rails_helper:
 
 | Option | Value | Description |
 | -- | -- | -- |
-| descriptions_location | Pathname instance or fullpath string | Folder containing markdown descriptions of resources. |
+| descriptions_location | Pathname instance or fullpath string (can be an array) | Folder containing markdown descriptions of resources. |
 | schema_request_folder_path | Pathname instance or fullpath string | Folder with request schemas of resources. |
 | schema_response_folder_path | Pathname instance or fullpath string | Folder with response schemas of resources. |
 | schema_response_fail_file_path | Pathname instance or fullpath string | Json file that contains the default schema of a failed response. |
