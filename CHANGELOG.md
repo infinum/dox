@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.3.0 (2024-02-20)
+
+### Enhancements
+
+- Enable `#descriptions_location` config to be an array of pathname instances or fullpath strings, which will make dox search resource descriptions in more folders, not just one
+
+```bash
+DEPRECATION WARNING: Rails 7.1 will return Content-Type header without modification. If you want just the MIME type, please use `#media_type` instead.
+```
+
 ## v2.2.0 (2022-11-03)
 
 ### Enhancements
