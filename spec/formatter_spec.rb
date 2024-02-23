@@ -24,7 +24,7 @@ describe Dox::Formatter do
         path: '/pokemons/14',
         fullpath: '/pokemons/14',
         path_parameters: { id: 14 },
-        headers: { 'Accept' => 'application/json' }
+        headers: { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
       },
       response: {
         status: 200,
@@ -64,7 +64,7 @@ describe Dox::Formatter do
             }
           }
         },
-        headers: { 'Accept' => 'application/json' }
+        headers: { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
       },
       response: {
         status: 201,
@@ -97,7 +97,7 @@ describe Dox::Formatter do
         method: 'get',
         path: '/digimons',
         fullpath: '/digimons',
-        headers: { 'Accept' => 'application/json' }
+        headers: { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
       },
       response: {
         status: 200,
@@ -139,7 +139,7 @@ describe Dox::Formatter do
         method: 'get',
         path: '/auth',
         fullpath: '/auth',
-        headers: { 'Accept' => 'application/json' }
+        headers: { 'Accept' => 'application/json', 'Content-Type' => 'application/json' }
       },
       response: {
         status: 200,

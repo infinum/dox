@@ -56,7 +56,7 @@ describe Dox::Printers::ExampleRequestPrinter do
         )
       end
 
-      let(:req_headers) { { 'Accept' => content_type } }
+      let(:req_headers) { { 'Content-Type' => content_type, 'Accept' => content_type } }
 
       before do
         Dox.config.headers_whitelist = nil
