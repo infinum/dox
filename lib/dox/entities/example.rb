@@ -5,10 +5,8 @@ module Dox
 
       attr_reader :desc, :name, :request_schema, :response_schema_success, :response_schema_fail
 
-      def_delegator :response, :status, :response_status
-      def_delegator :response, :content_type, :response_content_type
-      def_delegator :request, :content_type, :request_content_type
       def_delegator :request, :method, :request_method
+      def_delegator :response, :status, :response_status
 
       def initialize(details, request, response)
         @desc = details[:description]
@@ -51,6 +49,15 @@ module Dox
         else
           request_path
         end
+      end
+
+      # Rails 7 changes content_type result
+      def request_content_type
+        request.respond_to?(:media_type) ? request.media_type : request.content_type
+      end
+
+      def response_content_type
+        response.respond_to?(:media_type) ? response.media_type : response.content_type
       end
 
       private

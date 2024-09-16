@@ -12,9 +12,11 @@ module Dox
     attr_reader :descriptions_location
 
     def descriptions_location=(folder_path)
-      raise(Errors::FolderNotFoundError, folder_path) unless Dir.exist?(folder_path)
+      Array(folder_path).each do |path|
+        raise(Errors::FolderNotFoundError, path) unless Dir.exist?(path)
+      end
 
-      @descriptions_location = folder_path
+      @descriptions_location = Array(folder_path)
     end
 
     def schema_request_folder_path=(folder_path)
