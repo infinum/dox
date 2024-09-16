@@ -47,7 +47,7 @@ module Dox
       end
 
       def find_headers(headers)
-        headers.find { |key, _| key == 'Accept' }&.last || 'any'
+        headers.find { |key, _| key == 'Content-Type' }&.last || 'any'
       end
 
       def acquire_header_params
