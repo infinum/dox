@@ -32,6 +32,7 @@ require 'dox/printers/example_response_printer'
 require 'dox/printers/resource_group_printer'
 require 'dox/printers/resource_printer'
 require 'dox/util/http'
+require 'dox/util/file'
 require 'dox/version'
 
 module Dox
