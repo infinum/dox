@@ -20,14 +20,9 @@ module Dox
       end
 
       def read_file(path, config_root_path: Dox.config.descriptions_location)
-        return '' unless config_root_path
+        full_path = Util::File.file_path(path, config_root_path: config_root_path)
 
-        config_root_path.each do |root_path|
-          file_path = File.join(root_path, path)
-          next unless File.exist?(file_path)
-
-          return File.read(file_path)
-        end
+        full_path.nil? ? nil : File.read(full_path)
       end
 
       def formatted_body(body_str, content_type)

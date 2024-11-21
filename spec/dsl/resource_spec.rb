@@ -40,6 +40,30 @@ describe Dox::DSL::Resource do
         end.not_to raise_error
       end
     end
+
+    context 'when desc is a file that does not exist' do
+      it 'raises error when name is not specified' do
+        expect do
+          subject.new(RESOURCE_NAME) do
+            group RESOURCE_GROUP
+            desc 'unknown_file.md'
+          end
+        end.to raise_error(Dox::Errors::InvalidResourceError, /unknown_file.md is missing/)
+      end
+    end
+
+    context 'when desc is a file that does exist' do
+      it 'initializes resource' do
+        allow(Dox::Util::File).to receive(:file_path).with('known_file.md').and_return('Some text')
+
+        expect do
+          subject.new(RESOURCE_NAME) do
+            group RESOURCE_GROUP
+            desc 'known_file.md'
+          end
+        end.not_to raise_error
+      end
+    end
   end
 
   describe '#config' do
