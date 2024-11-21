@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.4.0 (2024-11-21)
+
+### Enhancements
+
+- Raise error in case a Resource references an MD file under `#desc` that doesn't exist
+
+
 ## v2.3.0 (2024-02-20)
 
 ### Enhancements
