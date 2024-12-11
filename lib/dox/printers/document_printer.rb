@@ -27,18 +27,14 @@ module Dox
           openapi: Dox.config.openapi_version || '3.0.0',
           info: {
             title: Dox.config.title || 'API Documentation',
-            description: adjust_description(Dox.config.header_description || ''),
+            description: adjusted_description,
             version: Dox.config.api_version || '1.0'
           }
         }
       end
 
-      def adjust_description(description)
-        description.end_with?('.md') ? acquire_desc(description) : description
-      end
-
-      def acquire_desc(path)
-        read_file(path)
+      def adjusted_description
+        format_desc(Dox.config.header_description)
       end
 
       def group_printer

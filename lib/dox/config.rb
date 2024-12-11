@@ -10,6 +10,7 @@ module Dox
     attr_accessor :header_description
     attr_accessor :groups_order
     attr_reader :descriptions_location
+    attr_writer :check_file_presence_on_init
 
     def descriptions_location=(folder_path)
       Array(folder_path).each do |path|
@@ -35,6 +36,12 @@ module Dox
       raise(Errors::FileNotFoundError, file_path) unless File.exist?(file_path)
 
       @schema_response_fail_file_path = file_path
+    end
+
+    def check_file_presence_on_init
+      return false if @check_file_presence_on_init == false
+
+      @check_file_presence_on_init || true
     end
 
     def desc_folder_path=(folder_path)

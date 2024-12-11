@@ -42,7 +42,7 @@ describe Dox::DSL::Resource do
     end
 
     context 'when desc is a file that does not exist' do
-      it 'raises error when name is not specified' do
+      it 'raises error' do
         expect do
           subject.new(RESOURCE_NAME) do
             group RESOURCE_GROUP
@@ -60,6 +60,23 @@ describe Dox::DSL::Resource do
           subject.new(RESOURCE_NAME) do
             group RESOURCE_GROUP
             desc 'known_file.md'
+          end
+        end.not_to raise_error
+      end
+    end
+
+    context 'when desc is a file that does not exist and the check_file_presence_on_init is set to false' do
+      around do |example|
+        Dox.config.check_file_presence_on_init = false
+        example.run
+        Dox.config.check_file_presence_on_init = true
+      end
+
+      it 'does not raise error' do
+        expect do
+          subject.new(RESOURCE_NAME) do
+            group RESOURCE_GROUP
+            desc 'unknown_file.md'
           end
         end.not_to raise_error
       end

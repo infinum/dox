@@ -54,6 +54,7 @@ Set these optional options in the rails_helper:
 | title | string | Documentation title (default: 'API Documentation') |
 | header_description | Pathname instance or string | Description (header) of the documentation (default: ''). If pathname ends with `.md`, the file is looked in `descriptions_location` folder |
 | headers_whitelist | Array of headers (strings) | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
+| check_file_presence_on_init | boolean | Option defaults to true. In case an .md file doesn't exist, dox won't wait for the specs to pass before attempting to print the documentation. It will raise an error early during resource initialization. If you're calling Dox.configure multiple times during the spec suite, you might want to set this to false. |
 
 Example:
 

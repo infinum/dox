@@ -48,7 +48,11 @@ module Dox
       def format_desc(description)
         desc = description
         desc = '' if desc.nil?
-        desc = read_file(desc) if desc.end_with?('.md')
+
+        if desc.end_with?('.md')
+          desc = read_file(desc)
+          raise "#{description} file is missing!" if desc.nil?
+        end
 
         desc
       end

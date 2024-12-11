@@ -34,4 +34,30 @@ describe Dox::Config do
       end
     end
   end
+
+  describe '#check_file_presence_on_init' do
+    context 'when check_file_presence_on_init is nil' do
+      it 'returns true' do
+        config.check_file_presence_on_init = nil
+
+        expect(config.check_file_presence_on_init).to eq(true)
+      end
+    end
+
+    context 'when check_file_presence_on_init is true' do
+      it 'returns true' do
+        config.check_file_presence_on_init = true
+
+        expect(config.check_file_presence_on_init).to eq(true)
+      end
+    end
+
+    context 'when check_file_presence_on_init is false' do
+      it 'returns false' do
+        config.check_file_presence_on_init = false
+
+        expect(config.check_file_presence_on_init).to eq(false)
+      end
+    end
+  end
 end

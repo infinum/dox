@@ -16,7 +16,10 @@ module Dox
 
         raise(Dox::Errors::InvalidResourceError, 'Resource name is required!') if @name.blank?
         raise(Dox::Errors::InvalidResourceError, 'Resource group is required!') if @group.blank?
-        raise(Dox::Errors::InvalidResourceError, "Resource desc #{@desc} is missing!") if desc_file_path.nil?
+
+        if Dox.config.check_file_presence_on_init
+          raise(Dox::Errors::InvalidResourceError, "Resource desc #{@desc} is missing!") if desc_file_path.nil?
+        end
       end
 
       def config
