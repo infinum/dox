@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.5.0 (2024-12-11)
+
+### Enhancements
+
+- Add `#check_file_presence_on_init` option to turn off raising error during resource initialization in case a Resource references an MD file under `#desc` that doesn't exist
+
 ## v2.4.0 (2024-11-21)
 
 ### Enhancements
