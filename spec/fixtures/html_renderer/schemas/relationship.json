@@ -1,0 +1,23 @@
+{
+  "definitions": {
+    "relationship_properties": {
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["id", "type"],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": ["array", "object", "null"],
+      "items": {
+        "type": "object",
+        "$ref": "#/definitions/relationship_properties"
+      },
+      "$ref": "#/definitions/relationship_properties"
+    }
+  }
+}

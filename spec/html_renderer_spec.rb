@@ -16,101 +16,107 @@ RSpec.describe Dox::HtmlRenderer do
   end
 
   describe '#render' do
-    context 'with nested $ref references' do
+    context 'with nested file $ref references' do
       let(:spec_path) { fixtures_path.join('html_renderer', 'apispec.json').to_s }
       let(:renderer) { described_class.new(spec_path, output_path) }
       let(:html) { File.read(output_path) }
+      let(:parsed_spec) { extract_spec_from_html(html) }
 
       before { renderer.render }
 
-      it 'generates an HTML file at the output path' do
-        expect(File.exist?(output_path)).to be true
-      end
-
-      it 'uses the title from the spec' do
-        expect(html).to include('<title>Test API</title>')
-      end
-
-      it 'includes the Redoc script tag with default version' do
-        expect(html).to include('redoc/v2.5.1/bundles/redoc.standalone.js')
-      end
-
-      it 'resolves all $ref references' do
-        expect(html).not_to include('$ref')
-      end
-
-      it 'resolves first-level $ref (item schema)', :aggregate_failures do
-        parsed_spec = extract_spec_from_html(html)
+      it 'resolves the full $ref chain (apispec → item.json → category.json)', :aggregate_failures do
         schema = parsed_spec.dig('paths', '/items', 'get', 'responses', '200',
                                  'content', 'application/json', 'schema')
 
         expect(schema['type']).to eq('object')
         expect(schema['properties']).to have_key('id')
         expect(schema['properties']).to have_key('name')
-      end
 
-      it 'resolves second-level $ref (category schema nested inside item)', :aggregate_failures do
-        parsed_spec = extract_spec_from_html(html)
-        category = parsed_spec.dig('paths', '/items', 'get', 'responses', '200',
-                                   'content', 'application/json', 'schema',
-                                   'properties', 'category')
-
+        category = schema.dig('properties', 'category')
         expect(category['type']).to eq('object')
         expect(category['properties']).to have_key('name')
         expect(category['required']).to eq(['name'])
       end
 
-      it 'produces valid HTML structure', :aggregate_failures do
-        expect(html).to include('<!DOCTYPE html>')
-        expect(html).to include('<div id="redoc"></div>')
-        expect(html).to include('Redoc.init(')
+      it 'does not leave file path refs in the output' do
+        expect(html).not_to include('schemas/item.json')
+        expect(html).not_to include('shared/category.json')
       end
     end
 
-    context 'when the spec has no title' do
-      let(:spec_path) { fixtures_path.join('html_renderer', 'apispec_no_title.json').to_s }
+    context 'with internal $ref references in the top-level spec' do
+      let(:spec_path) { fixtures_path.join('html_renderer', 'apispec_internal_refs.json').to_s }
       let(:renderer) { described_class.new(spec_path, output_path) }
 
       before { renderer.render }
 
-      it 'falls back to the configured title' do
+      it 'preserves them for Redoc to resolve at render time' do
         html = File.read(output_path)
 
-        expect(html).to include('<title>Fallback Title</title>')
+        expect(html).to include('#/definitions/relationship_properties')
       end
     end
 
-    context 'with a custom redoc version' do
-      let(:spec_path) { fixtures_path.join('html_renderer', 'apispec.json').to_s }
+    context 'with an external file that has internal $ref references' do
+      let(:spec_path) { fixtures_path.join('html_renderer', 'apispec_external_with_internal_refs.json').to_s }
       let(:renderer) { described_class.new(spec_path, output_path) }
-
-      let(:config) do
-        instance_double(Dox::Config, title: 'My API', redoc_version: '2.4.0')
-      end
 
       before { renderer.render }
 
-      it 'uses the configured redoc version' do
-        html = File.read(output_path)
+      it 'resolves internal #/ pointers from the inlined file', :aggregate_failures do
+        parsed_spec = extract_spec_from_html(File.read(output_path))
+        data = parsed_spec.dig('paths', '/relationships', 'get', 'responses', '200',
+                               'content', 'application/json', 'schema', 'properties', 'data')
 
-        expect(html).to include('redoc/v2.4.0/bundles/redoc.standalone.js')
+        expect(data['properties']).to have_key('id')
+        expect(data['properties']).to have_key('type')
+        expect(data['required']).to eq(['id', 'type'])
+      end
+    end
+
+    context 'title' do
+      it 'uses the title from the spec' do
+        spec_path = fixtures_path.join('html_renderer', 'apispec.json').to_s
+        described_class.new(spec_path, output_path).render
+
+        expect(File.read(output_path)).to include('<title>Test API</title>')
+      end
+
+      it 'falls back to the configured title when the spec has none' do
+        spec_path = fixtures_path.join('html_renderer', 'apispec_no_title.json').to_s
+        described_class.new(spec_path, output_path).render
+
+        expect(File.read(output_path)).to include('<title>Fallback Title</title>')
+      end
+    end
+
+    context 'redoc version' do
+      it 'defaults to 2.5.1' do
+        spec_path = fixtures_path.join('html_renderer', 'apispec.json').to_s
+        described_class.new(spec_path, output_path).render
+
+        expect(File.read(output_path)).to include('redoc/v2.5.1/bundles/redoc.standalone.js')
+      end
+
+      it 'uses the configured version' do
+        allow(config).to receive(:redoc_version).and_return('2.4.0')
+        spec_path = fixtures_path.join('html_renderer', 'apispec.json').to_s
+        described_class.new(spec_path, output_path).render
+
+        expect(File.read(output_path)).to include('redoc/v2.4.0/bundles/redoc.standalone.js')
       end
     end
 
     context 'when the output directory does not exist' do
-      let(:spec_path) { fixtures_path.join('html_renderer', 'apispec.json').to_s }
-      let(:nested_output_path) { File.join(output_dir, 'deep', 'nested', 'index.html') }
-      let(:renderer) { described_class.new(spec_path, nested_output_path) }
+      it 'creates it' do
+        spec_path = fixtures_path.join('html_renderer', 'apispec.json').to_s
+        nested_path = File.join(output_dir, 'deep', 'nested', 'index.html')
+        described_class.new(spec_path, nested_path).render
 
-      before { renderer.render }
-
-      it 'creates the directory and writes the file' do
-        expect(File.exist?(nested_output_path)).to be true
+        expect(File.exist?(nested_path)).to be true
       end
     end
   end
-
-  private
 
   def extract_spec_from_html(html)
     match = html.match(/Redoc\.init\((.+),\s*\{\},/)

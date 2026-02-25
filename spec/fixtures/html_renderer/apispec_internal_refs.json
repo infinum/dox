@@ -1,0 +1,46 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Internal Refs API",
+    "version": "1.0"
+  },
+  "definitions": {
+    "relationship_properties": {
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["id", "type"],
+      "additionalProperties": false
+    }
+  },
+  "paths": {
+    "/relationships": {
+      "get": {
+        "summary": "Get relationships",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": ["array", "object", "null"],
+                      "items": {
+                        "type": "object",
+                        "$ref": "#/definitions/relationship_properties"
+                      },
+                      "$ref": "#/definitions/relationship_properties"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
