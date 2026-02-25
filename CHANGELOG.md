@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.0.0
+
+### Enhancements
+
+- Added `Dox::HtmlRenderer` for generating self-contained HTML documentation from OpenAPI JSON specs. Resolves all `$ref` references recursively and renders using [Redoc](https://github.com/Redocly/redoc) via CDN — no Node.js dependencies required.
+- Added `Dox.config.redoc_version` option to configure the Redoc CDN version used by `HtmlRenderer` (defaults to `'2.5.1'`)
+- Updated `Dox.config.title` to serve as the fallback title when the OpenAPI spec has no `info.title`
+
+### Good to know
+
+- External Node.js renderers (e.g. `redoc-cli`, `@redocly/cli`, `swagger-ui-offline-packager`) are no longer needed. If you only had them in `package.json` for doc generation, you can remove them and use `Dox::HtmlRenderer` instead.
+
 ## v2.5.0 (2024-12-11)
 
 ### Enhancements

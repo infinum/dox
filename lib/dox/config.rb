@@ -9,6 +9,7 @@ module Dox
     attr_accessor :title
     attr_accessor :header_description
     attr_accessor :groups_order
+    attr_accessor :redoc_version
     attr_reader :descriptions_location
     attr_writer :check_file_presence_on_init
 

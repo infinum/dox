@@ -15,7 +15,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 group :test do
-  gem 'dox', require: false
+  gem 'dox'
 end
 ```
 
@@ -51,9 +51,10 @@ Set these optional options in the rails_helper:
 | schema_response_fail_file_path | Pathname instance or fullpath string | Json file that contains the default schema of a failed response. |
 | openapi_version | string | Openapi version (default: '3.0.0' ) |
 | api_version | string | Api Version (default: '1.0') |
-| title | string | Documentation title (default: 'API Documentation') |
+| title | string | Documentation title. Used as fallback when the OpenAPI spec has no `info.title`. (default: 'API Documentation') |
 | header_description | Pathname instance or string | Description (header) of the documentation (default: ''). If pathname ends with `.md`, the file is looked in `descriptions_location` folder |
 | headers_whitelist | Array of headers (strings) | Requests and responses will by default list only `Content-Type` header. To list other http headers, you must whitelist them.|
+| redoc_version | string | Redoc version used for HTML rendering (default: '2.5.1') |
 | check_file_presence_on_init | boolean | Option defaults to true. In case an .md file doesn't exist, dox won't wait for the specs to pass before attempting to print the documentation. It will raise an error early during resource initialization. If you're calling Dox.configure multiple times during the spec suite, you might want to set this to false. |
 
 Example:
@@ -68,6 +69,7 @@ Dox.configure do |config|
   config.title = 'API'
   config.api_version = '2.0'
   config.header_description = 'api_description.md'
+  config.redoc_version = '2.5.1'
 end
 ```
 
@@ -265,21 +267,28 @@ end
 ### Generate documentation
 Documentation is generated in 2 steps:
 
-1. generate OpenApi json file:
-```bundle exec rspec --tag apidoc -f Dox::Formatter --order defined --tag dox --out spec/api_doc/v1/schemas/docs.json```
+1. Generate an OpenAPI JSON file from your specs:
 
-2. render HTML with Redoc:
-```redoc-cli bundle -o public/api/docs/v2/docs.html spec/api_doc/v1/schemas/docs.json```
+```
+bundle exec rspec -f Dox::Formatter --order defined --tag dox --out spec/docs/v1/apispec.json
+```
 
+2. Render the OpenAPI JSON file as HTML using the built-in renderer:
+
+```ruby
+Dox::HtmlRenderer.new('spec/docs/v1/apispec.json', 'public/api/v1/docs/index.html').render
+```
+
+`Dox::HtmlRenderer` resolves all `$ref` references in the spec, extracts the title (falling back to `Dox.config.title`), and generates a self-contained HTML file powered by [Redoc](https://github.com/Redocly/redoc). The Redoc JavaScript is loaded from CDN at the version specified by `Dox.config.redoc_version`.
+
+No external Node.js dependencies are required.
 
 #### Use rake tasks
 It's recommendable to write a few rake tasks to make things easier. Here's an example:
 
 ```ruby
 namespace :dox do
-  desc 'Generate API documentation markdown'
-
-  task :json, [:version, :docs_path, :host] => :environment do |_, args|
+  task :json, [:version] => :environment do |_, args|
     require 'rspec/core/rake_task'
     version = args[:version] || :v1
 
@@ -292,26 +301,23 @@ namespace :dox do
     Rake::Task['api_spec'].invoke
   end
 
-  task :html, [:version, :docs_path, :host] => :json do |_, args|
+  task :html, [:version] => :json do |_, args|
     version = args[:version] || :v1
-    docs_path = args[:docs_path] || "api/#{version}/docs"
+    docs_path = "api/#{version}/docs"
+    spec_path = Rails.root.join("spec/docs/#{version}/apispec.json").to_s
+    output_path = Rails.root.join("public/#{docs_path}/index.html").to_s
 
-    `yarn run redoc-cli bundle -o public/#{docs_path}/index.html spec/docs/#{version}/apispec.json`
+    Dox::HtmlRenderer.new(spec_path, output_path).render
   end
 
-  task :open, [:version, :docs_path, :host] => :html do |_, args|
+  task :open, [:version] => :html do |_, args|
     version = args[:version] || :v1
-    docs_path = args[:docs_path] || "api/#{version}/docs"
+    docs_path = "api/#{version}/docs"
 
     `open public/#{docs_path}/index.html`
   end
 end
 ```
-
-#### Renderers
-You can render the HTML yourself with ReDoc:
-
-- [Redoc](https://github.com/Redocly/redoc)
 
 ### Common issues
 
