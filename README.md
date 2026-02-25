@@ -14,7 +14,7 @@ Here's a [demo app](https://github.com/infinum/dox-demo).
 Add this line to your application's Gemfile:
 
 ```ruby
-group :test do
+group :development, :test do
   gem 'dox'
 end
 ```
