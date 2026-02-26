@@ -17,6 +17,7 @@ describe Dox::Printers::ResourcePrinter do
 
   describe '#print' do
     before { Dox.config.descriptions_location = File.join(File.dirname(__FILE__), '../fixtures/someuser') }
+
     it 'prints resource header' do
       printer.print(resource)
 

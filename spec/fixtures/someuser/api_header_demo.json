@@ -5,12 +5,7 @@
     "description": "Test demo",
     "version": "2.0"
   },
-  "paths": {
-  },
-  "tags": [
-
-  ],
-  "x-tagGroups": [
-
-  ]
+  "paths": {},
+  "tags": [],
+  "x-tagGroups": []
 }

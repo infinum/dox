@@ -1,7 +1,12 @@
 module Dox
   module Entities
     class Action
-      attr_reader :name, :desc, :verb, :path, :resource, :params
+      attr_reader :name
+      attr_reader :desc
+      attr_reader :verb
+      attr_reader :path
+      attr_reader :resource
+      attr_reader :params
       attr_accessor :examples
 
       def initialize(details, request)
@@ -25,7 +30,7 @@ module Dox
       def template_path
         path = request.path.dup.presence || request.fullpath.split('?').first
         path_params.each do |key, value|
-          path.sub!(%r{\/#{value}(\/|$)}, "/{#{key}}\\1")
+          path.sub!(%r{/#{value}(/|$)}, "/{#{key}}\\1")
         end
 
         path
@@ -64,7 +69,7 @@ module Dox
       end
 
       def guess_param_type(param)
-        if param =~ /^\d+$/
+        if param.to_s =~ /^\d+$/
           :number
         else
           :string

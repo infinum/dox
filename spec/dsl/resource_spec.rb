@@ -85,6 +85,7 @@ describe Dox::DSL::Resource do
 
   describe '#config' do
     let(:resource) { subject.new(RESOURCE_NAME, &options) }
+
     it { expect(resource.config[:resource_name]).to eq(RESOURCE_NAME) }
     it { expect(resource.config[:resource_group_name]).to eq(RESOURCE_GROUP) }
     it { expect(resource.config[:resource_desc]).to eq(RESOURCE_DESC) }

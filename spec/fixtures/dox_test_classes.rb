@@ -17,8 +17,14 @@ class DoxTestExample
 end
 
 class DoxTestRequest
-  attr_reader :method, :path, :content_type, :headers, :fullpath
-  attr_reader :path_parameters, :query_parameters, :body
+  attr_reader :method
+  attr_reader :path
+  attr_reader :content_type
+  attr_reader :headers
+  attr_reader :fullpath
+  attr_reader :path_parameters
+  attr_reader :query_parameters
+  attr_reader :body
 
   def initialize(request_data)
     @method = request_data.fetch(:method)
@@ -45,7 +51,10 @@ class DoxTestRequest
 end
 
 class DoxTestResponse
-  attr_reader :status, :body, :content_type, :headers
+  attr_reader :status
+  attr_reader :body
+  attr_reader :content_type
+  attr_reader :headers
 
   def initialize(response_data)
     @status = response_data.fetch(:status)

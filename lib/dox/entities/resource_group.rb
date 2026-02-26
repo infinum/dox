@@ -2,7 +2,8 @@ module Dox
   module Entities
     class ResourceGroup
       attr_reader :name
-      attr_accessor :desc, :resources
+      attr_accessor :desc
+      attr_accessor :resources
 
       def initialize(details)
         @name = details[:resource_group_name]

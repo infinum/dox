@@ -3,21 +3,21 @@ module Pokemons
 
   show_params = { id: { type: :number } }
   query_params = [{
-    "in": 'query',
-    "name": 'filter',
-    "required": false,
-    "style": 'deepObject',
-    "explode": true,
-    "schema": {
-      "type": 'object',
-      "required": ['updated_at_gt'],
-      "example": {
-        "updated_at_gt": '2018-02-03 10:30:00'
+    in: 'query',
+    name: 'filter',
+    required: false,
+    style: 'deepObject',
+    explode: true,
+    schema: {
+      type: 'object',
+      required: ['updated_at_gt'],
+      example: {
+        updated_at_gt: '2018-02-03 10:30:00'
       },
-      "properties": {
-        "updated_at_gt": {
-          "type": 'string',
-          "title": 'date'
+      properties: {
+        updated_at_gt: {
+          type: 'string',
+          title: 'date'
         }
       }
     }

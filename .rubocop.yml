@@ -1,17 +1,84 @@
-LineLength:
-  Max: 120
+inherit_gem:
+  rubocop-infinum: rubocop.yml
 
-Documentation:
-  Enabled: False
+plugins:
+  - rubocop-infinum
+  - rubocop-rake
 
-WordArray:
-  Enabled: False
+AllCops:
+  TargetRubyVersion: 3.1
+
+Rails:
+  Enabled: false
+
+Naming/BlockForwarding:
+  Enabled: false
+
+Style/ArgumentsForwarding:
+  Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-BlockLength:
-  Max: 250
+Style/HashAsLastArrayItem:
+  Enabled: false
 
-Gemspec/RequiredRubyVersion:
+Style/MissingRespondToMissing:
+  Enabled: false
+
+Style/HashTransformValues:
+  Enabled: false
+
+Style/OneClassPerFile:
+  Enabled: false
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+Performance/RegexpMatch:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/ExpectInHook:
+  Enabled: false
+
+RSpec/BeEq:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/VoidExpect:
+  Enabled: false
+
+RSpec/NoExpectationExample:
+  Enabled: false
+
+RSpec/ReceiveMessages:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/LeakyConstantDeclaration:
   Enabled: false

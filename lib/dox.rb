@@ -1,4 +1,7 @@
 require 'active_support/concern'
+require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/object/blank'
+require 'active_support/core_ext/object/to_query'
 require 'active_support/core_ext/string'
 require 'forwardable'
 
@@ -36,7 +39,8 @@ require 'dox/util/file'
 require 'dox/version'
 
 module Dox
-  Error = Class.new(StandardError)
+  class Error < StandardError
+  end
 
   def self.configure
     yield(config) if block_given?

@@ -1,5 +1,5 @@
 describe Dox do
   it 'has a version number' do
-    expect(Dox::VERSION).not_to be nil
+    expect(Dox::VERSION).not_to be_nil
   end
 end
