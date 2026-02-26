@@ -7,7 +7,7 @@ module Dox
     end
 
     def render
-      spec = JSON.parse(::File.read(spec_path))
+      spec = JSON.load_file(spec_path)
       resolved = resolve_file_refs(spec, ::File.dirname(spec_path))
       title = resolved.dig('info', 'title') || Dox.config.title
 
@@ -38,7 +38,7 @@ module Dox
 
     def load_schema(ref_path, base_dir)
       full_path = ::File.expand_path(ref_path, base_dir)
-      schema = JSON.parse(::File.read(full_path))
+      schema = JSON.load_file(full_path)
       resolved = resolve_file_refs(schema, ::File.dirname(full_path))
       resolve_internal_refs(resolved)
     end
