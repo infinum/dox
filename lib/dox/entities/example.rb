@@ -3,7 +3,11 @@ module Dox
     class Example
       extend Forwardable
 
-      attr_reader :desc, :name, :request_schema, :response_schema_success, :response_schema_fail
+      attr_reader :desc
+      attr_reader :name
+      attr_reader :request_schema
+      attr_reader :response_schema_success
+      attr_reader :response_schema_fail
 
       def_delegator :request, :method, :request_method
       def_delegator :response, :status, :response_status
@@ -68,7 +72,7 @@ module Dox
 
       def formatter(content_type)
         case content_type
-        when %r{application\/.*json}
+        when %r{application/.*json}
           Dox::Formatters::Json
         when /xml/
           Dox::Formatters::Xml
@@ -84,15 +88,16 @@ module Dox
         request.path.presence || request.fullpath.split('?')[0]
       end
 
-      attr_reader :request, :response
+      attr_reader :request
+      attr_reader :response
 
       def filter_headers(obj)
-        headers_whitelist.map do |header|
+        headers_whitelist.filter_map do |header|
           header_val = obj.headers[header]
           next if header_val.blank?
 
           [header, header_val]
-        end.compact
+        end
       end
 
       def headers_whitelist

@@ -36,7 +36,8 @@ require 'dox/util/file'
 require 'dox/version'
 
 module Dox
-  Error = Class.new(StandardError)
+  class Error < StandardError
+  end
 
   def self.configure
     yield(config) if block_given?

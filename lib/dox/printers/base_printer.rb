@@ -27,7 +27,7 @@ module Dox
 
       def formatted_body(body_str, content_type)
         case content_type
-        when %r{application\/.*json}
+        when %r{application/.*json}
           JSON.parse(body_str)
         when /xml/
           pretty_xml(body_str)

@@ -29,6 +29,7 @@ describe Dox::Printers::DocumentPrinter do
   describe '#print' do
     context 'without passed_examples' do
       before { printer.print({}) }
+
       it do
         expect(output).to have_received(:puts).with(api_header_demo_output[0...-1])
       end
@@ -36,6 +37,7 @@ describe Dox::Printers::DocumentPrinter do
 
     context 'with one passed_example' do
       let(:group_printer) { double(:group_printer) }
+
       before do
         expect_any_instance_of(Dox::Printers::ResourceGroupPrinter).to receive(:print).once
       end

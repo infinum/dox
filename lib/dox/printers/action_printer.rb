@@ -13,7 +13,8 @@ module Dox
 
       private
 
-      attr_accessor :action, :action_hash
+      attr_accessor :action
+      attr_accessor :action_hash
 
       def add_action
         action_hash['summary'] = action.name

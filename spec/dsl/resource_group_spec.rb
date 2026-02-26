@@ -53,6 +53,7 @@ describe Dox::DSL::ResourceGroup do
 
   describe '#config' do
     let(:resource_group) { subject.new(GROUP_NAME, &options) }
+
     it { expect(resource_group.config[:resource_group_name]).to eq(GROUP_NAME) }
     it { expect(resource_group.config[:resource_group_desc]).to eq(GROUP_DESC) }
     it { expect(resource_group.config[:apidoc]).to eq(true) }

@@ -62,6 +62,7 @@ describe Dox::DSL::Action do
 
   describe '#config' do
     let(:action) { subject.new(ACTION_NAME, &options) }
+
     it { expect(action.config[:action_name]).to eq(ACTION_NAME) }
     it { expect(action.config[:action_verb]).to eq(ACTION_VERB) }
     it { expect(action.config[:action_path]).to eq(ACTION_PATH) }

@@ -13,7 +13,8 @@ module Dox
 
       private
 
-      attr_reader :http_env, :body
+      attr_reader :http_env
+      attr_reader :body
     end
   end
 end

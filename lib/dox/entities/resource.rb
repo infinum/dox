@@ -1,7 +1,9 @@
 module Dox
   module Entities
     class Resource
-      attr_reader :name, :desc, :group
+      attr_reader :name
+      attr_reader :desc
+      attr_reader :group
       attr_accessor :actions
 
       def initialize(details)

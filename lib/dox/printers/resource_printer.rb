@@ -5,7 +5,7 @@ module Dox
         self.resource = resource
         add_resources
 
-        resource.actions.each do |_, action|
+        resource.actions.each_value do |action|
           action_printer.print(action)
         end
       end

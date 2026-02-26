@@ -79,7 +79,7 @@ module Dox
       end
 
       def add_headers(body)
-        body['headers'] = Hash[example.response_headers.map { |key, value| [key, { description: value }] }]
+        body['headers'] = example.response_headers.to_h { |key, value| [key, { description: value }] }
       end
     end
   end

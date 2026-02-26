@@ -5,7 +5,7 @@ module Dox
         self.resource_group = resource_group
         add_resource_group
 
-        resource_group.resources.each do |_, resource|
+        resource_group.resources.each_value do |resource|
           resource_printer.print(resource)
         end
       end

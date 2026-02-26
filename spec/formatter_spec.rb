@@ -207,16 +207,10 @@ describe Dox::Formatter do
                                    api_version: '2.0',
                                    headers_whitelist: nil)
     end
-
-    before do
-      allow(Dox).to receive(:config).and_return(config)
-    end
-
     let(:create_pokemon) { DoxTestNotification.new(create_pokemon_data) }
     let(:get_pokemon) { DoxTestNotification.new(get_pokemon_data) }
     let(:get_digimons) { DoxTestNotification.new(get_digimons_data) }
     let(:get_auth) { DoxTestNotification.new(get_auth_data) }
-
     let(:stop_notification) do
       instance_double(RSpec::Core::Notifications::ExamplesNotification,
                       examples: [create_pokemon, get_pokemon, get_digimons],
@@ -224,6 +218,7 @@ describe Dox::Formatter do
     end
 
     before do
+      allow(Dox).to receive(:config).and_return(config)
       formatter.example_passed(create_pokemon)
       formatter.example_passed(get_pokemon)
       formatter.example_passed(get_digimons)
