@@ -5,8 +5,8 @@ require 'dox/version'
 Gem::Specification.new do |spec|
   spec.name          = 'dox'
   spec.version       = Dox::VERSION
-  spec.authors       = ['Melita Kokot', 'Vedran Hrnčić', 'Marko Ćilimković']
-  spec.email         = ['melita.kokot@gmail.com', 'vrabac266@gmail.com', 'os.chilim@gmail.com']
+  spec.authors       = ['Melita Kokot', 'Vedran Hrnčić']
+  spec.email         = ['melita.kokot@gmail.com', 'vrabac266@gmail.com']
 
   spec.summary       = 'Generates API documentation for rspec in OpenAPI format.'
   spec.homepage      = 'https://github.com/infinum/dox'
