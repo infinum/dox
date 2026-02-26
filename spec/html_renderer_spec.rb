@@ -16,6 +16,21 @@ RSpec.describe Dox::HtmlRenderer do
   end
 
   describe '#render' do
+    context 'with a custom adapter' do
+      let(:spec_path) { fixtures_path.join('html_renderer', 'apispec_no_title.json').to_s }
+      let(:adapter) { instance_double(Dox::RedoclyAdapter) }
+      let(:renderer) { described_class.new(spec_path, output_path, adapter: adapter) }
+
+      it 'delegates html generation to the adapter and writes the result' do
+        allow(adapter).to receive(:build_html).and_return('<html>custom</html>')
+
+        renderer.render
+
+        expect(File.read(output_path)).to eq('<html>custom</html>')
+        expect(adapter).to have_received(:build_html).with('Fallback Title', hash_including('openapi' => '3.0.0'))
+      end
+    end
+
     context 'with nested file $ref references' do
       let(:spec_path) { fixtures_path.join('html_renderer', 'apispec.json').to_s }
       let(:renderer) { described_class.new(spec_path, output_path) }
