@@ -69,7 +69,7 @@ module Dox
       end
 
       def guess_param_type(param)
-        if param.is_a?(Integer) || (param.is_a?(String) && param.to_i.to_s == param)
+        if param.to_s =~ /^\d+$/
           :number
         else
           :string
