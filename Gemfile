@@ -10,6 +10,7 @@ gem 'activesupport', "~> #{rails_version}"
 gem 'bundler'
 gem 'codeclimate-test-reporter'
 gem 'json'
+gem 'ostruct'
 gem 'pry-nav'
 gem 'pry-rails'
 gem 'pry-stack_explorer'
