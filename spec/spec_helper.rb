@@ -3,7 +3,12 @@ SimpleCov.start
 
 require 'dox'
 require 'pathname'
-require 'pry'
+
+begin
+  require 'pry'
+rescue LoadError
+  warn 'pry could not be loaded; add ostruct to Gemfile if using Ruby >= 4.0'
+end
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
