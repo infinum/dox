@@ -124,7 +124,7 @@
             "name": "id",
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "number"
             },
             "example": 14
           },

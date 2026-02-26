@@ -19,7 +19,7 @@ describe Dox::Printers::ActionPrinter do
       { example: 1,
         in: :path,
         name: :id,
-        schema: { type: :string } },
+        schema: { type: :number } },
       { description: 'pokemon id',
         example: 2,
         in: 'query',
@@ -44,7 +44,7 @@ describe Dox::Printers::ActionPrinter do
 
   describe '#print' do
     let(:action_output) do
-      [{ example: 1, in: :path, name: :id, schema: { type: :string } }]
+      [{ example: 1, in: :path, name: :id, schema: { type: :number } }]
     end
 
     it 'prints action header' do

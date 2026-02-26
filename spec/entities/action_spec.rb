@@ -87,13 +87,13 @@ describe Dox::Entities::Action do
 
   describe '#params' do
     context 'when explicitly defined' do
-      it { expect(action.params).to eq([{ example: 1, in: :path, name: :id, schema: { type: :string } }]) }
+      it { expect(action.params).to eq([{ example: 1, in: :path, name: :id, schema: { type: :number } }]) }
     end
 
     context 'when not explicitly defined' do
       let(:params) do
         [
-          { example: 11, name: :id, schema: { type: :string }, in: :path },
+          { example: 11, name: :id, schema: { type: :number }, in: :path },
           { example: :electric, name: :type, schema: { type: :string }, in: :path }
         ]
       end
