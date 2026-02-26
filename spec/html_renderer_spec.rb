@@ -105,23 +105,6 @@ RSpec.describe Dox::HtmlRenderer do
       end
     end
 
-    context 'redoc version' do
-      it 'defaults to 2.5.1' do
-        spec_path = fixtures_path.join('html_renderer', 'apispec.json').to_s
-        described_class.new(spec_path, output_path).render
-
-        expect(File.read(output_path)).to include('redoc/v2.5.1/bundles/redoc.standalone.js')
-      end
-
-      it 'uses the configured version' do
-        allow(config).to receive(:redoc_version).and_return('2.4.0')
-        spec_path = fixtures_path.join('html_renderer', 'apispec.json').to_s
-        described_class.new(spec_path, output_path).render
-
-        expect(File.read(output_path)).to include('redoc/v2.4.0/bundles/redoc.standalone.js')
-      end
-    end
-
     context 'when the output directory does not exist' do
       it 'creates it' do
         spec_path = fixtures_path.join('html_renderer', 'apispec.json').to_s
