@@ -8,4 +8,4 @@ require 'pry'
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 
 root_path = Pathname.new(File.expand_path('../', File.dirname(__FILE__)))
-Dir[root_path.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[root_path.join('spec/support/**/*.rb')].each { |f| require f }
