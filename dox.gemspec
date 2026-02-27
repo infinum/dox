@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport', '>= 4.0'
+  spec.add_dependency 'rack'
   spec.add_dependency 'rexml'
   spec.add_dependency 'rspec-core'
 end
