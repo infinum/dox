@@ -1,5 +1,23 @@
 # Changelog
 
+## v3.0.0
+
+### Enhancements
+
+- Added `Dox::HtmlRenderer` for generating HTML documentation from OpenAPI JSON specs. It resolves `$ref` references recursively and delegates HTML generation to an adapter object.
+- `Dox::HtmlRenderer` accepts an overridable `adapter:` argument, so you can provide any renderer object that responds to `build_html(title, spec)`.
+- Added `Dox.config.redoc_version` option to configure the Redoc CDN version used by the default `Dox::RedoclyAdapter` (defaults to `'2.5.1'`)
+- Updated `Dox.config.title` to serve as the fallback title when the OpenAPI spec has no `info.title`
+- Add support for Ruby 4.0
+
+### Breaking changes
+
+- [BREAKING] Dropped support for Ruby 3.0 and below (Ruby 3.1+ is required)
+
+### Good to know
+
+- External Node.js renderers (e.g. `redoc-cli`, `@redocly/cli`, `swagger-ui-offline-packager`) are no longer needed. If you only had them in `package.json` for doc generation, you can remove them and use `Dox::HtmlRenderer` instead.
+
 ## v2.5.0 (2024-12-11)
 
 ### Enhancements
