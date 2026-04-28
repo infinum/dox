@@ -28,5 +28,11 @@ describe Dox::Formatters::Multipart do
 
       expect(Rack::Multipart).to have_received(:extract_multipart).once
     end
+
+    it 'rewinds the input before extracting the multipart body' do
+      body.read
+
+      expect { subject }.to change(body, :pos).to(0)
+    end
   end
 end

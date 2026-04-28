@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.0.1
+
+### Bug fixes
+
+- Rewind `rack.input` in `Dox::Formatters::Multipart` before re-parsing the request body. Rack 3 dropped the implicit rewind on `Rack::Request#body`, so re-parsing a multipart request whose body had already been consumed by Rails raised `Rack::Multipart::Parser::BoundedIO#read: bad content body (EOFError)` when the formatter ran.
+
 ## v3.0.0
 
 ### Enhancements
