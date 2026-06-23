@@ -19,5 +19,11 @@ describe Dox::Formatters::Xml do
     end
 
     it { is_expected.to eq body.chomp }
+
+    context 'when body is nil' do
+      let(:body) { nil }
+
+      it { is_expected.to eq '' }
+    end
   end
 end

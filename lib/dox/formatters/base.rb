@@ -4,6 +4,7 @@ module Dox
       def initialize(http_env)
         @http_env = http_env
         http_env_body = http_env.body
+        http_env_body.rewind if http_env_body.respond_to?(:rewind)
         @body = http_env_body.respond_to?(:read) ? http_env_body.read : http_env_body
       end
 

@@ -21,5 +21,11 @@ describe Dox::Formatters::Plain do
 
       it { is_expected.to eq 'ASCII-8BIT stream' }
     end
+
+    context 'when body is nil' do
+      let(:body) { nil }
+
+      it { is_expected.to eq '' }
+    end
   end
 end

@@ -2,6 +2,8 @@ module Dox
   module Formatters
     class Plain < Dox::Formatters::Base
       def format
+        return '' if body.nil?
+
         return body if body.encoding == Encoding::UTF_8
 
         body.encode(Encoding::UTF_8)
