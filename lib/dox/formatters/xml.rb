@@ -2,6 +2,8 @@ module Dox
   module Formatters
     class Xml < Dox::Formatters::Base
       def format
+        return '' if body.nil?
+
         doc = REXML::Document.new(body)
         formatter = REXML::Formatters::Pretty.new
         formatter.compact = true

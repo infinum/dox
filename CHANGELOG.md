@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.0.2
+
+### Bug fixes
+
+- Rewind `rack.input` in `Dox::Formatters::Base` before reading the request body. Rack 3 dropped the implicit rewind on `Rack::Request#body`, so JSON, plain text, and XML request examples were empty when the body had already been consumed during request processing.
+- Guard against a nil request body in `Dox::Formatters::Plain` and `Dox::Formatters::Xml`. Rack 3 returns `nil` instead of `StringIO("")` for bodyless requests.
+
 ## v3.0.1
 
 ### Bug fixes

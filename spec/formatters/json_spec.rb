@@ -42,5 +42,34 @@ describe Dox::Formatters::Json do
 
       it { is_expected.to eq formatted_response }
     end
+
+    context 'when body stream was already read' do
+      let(:body) do
+        StringIO.new(
+          {
+            data: {
+              attributes: {
+                name: 'John Doe'
+              }
+            }
+          }.to_json
+        )
+      end
+      let(:formatted_response) do
+        <<~HEREDOC.chomp
+          {
+            "data": {
+              "attributes": {
+                "name": "John Doe"
+              }
+            }
+          }
+        HEREDOC
+      end
+
+      before { body.read }
+
+      it { is_expected.to eq formatted_response }
+    end
   end
 end
